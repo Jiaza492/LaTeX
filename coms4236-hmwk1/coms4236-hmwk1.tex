@@ -1,0 +1,103 @@
+\documentclass[12pt]{article}
+
+\usepackage{amsmath}
+\usepackage[dvips]{graphicx}
+\usepackage{verbatim}
+\usepackage{appendix}
+
+\title{COMS 4236 Homework 1}
+\author{Mengqi Zong $<mz2326@columbia.edu>$}
+
+\begin{document}
+
+\maketitle
+
+\setlength{\parindent}{0in}
+
+\section{Problem 1}
+
+
+a.\\
+The transition table is shown in Table-\ref{tab:p1_a}. And here is the
+brief explanation:
+
+\begin{enumerate}
+\item If the last bit is 0 ($s_0$): change the bit into 1 ($s_1$),
+  scan the next input.
+\item If the last bit is 1 ($s_1$), change the bit into 0, and work
+  tape moves back 1 bit ($p_1$).
+  \begin{itemize}
+  \item If the bit is 0 ($p_1$), change it into 1 ($p_0$). Work tape
+    moves to the last bit.
+  \item If the bit is 1 ($p_1$), change it into 0. Work tape moves back
+    1 bit ($p_1$).
+  \item If the bit is $\triangleright$, work tape move to the first
+    bit ($p_f$) and flip to 1 ($p'_f$). Then go to the first $\sqcup$
+    bit and set it to 0.
+  \end{itemize}
+\end{enumerate}
+
+\begin{table}[ht!]
+\begin{center}
+\begin{tabular}{|ccc|c|}
+  \hline
+
+  $p \in K$ & $\sigma_1 \in \Sigma$ & $\sigma_2 \in \Sigma$
+  & $\delta(p1,\sigma_1,\sigma_2)$ \\
+  \hline
+  $s_0$  &    1     &    0     &  $(s_1, 1, \to, 1, -)$  \\
+  $s_0$  & $\sqcup$ &    0     &  $(h, \sqcup, -, 0, -)$  \\
+  $s_1$  &    1     &    1     &  $(p_1, 1, -, 0, \gets)$  \\
+  $s_1$  & $\sqcup$ &    1     &  $(h, \sqcup, -, 1, -)$  \\
+  $s_1$  &    1     &    0     &  $(p_0, 1, -, 1, \to)$  \\
+  $p_0$  &    1     &    0     &  $(p_0, 1, -, 0, \to)$ \\
+  $p_0$  &    1     &    1     &  $(p_0, 1, -, 1, \to)$ \\
+  $p_0$  &    1     & $\sqcup$ &  $(p'_0, 1, -, \sqcup, \gets)$ \\
+  $p'_0$ &    1     &    0     &  $(s_0, 1, \to, 0, -)$ \\
+  $p'_0$ &    1     &    1     &  $(s_1, 1, \to, 1, -)$ \\
+  $p_1$  &    1     &    0     &  $(p_0, 1, -, 1, \to)$ \\
+  $p_1$  &    1     &    1     &  $(p_1, 1, -, 0, \gets)$ \\
+  $p_1$  &    1     & $\triangleright$ &  $(p_f, 1, -, \sqcup, \to)$ \\
+  $p_f$  &    1     &    0     &  $(p'_f, 1, -, 1, \to)$ \\
+  $p'_f$ &    1     &    0     &  $(p'_f, 1, -, 0, \to)$ \\
+  $p'_f$ &    1     &    1     &  $(p'_f, 1, -, 1, \to)$ \\
+  $p'_f$ &    1     & $\sqcup$ &  $(s_0, 1, \to, 0, -)$ \\
+
+  \hline
+\end{tabular}
+\end{center}
+\caption{Problem 1-a: 2-string Turing machine for length
+  counting \label{tab:p1_a}}  
+\end{table}
+
+b.\\
+Using amortized analysis, we can show that for any input string with
+length $n$ and its any digit$k$ $(0 \le m \le \log n)$, the total time
+the m$th$ digit get flipped is $ 1 / 2^k \cdot n$. And the running
+time is
+
+\begin{eqnarray}
+  T(n) &=&    \sum_{k = 0}^{\log n} {\frac {1}{2^k} \cdot n \cdot k}
+              \nonumber \\
+       &=&  n \sum_{k = 0}^{\log n} {\frac {1}{2^k} \cdot k} 
+              \nonumber \\
+       &\leq& n (1 + \sum_{k = 0}^{\infty} {\frac {1}{2^k} \cdot k}) 
+              \nonumber \\
+       &\leq& n (1 + 2) \nonumber \\
+       &=&    O(n)
+\end{eqnarray}
+
+So the time complexity of the TM is $O(n)$.
+
+\section{Problem 2}
+
+\section{Problem 3}
+
+\section{Problem 4}
+
+
+\appendix
+\appendixpage
+\addappheadtotoc
+
+\end{document}
