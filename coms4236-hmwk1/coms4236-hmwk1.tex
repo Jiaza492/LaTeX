@@ -17,19 +17,18 @@
 \section{Problem 1}
 
 
-a.\\
-The transition table is shown in Table-\ref{tab:p1_a}. And here is the
-brief explanation:
+a. The transition table is shown in Table-\ref{tab:p1_a}. And here is
+the brief explanation:
 
 \begin{enumerate}
-\item If the last bit is 0 ($s_0$): change the bit into 1 ($s_1$),
+\item If the last bit is 0 ($s_0$): change the bit to 1 ($s_1$),
   scan the next input.
-\item If the last bit is 1 ($s_1$), change the bit into 0, and work
-  tape moves back 1 bit ($p_1$).
+\item If the last bit is 1 ($s_1$), change the bit to 0, and
+  worktape moves back 1 bit ($p_1$).
   \begin{itemize}
-  \item If the bit is 0 ($p_1$), change it into 1 ($p_0$). Work tape
+  \item If the bit is 0 ($p_1$), change it to 1 ($p_0$). Worktape
     moves to the last bit.
-  \item If the bit is 1 ($p_1$), change it into 0. Work tape moves back
+  \item If the bit is 1 ($p_1$), change it to 0. Worktape moves back
     1 bit ($p_1$).
   \item If the bit is $\triangleright$, work tape move to the first
     bit ($p_f$) and flip to 1 ($p'_f$). Then go to the first $\sqcup$
@@ -70,11 +69,10 @@ brief explanation:
   counting \label{tab:p1_a}}  
 \end{table}
 
-b.\\
-Using amortized analysis, we can show that for any input string with
-length $n$ and its any digit$k$ $(0 \le m \le \log n)$, the total time
-the m$th$ digit get flipped is $ 1 / 2^k \cdot n$. And the running
-time is
+b. Using amortized analysis, we can show that given any input string
+with length $n$, its $k^{th}$ $(0 \le m \le \log n)$ digit will be
+flipped  $ 1 / 2^k \cdot n$ times. And the total running time for the
+string is
 
 \begin{eqnarray}
   T(n) &=&    \sum_{k = 0}^{\log n} {\frac {1}{2^k} \cdot n \cdot k}
@@ -90,8 +88,36 @@ time is
 So the time complexity of the TM is $O(n)$.
 
 \section{Problem 2}
+a. Let the TM have two heads, $h_1$ and $h_2$. First, move head
+$h_2$ to the last symbol of the input. Second, begin to compare the
+symbol on the two heads: If they are the same, then keep going, until
+both of them reach the end ($h_1$ reaches the right-end and $h_2$
+reaches the left-end); If they are not the same, half and output
+``No''. If both heads reaches the end, then half and ouput ``Yes''. In
+this case, it takes $O(n)$ to run the algorithm.\\
+
+b. Suppose a multihead Turing machine has $l$ heads. Since it is
+possible for a tape to have multiple heads, then we need some extra
+space to store the position of each head.\\
+
+For every work tape, since a work tape can at most have S(n) space,
+then it takes $O(\log {S(n)})$ to store each head's position. For the
+input tape, since it takes $n$ space, then it takes $O(\log {n})$ to
+store each head's position. As a result, it takes $O(\log {S(n)} +
+\log {n})$ space to store the heads' postions.\\
+
+In total, the multihead Turing machine takes $O(S(n) + \log {S(n)} +
+\log {n})$ space. Simplify a little, we get $O(S(n) + \log {n})$.\\
+
+About time complexity, let $S^{'}(n) = O(S(n) + \log {n})$. Since
+the number of configurations of a TM M with space $S(n)$ is at most
+$n \cdot c^{S(n)}$ for some constant c that depends on M, replace
+$S(n)$ with $S^{'}(n)$ we get the time complexity of a multihead
+Turing machine is $O(n \cdot c^{S(n) + \log {n}})$.
 
 \section{Problem 3}
+
+
 
 \section{Problem 4}
 
