@@ -79,7 +79,7 @@ with length $n$, its $k^{th}$ $(0 \le m \le \log n)$ digit will be
 flipped  $ 1 / 2^k \cdot n$ times. And the total running time for the
 string is
 
-\begin{eqnarray}
+\begin{eqnarray*}
   T(n) &=&    \sum_{k = 0}^{\log n} {\frac {1}{2^k} \cdot n \cdot k}
               \nonumber \\
        &=&  n \sum_{k = 0}^{\log n} {\frac {1}{2^k} \cdot k} 
@@ -88,7 +88,7 @@ string is
               \nonumber \\
        &\leq& n (1 + 2) \nonumber \\
        &=&    O(n)
-\end{eqnarray}
+\end{eqnarray*}
 
 So the time complexity of the TM is $O(n)$.
 
@@ -270,6 +270,93 @@ $O(c^{\log n})$, which is polynomial.
 
 \section*{Problem 4}
 
-a.
+a. From $u_1v_1 \in L(M)$, we can know that given the working
+configuration $\delta(M,u_1v_1, |u_1|)$, M can continue processing the
+rest of input -- $v_1$, and finally accept the whole input. That is, with
+working configuration $\delta(M,u_1v_1, |u_1|)$, whether the input
+$u_1v_1$ can be accepted or not just depends on how M process the input
+$v_1$ (since the first part of the input $u_1$ is totally OK with
+M). In other words, $\delta(M,u_1v_1, |u_1|)$ represents the process
+result of $u_1$. And given this result, whether input can be accepted
+or not just depends on $v_1$.\\
+
+As a result, if $u_1v_1 \in L(M), u_2v_2 \in L(M),\delta(M,u_1v_1,
+|u_1|) = \delta(M,u_2v_2, |u_2|)$, then $\delta(M,u_1v_2, |u_1|) =
+\delta(M,u_2v_1, |u_2|) = \delta(M,u_1v_1, |u_1|) = \delta(M,u_2v_2,
+|u_2|)$. This is because $\delta(M,u_1v_1, |u_1|) = \delta(M,u_2v_2,
+|u_2|)$ means both inputs' first part $u_1$ and $u_2$ are OK to Turing
+machine M. And the their first parts' processing result are the
+same. So based on the result,  we can process either $v_1$ or $v_2$
+and makes the whole input accepted by M.\\
+
+As to $u_1v_2$, we know that $u_1$ is totally OK with M. And for
+$v_2$, given $\delta(M,u_1v_2, |u_1|)$, it can be processed by M and
+$u_1v_2$ can be finally accepted by M. Same to $u_2v_1$. Then we get
+$u_1v_2 \in L(M), u_2v_1 \in L(M)$.\\
+
+b. For reduced crossing sequence $\delta'(M,x0^my,|x|)$, every working
+condition in this sequence means that the input head has to travel at
+least $n/3$:
+\begin{itemize}
+\item From the last cell of x to the first cell of y. The input head
+  has to cross the whole $0^m$ area, which has a length of $n/3$.
+\item From the first cell of y to the last cell of x. The input head
+  also has to cross the whole $0^m$ area, which has a length of $n/3$.
+\end{itemize}
+
+As a result, suppose all the running time $T(n)$ is used to do the
+crossing, the maximum possible crossing time is
+\begin{eqnarray*}
+  m & = & \frac {T(n)}{n/3} \\
+    & = & \frac {3T(n)}{n}
+\end{eqnarray*}
+
+Note that in the analysis I don't count the time to process the whole
+input sequence, since this just at most affects the maximum crossing
+time by a constant 3. \\
+
+About the upper bound, we already know from the class that the number
+of configurations is $c^{S(n)}$ (without considering the input
+tape). Since there are ${3T(n)}/n$ configurations in the reduced
+crossing sequence, so the upper bound on the number of possible
+distinct reduced crossing sequence is $(c^{S(n)})^{\frac {3T(n)}{n}}$.
+That is, $c^{\frac {3S(n)T(n)}{n}}$.
+
+c. Since $x_1 \neq x_2$, then one of the two conditions must happen:
+
+\begin{enumerate}
+\item $|x_1| \neq |x_2|$
+\item Since the two palindromes are different, there must exist at
+  least one cell in $x_1$ that is different from the corresponding
+  cell in $x_2$.
+\end{enumerate}
+
+If $|x_1| \neq |x_2$, it is obvious that they have different reduced
+crossing sequences. Now let's consider the condition that $|x_1| =
+|x_2|$. In this case, at least one cell in $x_1$ is different from the
+correspond cell in $x_2$. That decides that their reduced crossing
+sequences are different: because when TM is about to cross cell $|x_1|$,
+it has to store what is in the cell M is now dealing with of $x_1$ in
+order to compare with the cell in ${x_1}^R$. However, since the two
+different palindromes must have at least one cell is different, then
+the reduced crossing sequences are different.\\
+
+d. Given n, there are ${c'}^n$ possible palindromes. And note that
+every palindromes can be represented in the form of $x0^mx^R$ as
+mentioned in part b. And since different palindromes have different
+reduced crossing sequences, then the number of possible reduced
+sequences should be greater equal to the number of possible
+palindromes (note that the constant doesn't matter).  As a result, we
+have 
+
+\begin{eqnarray*}
+c^{\frac {3S(n)T(n)}{n}} & \geq & {c'}^{n} \\
+\frac {3S(n)T(n)}{n} & \geq & a \cdot n \\
+S(n) \cdot T(n) & \geq & \frac {a}{3} \cdot n^2 \\
+S(n) \cdot T(n) & = & \Omega (n^2)
+\end{eqnarray*}
+
+Note that $a$ is a constant. At last, we get $S(n) \cdot T(n) = \Omega
+(n^2)$.
 
 \end{document}
