@@ -1,0 +1,170 @@
+\documentclass[12pt]{article}
+
+\parindent=.25in
+\setlength{\oddsidemargin}{0pt}
+\setlength{\textwidth}{440pt}
+\setlength{\topmargin}{0in}
+
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage[dvips]{graphicx}
+\usepackage{verbatim}
+\usepackage{appendix}
+
+\title{COMS E6998 Homework 1}
+\author{Mengqi Zong $<mz2326@columbia.edu>$}
+
+\begin{document}
+
+\maketitle
+
+\setlength{\parindent}{0in}
+
+\section*{Question 1}
+
+a. The decoding problem: find
+
+\begin{eqnarray*}
+arg \max_{s \in S^m} {p(\underline {s}| \underline{x}; \underline {w})}
+  &=& arg \max_{s \in S^m} \; 
+{\frac
+{\exp {(\underline {w} \cdot \underline {\Phi} (\underline {x},
+    \underline {s}))}} 
+{\sum_{\underline {s}' \in S^m} {\exp {(\underline {w} \cdot
+  \underline {\Phi} (\underline x, \underline {s}'))}}}} \\
+&=& arg \max_{s \in S^m} \; {\exp {(\underline {w} \cdot \underline
+{\Phi} (\underline {x}, \underline{s}'))}} \\
+&=& arg \max_{s \in S^m} \; {\underline {w} \cdot \underline {\Phi}
+(\underline {x}, \underline{s}')} \\
+&=& arg \max_{s \in S^m} \; {\underline {w} \cdot \sum_{j=1}^{m}
+{\underline {\phi} (\underline {x}, j, s_{j-2}, s_{j-1}, s_j)}} \\
+&=& arg \max_{s \in S^m} \; {\sum_{j=1}^{m} {\underline {w} \cdot
+  \underline {\phi} (\underline {x}, j, s_{j-2}, s_{j-1}, s_j)}} \\
+\end{eqnarray*}
+Here comes the dynamic programming algorithm...
+
+\begin{itemize}
+\item Initialization-1: for $s \in S$
+  \begin{equation*}
+    \pi [1,s] = \underline {w} \cdot \underline {\phi} (\underline
+    {x}, 1, s_{00}, s_0, s)
+  \end{equation*}
+  where $s_{00}, s_0$ is a special ``initial'' state.
+\item Initialization-2: for $s \in S$
+  \begin{equation*}
+    \pi [2,s] = \max_{s' \in S} {[\pi[1, s'] + \underline {w} \cdot
+    \underline{\phi} (\underline {x}, 2, s_0, s', s)]}
+  \end{equation*}
+\item For $j = 3...m, s = 1...k$
+  \begin{equation*}
+    \pi [j,s] = \max_{s',s'' \in S} {[\pi[j-1, s''] + \underline {w}
+    \cdot \underline{\phi} (\underline {x}, j, s'', s', s)]}
+  \end{equation*}
+\item We have
+  \begin{equation*}
+    \max_{s_1...s_m} {\sum_{j=1}^m {\underline {w} \cdot \underline
+      {\phi} (\underline {x}, j, s_{j-2}, s_{j-1}, s_j)}} = \max_s
+  {\pi[m,s]}
+  \end{equation*}
+\item This algorithm runs in $O(mk^3) time.$
+\end{itemize}
+
+b. To estimate the parameters, we assume we have a set of $n$ labeled
+examples, ${(\underline {x}^i, \underline {s}^i)}_{i=1}^n$. Each
+$\underline{x}^i$ is an input sequence $x_1^i...x_m^i$, each
+$\underline {s}^i$ is a state sequence $s_1^i...s_m^i$.\\
+
+We then prooceed in exactly the same way as for regular log-linear
+models. The regularized log-likelihood function is
+
+\begin{equation*}
+L(\underline {w}) = \sum_{i=1}^n {\log p(\underline {s}^i |
+  \underline{x}^i; \underline {w})} - \frac {\lambda}{2} ||\underline
+{w}||^2
+\end{equation*}
+
+Our parameter estimates are
+
+\begin{equation*}
+\underline {w}^* = arg \max_{\underline {w} \in \mathbb{R}^d}
+\sum_{i=1}^n {\log p(\underline {s}^i | \underline{x}^i; \underline
+  {w})} - \frac {\lambda}{2} ||\underline {w}||^2
+\end{equation*}
+
+Now we use gradient-based optimization methods to find
+$\underline{w}^*$. Let's compute the derivatives:
+
+\begin{equation*}
+\frac {\partial} {\partial w_k} L(\underline {w}) = 
+\sum_i {\Phi_k(\underline {x}^i, \underline {s}^i)}
+- \sum_i {\sum_{\underline {s} \in S^m} {p(\underline {s} | \underline
+    {x}^i; \underline {w}) \Phi_k {\underline {x}^i, \underline {s}}}}
+- \lambda w_k
+\end{equation*}
+
+The first term is easily computed, because
+
+\begin{equation*}
+\sum_i {\Phi_k(\underline {x}^i, \underline {s}^i)} =
+\sum_i {\sum_{j=1}^m {\phi_k (\underline {x}^i, j, s_{j-2}^i,
+    s_{j-1}^i, s_j^i)}}
+\end{equation*}
+
+We now consider how to compute the second term:
+
+\begin{eqnarray*}
+\sum_i {\sum_{\underline {s} \in S^m} {p(\underline {s} | \underline
+    {x}^i; \underline {w}) \Phi_k (\underline {x}^i, \underline {s})}}
+&=& \sum_{\underline {s} \in S^m} {p(\underline {s} | \underline {x}^i;
+  \underline {w})} \sum_{j=1}^m {\phi_k (\underline {x}^i, j, s_{j-2},
+  s_{j-1}, s_j)} \\
+&=& \sum_{j=1}^m {\sum_{a \in S, b \in S} {q_j^i(a,b,c) \phi_k
+    (\underline {x}^i, j, a, b, c)}}
+\end{eqnarray*}
+
+where
+
+\begin{equation*}
+q_j^i(a,b,c) =
+\sum_{\underline {s} \in S^m: s_{j-2} = a, s_{j-1} = b, s_j = c}
+{p(\underline {s} | \underline {x}^i; \underline {w})}
+\end{equation*}
+
+For a given $i$, all $q_j^i$ terms can be computed simultaneously in
+$O(mk^3)$ time using the forward-backward algorithm, a dynamic
+programming algorithm that is closely reltaed to Viterbi.\\
+
+c. Here is the structured perceptron algorithm for parameter
+estimation:
+
+\begin{itemize}
+\item Input: labeled examples, ${(\underline {x}^i,
+    \underline{s}^i)}_{i=1}^n$.
+\item Initialization: $\underline {w} = \underline {0}$.
+\item For $t = 1...T$, for $i = 1...n:$
+  \begin{itemize}
+    \item Use the algorithm in part a to calculate
+      \begin{eqnarray*}
+        \underline {s}^* &=& arg \max_{underline {s} \in \mathrm{Y}} \;
+        {\underline {w} \cdot \underline {\Phi} (\underline {x}^i,
+          \underline {s})} \\
+        &=& arg \max_{\underline{s} \in \mathrm{Y}} {\sum_{j=1}^m
+          {\underline {w} \cdot \underline {\phi} (\underline {x}, j,
+            s_{j-2}, s_{j-1}, s_j) }}
+      \end{eqnarray*}
+    \item Update:
+      \begin{eqnarray*}
+        \underline {w} &=& \underline {w} + \underline
+        {\Phi} (\underline {x}^i, \underline{s}^i) - \underline{\Phi}
+        (\underline {x}^i, \underline{s}^*)\\
+        &=& \underline {w} + \sum_{j=1}^m {\underline {\phi}
+          (\underline {x}, j, s_{j-2}, s_{j-1}^i, s_j^i)} -
+        \sum_{j=1}^m {\phi} (\underline {x}, j, s_{j-2}^*, s_{j-1}^*, s_j^*)
+      \end{eqnarray*}
+  \end{itemize}
+\item Return $\underline {w}$.
+\end{itemize}
+
+\section*{Question 2}
+
+\end{document}
