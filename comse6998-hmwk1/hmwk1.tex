@@ -167,4 +167,33 @@ estimation:
 
 \section*{Question 2}
 
+a. Here are all the non-zero parameters for the HMM:
+
+\begin{eqnarray*}
+e(x  = a | s = A) &=& 1 \\
+e(x  = c | s = B) &=& \frac {8}{9} \\
+e(x  = b | s = B) &=& \frac {1}{9} \\
+e(x  = c | s = C) &=& 1 \\
+e(x  = d | s = D) &=& 1 \\
+t(s' = B | s = A) &=& 0.5 \\
+t(s' = C | s = A) &=& 0.5 \\
+t(s' = D | s = B) &=& 1 \\
+t(A) &=& 0.2 \\
+t(B) &=& 0.8 \\
+\end{eqnarray*}
+
+For input sequence $x_1 \; x_2$, the output is :
+\begin{equation*}
+P(x_1x_2, s_1s_2; \theta) = \max \; {t(s_1)t(s_2|s_1)e(x_1|s_1)e(x_2|s_2)}
+\end{equation*}
+
+Here is the output from HMM on three input sequences:
+\begin{itemize}
+\item For input sequence $a \; b$, the output is $A \; B$.
+\item For input sequence $a \; c$, the output is $A \; C$.
+\item For input sequence $c \; d$, the output is $B \; D$.
+\end{itemize}
+
+b. 
+
 \end{document}
