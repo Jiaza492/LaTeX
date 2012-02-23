@@ -239,7 +239,144 @@ problem:
 
 \section*{Question 3}
 
-WTF.
+a. $v^*_1 = 0$. \\
+
+Since $f_1(x_i,y) =0$  for all $i \in \{1...n\}, y \in Y$, we
+have
+
+\begin{equation*}
+v_1 \cdot f_1(x_i,y) = 0
+\end{equation*}
+
+Then we get
+
+\begin{eqnarray*}
+p(y|x;v)
+&=& \frac {\exp {(v \cdot f(x,y))}}
+{\sum_{y \in \mathrm{Y}} {\exp {(v \cdot f(x,y))}}} \\
+&=& \frac {\exp {(0 + \sum_{j=2}^d {v_j \cdot f_j(x,y)})}}
+ {\sum_{y \in \mathrm{Y}} {\exp {(0 + \sum_{j=2}^d {v_j \cdot
+         f_j(x,y)})}}} \\
+&=& \frac {\exp {(\sum_{j=2}^d {v_j \cdot f_j(x,y)})}} {\sum_{y \in
+    \mathrm{Y}} {\exp {(\sum_{j=2}^d {v_j \cdot f_j(x,y)})}}}
+\end{eqnarray*}
+
+Since we only want to know the $v_1^*$, so we can assume that
+$v_2...v_d$ are fixed. Then $p(y|x;v)$ is a constant regarding of
+$v_1$. From regularized log-likelhood function
+
+\begin{equation*}
+L(v)= \sum_{i=1}^n {\log {p(y_i|x_i;v)}} - \frac {\lambda}{2} \sum_j
+{|v_j|}
+\end{equation*}
+
+we can see that the only part we can optimize is
+
+\begin{equation*}
+- \frac {\lambda}{2} \sum_j {|v_j|}
+\end{equation*}
+
+Obviously, when $v^*_1 = 0$, the maximum value is reached. \\
+
+b. $v^*_2 = 0$. \\
+
+Since $f_2(x_i,y) =10$  for all $i \in \{1...n\}, y \in Y$, we
+have
+
+\begin{equation*}
+v_2 \cdot f_2(x_i,y) = 10v_2
+\end{equation*}
+
+Then we get
+
+\begin{eqnarray*}
+p(y|x;v)
+&=& \frac {\exp {(v \cdot f(x,y))}}
+{\sum_{y \in \mathrm{Y}} {\exp {(v \cdot f(x,y))}}} \\
+&=& \frac {\exp {(10v_2 + \sum_{j \neq 2} {v_j \cdot f_j(x,y)})}}
+ {\sum_{y \in \mathrm{Y}} {\exp {(10v_2 + \sum_{j \neq 2} {v_j \cdot
+         f_j(x,y)})}}} \\
+\end{eqnarray*}
+
+Then the regularized log-likelhood function
+
+\begin{eqnarray*}
+L(v)
+&=& \sum_{i=1}^n {\log {p(y_i|x_i;v)}} - \frac {\lambda}{2} \sum_j
+{|v_j|} \\
+&=& \sum_{i=1}^n {\log {\frac {\exp {(10v_2 + \sum_{j \neq 2} {v_j \cdot
+        f_j(x_i,y_i)})}} {\sum_{y \in \mathrm{Y}} {\exp {(10v_2 + \sum_{j
+          \neq 2} {v_j \cdot f_j(x_i,y)})}}}}} - \frac {\lambda}{2}
+\sum_j {|v_j|} \\
+&=& \sum_{i=1}^n {\log {\frac {\exp {(10v_2)} \cdot \exp {(\sum_{j
+          \neq 2} {v_j \cdot f_j(x_i,y_i)})}} {\sum_{y \in \mathrm{Y}}
+      {\exp {(10v_2)} \cdot \exp {(\sum_{j \neq 2} {v_j \cdot
+            f_j(x_i,y)})}}}}} - \frac {\lambda}{2} \sum_j {|v_j|} \\
+&=& \sum_{i=1}^n {\log {\frac {\exp {(\sum_{j \neq 2} {v_j \cdot
+          f_j(x_i,y_i)})}} {\sum_{y \in \mathrm{Y}} {\exp {(\sum_{j
+            \neq 2} {v_j \cdot f_j(x_i,y)})}}}}} - \frac {\lambda}{2}
+\sum_j {|v_j|}
+\end{eqnarray*}
+
+Since we only want to know the $v_2^*$, so we can assume that
+$v_1, v_3,...,v_d$ are fixed. Then we can see that the only part
+we can optimize is
+
+\begin{equation*}
+- \frac {\lambda}{2} |v_2|
+\end{equation*}
+
+Obviously, when $v^*_2 = 0$, the maximum value is reached. \\
+
+c. $v^*_3 = 0$. \\
+
+Since $f_3(x_i,y) = i$  for all $i \in \{1...n\}, y \in Y$, we
+have
+
+\begin{equation*}
+v_3 \cdot f_3(x_i,y) = i \cdot v_3
+\end{equation*}
+
+Then we get
+
+\begin{eqnarray*}
+p(y|x;v)
+&=& \frac {\exp {(v \cdot f(x,y))}}
+{\sum_{y \in \mathrm{Y}} {\exp {(v \cdot f(x,y))}}} \\
+&=& \frac {\exp {(i \cdot v_3 + \sum_{j \neq 3} {v_j \cdot f_j(x,y)})}}
+ {\sum_{y \in \mathrm{Y}} {\exp {(i \cdot v_3 + \sum_{j \neq 3} {v_j \cdot
+         f_j(x,y)})}}} \\
+\end{eqnarray*}
+
+Then the regularized log-likelhood function
+
+\begin{eqnarray*}
+L(v)
+&=& \sum_{i=1}^n {\log {p(y_i|x_i;v)}} - \frac {\lambda}{2} \sum_j
+{|v_j|} \\
+&=& \sum_{i=1}^n {\log {\frac {\exp {(i \cdot v_3 + \sum_{j \neq 3} {v_j \cdot
+        f_j(x_i,y_i)})}} {\sum_{y \in \mathrm{Y}} {\exp {(i \cdot v_3 + \sum_{j
+          \neq 3} {v_j \cdot f_j(x_i,y)})}}}}} - \frac {\lambda}{2}
+\sum_j {|v_j|} \\
+&=& \sum_{i=1}^n {\log {\frac {\exp {(i \cdot v_3)} \cdot \exp {(\sum_{j
+          \neq 3} {v_j \cdot f_j(x_i,y_i)})}} {\sum_{y \in \mathrm{Y}}
+      {\exp {(i \cdot v_3)} \cdot \exp {(\sum_{j \neq 3} {v_j \cdot
+            f_j(x_i,y)})}}}}} - \frac {\lambda}{2} \sum_j {|v_j|} \\
+&=& \sum_{i=1}^n {\log {\frac {\exp {(\sum_{j \neq 3} {v_j \cdot
+          f_j(x_i,y_i)})}} {\sum_{y \in \mathrm{Y}} {\exp {(\sum_{j
+            \neq 3} {v_j \cdot f_j(x_i,y)})}}}}} - \frac {\lambda}{2}
+\sum_j {|v_j|}
+\end{eqnarray*}
+
+Since we only want to know the $v_3^*$, so we can assume that
+$v_1, v_2, v_4,...,v_d$ are fixed. Then we can see that the only part
+we can optimize is
+
+\begin{equation*}
+- \frac {\lambda}{2} |v_3|
+\end{equation*}
+
+Obviously, when $v^*_3 = 0$, the maximum value is reached. \\
 
 \section*{Question 4}
 
