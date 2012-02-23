@@ -301,11 +301,81 @@ As a result, for any $t \ge 2$ we have
 
 \begin{equation*}
   \underline {\theta}_{t} = \frac {1}{\lambda (t-1)} \sum_{i=1}^{M_t}
-  {{y'}_i \underline {x'}_i}
+  {{y'}_i \underline {x}'_i}
 \end{equation*}
 
 \section*{Question 5}
 
+\textit {Proof}: First, define $\underline {\omega}^k$ to be the
+parameter vector when the algorithm amkes its $k$th error. Note that
+we have
 
+\begin{equation*}
+\underline {\omega}^1 = \underline {0}
+\end{equation*}
+
+Next, assuming the $k$th error is made on example $t$, we have
+
+\begin{eqnarray*}
+\underline {\omega}^{k+1} \cdot \underline {\omega}^*
+&=& (\underline {\omega}^k + (\underline {\Phi} (\underline {x}^i,
+\underline {s}^i) - \underline {\Phi} (\underline {x}^i, \underline
+{s}^*))) \cdot \underline {\omega}^* \\
+&=& \underline {\omega}^k \cdot \underline {\omega}^* + \underline
+{\Phi} (\underline {x}^i, \underline {s}^i) \cdot \underline
+{\omega}^* - \underline {\Phi} (\underline {x}^i, \underline {s}^*)
+\cdot \underline {\omega}^* \\ 
+&\ge& \underline {\omega}^k \cdot \underline {\omega}^* + \delta
+\end{eqnarray*}
+
+It follows by induction on $k$ (recall that $||\underline {\omega}^1||
+=0$), that 
+
+\begin{equation*}
+\underline {\omega}^{k+1} \cdot \underline {\omega}^* \ge k \delta
+\end{equation*}
+
+In addition, because $||\underline {\omega}^{k+1}|| \times
+||\underline {\omega}^*|| \ge \underline {\omega}^{k+1} \cdot
+\underline {\omega}^*$, and $||\underline {\omega}^*|| = 1$, we have
+
+\begin{equation*}
+||\underline {\omega}^{k+1}|| \ge k \delta
+\end{equation*}
+
+In the second part of the proof, we will derive an upper bound on
+$||\underline {\omega}^{k+1}||$. We have
+
+\begin{eqnarray*}
+||\underline {\omega}^{k+1}||^2
+&=& ||\underline {\omega}^k + \underline {\Phi} (\underline {x}^i,
+\underline {s}^i) - \underline {\Phi} (\underline {x}^i, \underline
+{s}^*) ||^2 \\
+&=& ||\underline {\omega}^k||^2 + || \underline {\Phi} (\underline {x}^i,
+\underline {s}^i) - \underline {\Phi} (\underline {x}^i, \underline
+{s}^*) ||^2 + 2 \underline {\omega}^k \cdot \underline {\Phi}
+(\underline {x}^i, \underline {s}^i) - 2 \underline {\omega}^k \cdot
+\underline {\Phi} (\underline {x}^i, \underline {s}^*) \\
+&\le& ||\underline {\omega}^k||^2 + R^2
+\end{eqnarray*}
+
+It follows by induction on $k$ (recall that $||\underline
+{\omega}^1||^2$), that
+
+\begin{equation*}
+||\underline {\omega}^{k+1}||^2 \le k R^2
+\end{equation*}
+
+Combining the two bounds gives
+
+\begin{equation*}
+k^2 \delta^2 \le ||\underline {\omega}^{k+1}||^2 \le k R^2
+\end{equation*}
+
+from which it follows that
+
+\begin{equation*}
+k \le \frac{R^2} {\delta^2}
+\end{equation*}
 
 \end{document}
