@@ -145,7 +145,7 @@ estimation:
   \begin{itemize}
     \item Use the algorithm in part a to calculate
       \begin{eqnarray*}
-        \underline {s}^* &=& arg \max_{underline {s} \in \mathrm{Y}} \;
+        \underline {s}^* &=& arg \max_{\underline {s} \in \mathrm{Y}} \;
         {\underline {w} \cdot \underline {\Phi} (\underline {x}^i,
           \underline {s})} \\
         &=& arg \max_{\underline{s} \in \mathrm{Y}} {\sum_{j=1}^m
@@ -194,6 +194,118 @@ Here is the output from HMM on three input sequences:
 \item For input sequence $c \; d$, the output is $B \; D$.
 \end{itemize}
 
-b. 
+b. Here are the features for a bigram CRF for the sequence modeling
+problem:
+
+\begin{equation*}
+\phi_1(\underline {x}, j, s_{j-1}, s_j) =
+  \begin{cases}
+    1 & \text{if } x_j = b, s_{j-1} = A, s_j = B \\
+    0 & \text{o.w.}
+  \end{cases}
+\end{equation*}
+
+\begin{equation*}
+\phi_2(\underline {x}, j, s_{j-1}, s_j) =
+  \begin{cases}
+    1 & \text{if } x_j = c, s_{j-1} = A, s_j = C \\
+    0 & \text{o.w.}
+  \end{cases}
+\end{equation*}
+
+\begin{equation*}
+\phi_3(\underline {x}, j, s_{j-1}, s_j) =
+  \begin{cases}
+    1 & \text{if } j = 2, x_j = d, s_j = D \\
+    0 & \text{o.w.}
+  \end{cases}
+\end{equation*}
+
+\begin{equation*}
+\phi_4(\underline {x}, j, s_{j-1}, s_j) =
+  \begin{cases}
+    1 & \text{if } j = 1, x_j = c, s_j = B \\
+    0 & \text{o.w.}
+  \end{cases}
+\end{equation*}
+
+\begin{equation*}
+\phi_5(\underline {x}, j, s_{j-1}, s_j) =
+  \begin{cases}
+    1 & \text{if } j = 1, x_j = a, s_j = A \\
+    0 & \text{o.w.}
+  \end{cases}
+\end{equation*}
+
+\section*{Question 3}
+
+WTF.
+
+\section*{Question 4}
+
+When $t=1, y_i(\underline {\theta}_1 \cdot \underline {x}_i) = 0, M_1
+= 0$, we have
+
+\begin{eqnarray*}
+\underline {\theta}_{1+1} &=& (1 - \frac {1}{1}) \underline {\theta}_1 +
+\frac {1}{\lambda} y_1 \underline {x}_1\\
+&=& \frac{1}{\lambda(2-1)} \sum_{i=1}^{M_2} {{y'}_i \underline {x'}_i}
+\end{eqnarray*}
+
+This satisfies the condition from the question.\\
+
+Suppose for $t = k - 1$, we have
+Suppose for $t = k - 1$, we have
+
+\begin{equation*}
+  \underline {\theta}_{t} = \frac {1}{\lambda (t-1)} \sum_{i=1}^{M_t}
+  {{y'}_i \underline {x'}_i}
+\end{equation*}
+
+Then for $t = k$, we have two situations:
+
+\begin{itemize}
+\item If $y_i(\underline {\theta}_{k-1} \cdot \underline {x}_i) < 1$, then
+
+\begin{eqnarray*}
+\underline {\theta}_{(k-1)+1} & = & (1 - \frac {1}{k-1}) \: \underline
+{\theta}_{k-1} + \frac {1}{\lambda (k-1)} y_i \underline {x}_i \\
+& = & (1 - \frac {1}{k-1}) (\frac {1}{\lambda ((k-1)-1)}
+\sum_{i=1}^{k-1} {{y'}_i \underline {x}'_i}) 
+ + \frac {1}{\lambda (k-1)} y_i \underline {x}_i \\
+& = & \frac {k-2}{k-1} \cdot \frac {1}{\lambda (k-2)} \sum_{i=1}^{k-1}
+{{y'}_i \underline {x}'_i} + \frac {1}{\lambda 
+  (k-1)} y_i \underline {x}_i \\
+& = & \frac {1}{\lambda (k-1)} \sum_{i=1}^{k-1} {{y'}_i \underline
+  {x}'_i} + \frac {1}{\lambda (k-1)} y_i \underline {x}_i \\
+& = & \frac {1}{\lambda (k-1)} \sum_{i=1}^{k} {{y'}_i \underline
+  {x}'_i}
+\end{eqnarray*}
+
+\item If $y_i(\underline {\theta}_{k-1} \cdot \underline {x}_i) \ge
+  1$, then
+
+\begin{eqnarray*}
+\underline {\theta}_{(k-1)+1} & = & (1 - \frac {1}{k-1}) \: \underline
+{\theta}_{k-1} \\
+& = & (1 - \frac {1}{k-1}) (\frac {1}{\lambda ((k-1)-1)}
+\sum_{i=1}^{k-1} {{y'}_i \underline {x}'_i}) \\
+& = & \frac {k-2}{k-1} \cdot \frac {1}{\lambda (k-2)}
+\sum_{i=1}^{k-1} {{y'}_i \underline {x}'_i} \\
+& = & \frac {1}{\lambda (k-1)} \sum_{i=1}^{k-1} {{y'}_i \underline
+  {x}'_i}
+\end{eqnarray*}
+\end{itemize}
+
+As a result, for any $t \ge 2$ we have
+
+\begin{equation*}
+  \underline {\theta}_{t} = \frac {1}{\lambda (t-1)} \sum_{i=1}^{M_t}
+  {{y'}_i \underline {x'}_i}
+\end{equation*}
+
+\section*{Question 5}
+
+
 
 \end{document}
