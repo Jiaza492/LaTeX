@@ -1,0 +1,174 @@
+\documentclass[12pt]{article}
+
+\parindent=.25in
+\setlength{\oddsidemargin}{0pt}
+\setlength{\textwidth}{440pt}
+\setlength{\topmargin}{0in}
+
+\usepackage{amsmath}
+\usepackage[dvips]{graphicx}
+\usepackage{verbatim}
+\usepackage{appendix}
+
+\title{COMS 4236 Homework 2}
+\author{Mengqi Zong $<mz2326@columbia.edu>$}
+
+\begin{document}
+
+\maketitle
+
+\setlength{\parindent}{0in}
+
+\section*{Problem 1}
+
+a.
+\begin{itemize}
+\item $L_1 \cup L_2$ \\
+  Suppose $L_1$ can be recognized by nondeterministic Turing machine
+  $M_1$, and $L_2$ can be recognized by nondeterministic Turing
+  machine $M_2$. Then what we need to do here is simply simulating
+  $M_1$ and $M_2$ at the same time by another NTM and then check their
+  results.
+
+  We only accept the input when $M_1$ and $M_2$ accept the input. If
+  not, we reject the input. Note both simulations takes
+  $NTIME(f(n))$, then the simulation takes $NTIME(f(n))$. And
+  comparing the two results then generating the final result takes
+  constant time, so the total time is still $NTIME(f(n))$.
+\item $L_1 \cap L_2$ \\
+  Similar to $L_1 \cap L_2$, the only difference is that we accept the
+  input when one of $M_1$ and $M_2$ accept the input. If not, we
+  reject the input. Obviously, the running time is $NTIME(f(n))$.
+\item $L_1 \cdot L_2$ \\
+  First, we guess the length of x. Note that if we know the length of
+  x, then we will know the length of y.
+
+  Second, try to recognize the first $length(x)$ input. If NTM
+  accepts, then continue. If not, reject. If the second part of the
+  input also get accepted by the NTM, then we accept the whole
+  input. If not, we reject. In total, we just run the total time of
+  $M_1$ and $M_2$ plus a constant. In sum, the total running time is
+  $NTIME(f(n))$.
+\end{itemize}
+
+b. Basically, The Kleene star of a language $L$ can be treated as a
+concatination of $L$: 
+
+\begin{equation*}
+\prod_{i=1}^m {x_i}, \; \; x_i \in L 
+\end{equation*}
+
+where m is the number of strings of language L in the input. \\
+
+First, we guess how many strings of $L$ are there in the input. We
+guess the length of the first string, then the second string, ... till
+the total length reaches $n$. Second, we begin to recognize each of
+the strings. If all of them are accepted by NTM, then we accept the
+input. Note that the first part takes at most $NTIME(n)$, the second
+part also takes $NTIME(n)$. As a result, the total running time of
+$L^*$ is $NTIME(n)$, given that $L \in NTIME(n)$.
+
+\section*{Question 2}
+
+a. First, we can get that $TIME(2^n) \subseteq TIME(2^{2n})$ since
+a TM of time complexity $2^{2n}$ can always simulate any TM of time
+complexity $2^n$. Second, we can see that $2^n = o(2^{2n}) =
+o((2^n)^2)$. Then from time hierarchy, we can know that there is a
+language in $TIME(2^{2n}) - TIME(2^n)$. At last, we get $TIME(2^n)
+\subset TIME(2^{2n})$. \\
+
+b. Form the theorems that we learned on the relations between complete
+classes, we know that $NTIME(f(n)) \subseteq SPACE(f(n))$. In our
+case, we get $NTIME(n^2) \subseteq SPACE(n^2)$. \\
+
+Similar to the proof of part a, we can get $SPACE(n^2) \subseteq
+TIME(n^3)$. And by space hierarchy, we know that there is a language
+in $SPACE(n^3) - SPACE(n^2)$. As last, we get $SPCE(n^2) \subset
+SPACE(n^3)$, then $NTIME(n^2) \subset SPACE(n^3)$.
+
+\section*{Question 3}
+
+a. $\{n^k : k > 0 \}$ \\
+
+$\{n^k : k > 0 \}$ are left closed.
+
+\begin{eqnarray*}
+  p(n^k) &=& \Theta {((n^k)^c)} \\
+  &=& \Theta {(n^{ck})}
+\end{eqnarray*}
+
+where $c$ is a constant. In this case, for every constant $c$, we can
+always find
+\begin{eqnarray*}
+  g(n) &=& n^{ck}
+\end{eqnarray*}
+
+such that
+
+\begin{eqnarray*}
+  p(n^k) &=& \Theta {(n^k)^c} \\
+  &\ge& c' \cdot n^{ck} \\
+  &=& O(g(n))
+\end{eqnarray*}
+
+where $c'$ is a constant. As we can see, $\{ n^k : k > 0 \}$ are
+closed under left composition.
+
+b. $\{ k \cdot n : k > 0 \}$ \\
+$\{ k \cdot n : k > 0 \}$ are left closed.
+\begin{eqnarray*}
+  p(k \cdot n) &=& \Theta {((k \cdot n)^c)} \\
+  &=& \Theta {(n^c)}
+\end{eqnarray*}
+
+where $c$ is a constant. In this case, for every constant $c$, we can
+always find
+
+\begin{eqnarray*}
+  g(n) &=& n^c
+\end{eqnarray*}
+
+such that 
+
+\begin{eqnarray*}
+  p(k \cdot n) &=& \Theta {(n^c)} \\
+  &\ge& c' \cdot n^c \\
+  &=& O(g(n))
+\end{eqnarray*}
+
+where $c'$ is a constant. As we can see, $\{ k \cdot n : k > 0 \}$ are
+closed under left composition. \\
+
+f. $\{\log {n} \}$ \\
+
+$\{\log {n} \}$ are not left closed. For example, you can never find a
+$g(n) \in \{\log {n} \}$ such that $(\log {n})^{0.2} = O(g(n))$. \\
+
+$\{\log {n} \}$ are right closed. We have
+
+\begin{eqnarray*}
+  \log {p(n)} &=& \log {\Theta {(n^c)}} \\
+  &=& c \log {\Theta {(n)}}
+\end{eqnarray*}
+
+where $c$ is a constant. In this case, let $g(n) = \log {n}$. Then for
+any constant c, we have
+
+\begin{eqnarray*}
+  \log {p(n)} &=& \log {\Theta {(n^c)}} \\
+  &=& c \log {\Theta {(n)}} \\
+  &\ge& c \log {c_1 \cdot n}\\
+  &=& O(g(n))
+\end{eqnarray*}
+
+where $c_1$ is a constant. As we can see, $\{\log {n} \}$ are
+closed under right composition. \\
+
+\section*{Question 4}
+
+
+
+
+
+
+\end{document}
