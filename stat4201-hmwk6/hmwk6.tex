@@ -1,0 +1,73 @@
+\documentclass[12pt]{article}
+\parindent=.25in
+
+\setlength{\oddsidemargin}{0pt}
+\setlength{\textwidth}{440pt}
+\setlength{\topmargin}{0in}
+
+\usepackage{amsmath}
+\usepackage[dvips]{graphicx}
+\usepackage{verbatim}
+\usepackage{appendix}
+
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{latexsym}
+\usepackage[center]{subfigure}
+\usepackage{epsfig}
+\usepackage{hyperref}
+
+\title{Stat 4201 Homework 6}
+\author{Mengqi Zong $<mz2326@columbia.edu>$}
+
+\begin{document}
+
+\maketitle
+
+\setlength{\parindent}{0in}
+
+\section*{Question 1}
+
+Due to different sample sizes, we will use pooled estimate of standard
+deviation:
+
+\begin{eqnarray*}
+SD
+&=& \sigma \sqrt {\frac {1}{n_1} + \frac{1}{n_2}} \\
+&=& \sigma \sqrt {\frac {1}{n_1} + \frac{1}{rn_1}} \\
+&=& \frac {\sigma}{\sqrt {n_1}} \sqrt {1 + 1 / r} 
+\end{eqnarray*}
+
+From
+\begin{equation*}
+Z_{\alpha} + \frac {\triangle}{\text {SD}} = - Z_{\beta}
+\end{equation*}
+
+We get
+
+\begin{eqnarray*}
+Z_{\alpha} + \frac {\triangle}{\frac {\sigma}{\sqrt {n_1}} \sqrt {1 +
+    1 / r}} = - Z_{\beta} \\
+Z_{\alpha} + \frac {\sqrt {n_1} \triangle}{\sigma \sqrt {1 +
+    1 / r}} = - Z_{\beta} \\
+\frac {\sqrt {n_1} \triangle}{\sigma \sqrt {1 + 1 / r}} = -
+(Z_{\alpha} + Z_{\beta}) \\
+\sqrt {n_1} = - \frac {\sigma \sqrt {1 + 1 / r}(Z_{\alpha} +
+  Z_{\beta})}{\triangle} \\
+n_1= \frac {\sigma^2 (1 + 1 / r) (Z_{\alpha} +
+  Z_{\beta})^2}{\triangle^2}
+\end{eqnarray*}
+
+\section*{Question 3}
+
+
+
+\appendix
+\appendixpage
+\addappheadtotoc
+
+The code is listed below:
+
+\verbatiminput{hmwk5.r}
+
+\end{document} 
