@@ -16,4 +16,4 @@ PDF: 		hmwk1.pdf
 		xpdf hmwk1.pdf
 
 clean:
-	rm -rf *.aux *.log *.out *.toc *.pdf *.bbl *.blg *.dvi
+	rm -rf *.aux *.log *.out *.toc *.pdf *.bbl *.blg *.dvi *~
