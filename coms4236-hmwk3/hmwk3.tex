@@ -1,0 +1,77 @@
+\documentclass[12pt]{article}
+
+\parindent=.25in
+\setlength{\oddsidemargin}{0pt}
+\setlength{\textwidth}{440pt}
+\setlength{\topmargin}{0in}
+
+\usepackage{amsmath}
+\usepackage[dvips]{graphicx}
+\usepackage{verbatim}
+\usepackage{appendix}
+
+\title{COMS 4236 Homework 3}
+\author{Mengqi Zong $<mz2326@columbia.edu>$}
+
+\begin{document}
+
+\maketitle
+
+\setlength{\parindent}{0in}
+
+\section*{Problem 1}
+
+a) \\
+
+
+
+b) \\
+
+B is NP. \\
+
+Since C is NP-complete, given an input assignment $\alpha_C$, we can
+verify the output in P. Because $B \le_p C$, for any input assignment
+$alpha_b$, there is a poly-time reduction $R_{B \to C}(\alpha_B)$ from B to
+C. Therefore, we can also verify the output of $\alpha_B$ in
+polynomial time. So B is NP. \\
+
+B is NP-hard. \\
+
+Since $A \le_p B$, there is a poly-time reduction $R_{A \to
+  B}(\alpha_A)$ from A to B. Because A is NP-complete, A is
+NP-hard. If B is P, then we can also solve A in poly-time, which 
+contradicts the fact that A is NP-hard. So, B must be NP-hard. \\
+
+To sum up, B is NP-complete.
+
+\section*{Problem 2}
+
+a) \\
+
+$\bar {L}$ is coC. \\
+
+Since L is complete for class C, $L \in C$. By the definition of $coC
+= \{ \bar {L} | L \in C \}$, we know that $\bar {L}$ is coC. \\
+
+$\bar {L}$ is coC-hard. \\
+
+Since L is complete for class C, then L is C-hard. That is, any
+language $L' \in C$ can be reduced to L. For any input assignment
+$\alpha \in L'$, we have $R(\alpha) \in L$. Then for any input
+assignment $\alpha \in \bar {L'}$, we have $R(\alpha) \in \bar
+{L}$. That is, any language $\bar {L'} \in coC$ can be reduced to $\bar
+{L'}$. So $\bar {L}$ is coC-hard. \\ 
+
+To sum up, $\bar {L}$ is coC-complete. \\
+
+b) \\
+
+
+
+
+
+\section*{Problem 3}
+
+
+
+\end{document}
