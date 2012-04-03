@@ -10,7 +10,7 @@
 \usepackage{verbatim}
 \usepackage{appendix}
 
-\title{COMS 4236 Homework 3}
+\title{COMS 4236 Homework 4}
 \author{Mengqi Zong $<mz2326@columbia.edu>$}
 
 \begin{document}
@@ -20,6 +20,45 @@
 \setlength{\parindent}{0in}
 
 \section*{Problem 1}
+
+
+\section*{Problem 2}
+
+a. The kernel can't contain none of $u, v$. \\
+
+If the kernel $K$ does not include any nodes in $u$ and $v$, then condition (2) of a kernel can't hold: $u,v \notin K$ and there are no other edges entering the nodes $u, v$. For nodes $u, v$, they are neither in $K$ nor have an incoming edge from some node in K. \\
+
+The kernel cant' contain both $u$ and $v$. \\
+
+If the kernel $K$ contains both $u$ and $v$, then condition (1) of a kernel can't hold: for nodes $u, v$, $u,v \in K$ and there are edge (u,v). \\
+
+To sum up, any kernel of G must include exactly one of the two nodes $u,v$. \\
+
+b. Suppose there exists a kernel $K$ of G such that any node in $K$ does not have an edge to at least one of the three nodes $u, v, w$. \\
+
+In this case, none of $u, v, w$ is in K. Because nodes $u, v, w$ form a cycle $u \to v \to w \to u$, if any node of $u, v, w$ is in $K$, then there would be at least one edge to all the three nodes. \\
+
+As a result, the condition (2) of a kernel can't hold for kernel $K$: $u, v, w \notin K$ and $u, v, w$ has no incoming edge from some node in $K$. So, the assumption is not correct. And any kernel of G must contain some node x (distinct from $u, v, w$) that has an edge to at least one of the three nodes $u, v, w$. \\
+
+c. 
+
+
+\section*{Problem 3}
+
+a. 
+
+
+\section*{Problem 4}
+
+a. In order to satisfy a DNF, we just need to satisfy one conjunction term. We can choose the first conjunction term of the DNF, if $x_i$ is in this term, set $x_i$ to be 1; if $\bar {x_i}$ is in this term, set $x_i$ to be 0. As to the rest, we can arbitrarily set the value, for example, all set to 0. \\
+
+In order to get the result, we at most need to scan entire the input (when there is only one conjunction term in the DNF). So, the Satisfiability problem for Boolean formulas in DNF is in P. \\
+
+b. \\
+
+\section*{Problem 5}
+
+
 
 
 \end{document}
