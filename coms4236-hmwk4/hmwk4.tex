@@ -34,18 +34,38 @@ If the kernel $K$ contains both $u$ and $v$, then condition (1) of a kernel can'
 
 To sum up, any kernel of G must include exactly one of the two nodes $u,v$. \\
 
-b. Suppose there exists a kernel $K$ of G such that any node in $K$ does not have an edge to at least one of the three nodes $u, v, w$. \\
+b. Suppose there exists a kernel $K$ of G such that any node in $K$ does not contain some node (distinct from $u, v, w$) that has an edge to at least one of the three nodes $u, v, w$. \\
 
-In this case, none of $u, v, w$ is in K. Because nodes $u, v, w$ form a cycle $u \to v \to w \to u$, if any node of $u, v, w$ is in $K$, then there would be at least one edge to all the three nodes. \\
+In this case, none of $u, v, w$ is in $K$. Because nodes $u, v, w$ form a cycle $u \to v \to w \to u$, if any node of $u, v, w$ is in $K$, then there would be at least one edge to all the three nodes, which violates the condition (1) of a kernel. \\
 
-As a result, the condition (2) of a kernel can't hold for kernel $K$: $u, v, w \notin K$ and $u, v, w$ has no incoming edge from some node in $K$. So, the assumption is not correct. And any kernel of G must contain some node x (distinct from $u, v, w$) that has an edge to at least one of the three nodes $u, v, w$. \\
+If there is no such edge that comes from some node in $K$ that is distinct from the three nodes, then the condition (2) of a kernel can't hold for kernel $K$: $u, v, w \notin K$ and $u, v, w$ also have no incoming edge from some node in $K$. 
 
-c. 
+So, the assumption is not correct. And any kernel of G must contain some node x (distinct from $u, v, w$) that has an edge to at least one of the three nodes $u, v, w$. \\
+
+c. We can reduce 3SAT to this problem. \\
+
+For a given 3SAT problem, without loss of generality, suppose there are n variables $x_1, x_2, ..., x_n$ and m disjunction terms $t_1, t_2, ..., t_m$.
+
+\begin{itemize}
+\item First, we create $2n$ nodes to represent all the literals: $n_{x_1}, n_{\bar {x_1}}, ..., n_{x_n}, n_{\bar {x_n}}$. And for all $i = 1, 2, ..., n$, we add edges $(n_{x_i}, n_{\bar{x_i}})$ and $(n_{\bar{x_i}}, n_{x_i})$ to the graph.
+\item Second, for all $m$ disjunction terms, we create $m$ nodes to represent each term $n_{t_1}, n_{t_2}, ..., n_{t_m}$. And for every term $t_j, j = 1, 2, ..., m$, we do the following: suppose $t_j = x_a \lor x_b \lor \bar {x_c}$, then we add three edges $(n_{x_a}, n_{t_j}), (n_{x_b}, n_{t_j}), (n_{\bar {x_c}}, n_{t_j})$ to the graph.
+\item Third, we draw a cycle $n_{t_1} \to n_{t_2} \to ... \to n_{t_m} \to n_{t_1}$ in the graph.
+\end{itemize}
+
+Then we can prove that the kernel of the new graph consists of $n$ nodes which are representing the literals of the 3SAT, and the $n$ literals is the solution of the given 3SAT problem.
+
+\begin{itemize}
+\item For every pair of nodes $n_{x_i}$ and $n_{\bar {x_i}}$, we have edges $(n_{x_i}, n_{\bar{x_i}})$, $(n_{\bar{x_i}}, n_{x_i})$ and there are no other edges entering the nodes $n_{x_i}$ and $n_{\bar {x_i}}$. From the result of part a, we know that the kernel of the new graph must contain exactly one of the two nodes.
+\item From the result of part b, we can easily prove the similar result that applies to a cycle with m nodes, like $n_{t_1} \to n_{t_2} \to ... \to n_{t_m} \to n_{t_1}$. In this case, we know that all the nodes representing the terms can't be in the kernel of the graph. Also, 
+\end{itemize}
+
+
+
 
 
 \section*{Problem 3}
 
-a. 
+a.
 
 
 \section*{Problem 4}
