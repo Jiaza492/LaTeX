@@ -171,12 +171,42 @@ Then what we do is to first calculate the total distance $d$, then use
 the subroutine to check if $\frac {d}{2}$ satisfies. If $\frac {d}{2}$
 returns 1, then check $frac {\frac {d}{2} + d}{2}$; if $\frac {d}{2}$
 returns 0, then check $\frac {\frac {d}{2} + 0}{2}$. And so on, until
-we find the optimal solution. This procedure takes $O(\log {(n)})$
-times, and every time we call the subroutine which takes polynomial
-time. So in total, this algorithm takes polynomial time. \\
+we find the optimal solution. This procedure takes $O(\log {(2^n)}) =
+O(n)$ times, and every time we call the subroutine which takes
+polynomial time. So in total, this algorithm takes polynomial time. \\
 
-d. 
+d. First, the decision version of the Steiner tree problem is in NP. \\
 
+We can easily verify if a the spanning tree is at most $a$ in
+polynomial time. \\
+
+Second, this problem is NP-hard. And we can reduce Node Cover to this
+problem. \\
+
+Given Node Cover probelm with a graph G = (V,E), and number c. For
+every edge in E, we create a new node to represent this edge in G',
+and all the nodes form a set M. For every node in V, we create a new
+node to represent this node in G', and all the nodes form a set N. As
+a result, for the new graph G' = (V', E'), $V' = M \cup N$. \\
+
+As to the edges of G',
+
+\begin{itemize}
+\item For $u, v \in M, d(u, v) = d(v,u) = \infty$.
+\item For $u, v \in N, d(u,v) = d(v,u) = \infty$.
+\item For $u \in M, v \in N$, if the edge represented by $u$ connects
+  the node represented by $v$ in graph G, $d(u, v) = d(v, u) = 1$. If
+  not, $d(u,v) = d(v,u) = \infty$.
+\end{itemize}
+
+Note that this reduction takes polynomial time. \\
+
+In this case, graph G has a vertex cover that of size at most $c$ if
+and only if G' has a Steiner tree with total distance $d(H) = |M| + c
+- 1$. \\
+
+To sum up, the decision version of the Steiner tree problem is
+NP-complete. \\
 
 \section*{Problem 4}
 
