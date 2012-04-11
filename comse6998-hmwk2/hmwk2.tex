@@ -47,11 +47,32 @@ r^t(w_2|y) = \frac {\sum_{i:w^i_2 = w_2} \delta (y|i)}
 
 \section*{Question}
 
-\bf {Question 2(a)} \\
+{\bf Question 2(a)}
 
+\begin{eqnarray*}
+P(y_2 = 1, y_3 = 2, y_4 = 1 | x; \theta)
+= \frac {\alpha[2,1] \times t(2,1) \times e(x_3,2 \times t(1,2) \times
+  e(x_4|1) \times \beta[4,1]} {\sum_s \alpha[n,s]}
+\end{eqnarray*}
 
+Note that $n$ is the length of the sequence of x. \\
 
+{\bf Question 2(b)}
 
+\begin{eqnarray*}
+P(y_2 = 1, y_5 = 1|x; \theta)
+= \frac {\sum_{y_3} \sum_{y_4} \alpha[2,1] \times t(y_3, 1) \times
+  e(x_3,y_3) \times t(y_4, y_3) \times e(x_4, y_4) \times t(1, y_4)
+  \times e(x_5, 1) \times \beta[5, 1]}
+{\sum_s \alpha[n, s]}
+\end{eqnarray*}
 
+Note that $n$ is the length of the sequence of x. \\
+
+{\bf Question 2(c)}
+
+\begin{eqnarray*}
+
+\end{eqnarray*}
 
 \end{document}
