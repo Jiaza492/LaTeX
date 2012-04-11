@@ -22,6 +22,36 @@
 
 \section*{Question 1}
 
+Initialization: Set $q^0(y|w_1)$ and $r^0(w_2|y)$ to some initial
+values (e.g. random initial values). \\
+
+Algorithm: For $t = 1...T$: \\
+
+1. For $i = 1...n$, and $y = 1...K$, calculate
+
+\begin{eqnarray*}
+\delta(y|i)
+= p(y|w^i_1, w^i_2; \underline {\theta}^{t-1})
+= \frac {q^{t-1}(y|w^i_1) r(w^i_2|y)}
+{\sum_y {q^{t-1}(y|w^i_1) r(w^i_2|y)}}
+\end{eqnarray*}
+
+2. Recalculate the parameters: \\
+
+\begin{eqnarray*}
+q^t(y|w_1) = \frac {\sum_{i:w^i_1 = w_1} \delta (y|i)}
+{\sum^n_{i=1} [[w^i_1 = w_1]]} \\
+r^t(w_2|y) = \frac {\sum_{i:w^i_2 = w_2} \delta (y|i)}
+{\sum^n_{i=1} \delta (y|i)}
+\end{eqnarray*}
+
+\section*{Question}
+
+\bf {Question 2(a)} \\
+
+
+
+
 
 
 \end{document}
