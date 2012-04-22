@@ -12,6 +12,7 @@
 \usepackage{epsfig}
 \usepackage{hyperref}
 
+\usepackage{amsthm}
 
 \newtheorem{theorem}{Theorem}
 \newtheorem{lemma}[theorem]{Lemma}
@@ -63,19 +64,25 @@
 
 \begin{document}
 
+\setlength{\parindent}{0in}
+
 \handout{COMS 6253: Advanced Computational Learning Theory}{Spring 2012}
 {Lecturer: Rocco Servedio}
 {Scribe: Mengqi Zong}{Lecture 10: March 29, 2012}
 
 \thispagestyle{plain}
 
-\section{Last time and today}
+\section{Last Time and Today}
 
 {\bf Previously:}
 \begin{itemize}
 \item Use $NS_{\epsilon}$ to get Fourier Concentration
 \item Proved Peres theorem on $NS_{\epsilon}$ (halfspaces)
 \item Uniform distribution learning beyond LDA
+  \begin{itemize}
+  \item LTFs, the ``Chow parameters''
+  \item ``random'' DNFs
+  \end{itemize}
 \end{itemize}
 
 {\noindent \bf Today:}
@@ -87,16 +94,273 @@
 
 \begin{itemize}
 \item Elchanan Mossel, Ryan O'Donnell, Rocco A. Servedio
-  (2003). \emph {Learning Juntas}
-\item T. Siegenthaler (1984). \emph {Correlation-Immunity of Nonlinear
-  Combining Functions for Cryptographic Applications}
-\item Gregory Valiant (2012). \emph {Finding Correlations in
+  (2003). Learning Juntas
+\item T. Siegenthaler (1984). Correlation-Immunity of Nonlinear
+  Combining Functions for Cryptographic Applications
+\item Gregory Valiant (2012). Finding Correlations in
     Subquadratic Time, with Applications to Learning Parities and
-    Juntas with Noise}
+    Juntas with Noise
 \end{itemize}
 
-\section{}
+\section{Introduction}
+
+\begin{definition}
+Variable $i$ in $f(x_1,...,x_n)$ is relevant if $\; \exists x \in
+\{-1, 1 \}$ such that $f(x^{i \leftarrow 1}) \neq f(x^{i \leftarrow
+  -1})$.
+\end{definition}
+
+\begin{definition}
+Function $f: \{ -1, 1 \}^n \rightarrow \{ -1,1 \}$ is an r-junata if
+$f$ has at  $k \le r$ relevant variables.
+\end{definition}
+
+\begin{example}
+$x_{17} \oplus (x_{412} \lor (x_{916,774} \oplus x_{17}))$ is a
+3-junta. This can be treated as a function of the 3 variables $x_{17},
+x_{412}, x_{916,774}$.
+\end{example}
+
+\begin{observation}
+Let $f$ be an r-junta. Then $f$ has a DT of size $2^r$ and a DNF of $s
+\le 2^r$ terms.
+\end{observation}
+
+So to learn w(1)-size DNFs, DTs in $\poly(n)$ time, we need to be able
+to learn juntas. \\
+
+Let $\calc_r = \{\text {all r-juntas over n variables} \}$. By
+learning r-juntas, we mean learn any r-junta over the n variables. So
+it's very natural to ask: What can we hope for with respect to
+learning $\calc_r$? \\
+
+\section{Description Length}
+
+We first talk about the description length of an r-junta. The
+description length of an r-junta is $r \log n + 2^r$ bits. First,
+since there are $n$ variables, we need $\log n$ bits to represent each
+variable. Then for $r$ variables, we need $r \log n$ bits. Second,
+for $r$ variables, the truth table contains $2^r$ entries. So it takes
+$2^r$ bits to write down the truth table.  To sum up, the description
+length of an r-junta is $r \log n + 2^r$. \\
+
+Note that all the $r$ variables in an r-junta are relevant, this means
+that $2^r$ is the minimum number of examples we could hope for. So, the
+running time of the learning algorithm for r-juntas is associated 
+with $n$ and $2^r$. It is unknown whether we can learn r-juntas in
+time $\poly (n, 2^r)$. \\
+
+\section{Observations and Approaches}
+
+\begin{observation}
+\begin{equation*}
+|\calc_r| \le n^r \cdot 2^{2^r}
+\end{equation*}
+\end{observation}
+
+This observation follows by the fact that there are $\binom {n}{r}$
+possible ways to choose $r$ relevant variables from $n$ variables and
+there are $2^{2^r}$ possible truth tables over $r$ variables. \\
+
+From this observation, we know that we can learn an r-junta in $O(n^r
+\cdot 2^{2^r})$ by trying every possible concept in $\calc_r$. Due
+to the $2^{2^r}$ part, this is not an efficient algorithm.
+
+\begin{observation}
+To learn r-juntas, it suffice to be able to find relevant
+variables. Given the $r$ relevant variables, $O(r \cdot 2^r)$ examples
+suffice to fill in the truth table.
+\end{observation}
+
+We can get $r \cdot 2^r$ by applying the method of coupon collector's
+problem:
+
+\begin{eqnarray*}
+E(T) = k \cdot H_k = k \ln k = 2^r \cdot \ln (2^r) = r \cdot 2^r
+\end{eqnarray*}
+
+Now the main focus of learning r-juntas turns to how to find the $r$
+relevant variables efficiently.
+
+\begin{observation}
+If variable $i$ is irrelevant in f, then $Inf_i(f) = 0$ and $\hat
+{f}(S) = 0 \; \forall S \ni i$. If variable $i$ is relevant in r-junta
+f, then $Inf_i(f) \ge \frac {1}{2^r}$ and some $S \ni i$ must have
+$|\hat {f}(S)| \ge \frac {1}{2^r}$.
+\end{observation}
+
+The first part of the observation can be easily verified by the
+definition of influence and relevant. We now just prove ``If $i$ is
+relevant to f, then some $S \ni i$ must have $|\hat {f}(S)| \ge \frac
+{1}{2^r}$''. \\
+
+Recall from previous lectures, we have
+
+\begin{eqnarray*}
+Inf_i(f) = \sum_{S \ni i} \hat {f}(S)^2
+\end{eqnarray*}
+
+Then for relevant variable $i$, if no $S \ni i$ has $|\hat {f}(S)| \ge
+\frac {1}{2^r}$, we get
+
+\begin{eqnarray*}
+Inf_i(f)
+&=& \sum_{S \ni i} \hat {f}(S)^2 \\
+&=& 2^r \cdot \hat {f}(S)^2 \\
+&<& 2^r \cdot (\frac{1}{2^r})^2 \\
+&<& 2^r
+\end{eqnarray*}
+
+This contradicts with the fact that $Inf_i(f) \ge \frac{1}{2^r}$. So
+some $S \ni i$ must have $|\hat {f}(S)| \ge \frac {1}{2^r}$. \\
+
+Note that from the first part of the observation, we know if $S$ has
+irrelevant variables, $\hat {f}(S) = 0$. So, there are at most 
+$2^r \; S$ whose $\hat {f}(S) \neq 0$. So we get the second
+equation. \\
+
+From this observation, we know that we can learn concepts from
+$\calc_r$ in $n^r \cdot poly(2^r)$. Here is the algorithm:
+
+\begin{itemize}
+\item For all S with $1 \le |S| \le r$, we estimate $\hat {f}(S)$
+  with accuracy of $\pm 0.1 \cdot \frac {1}{2^r}$. Whenever we find
+  a $S$ with $\hat {f}(S) \neq 0$, add all variables in $S$ to the
+  collection of relevant variables.
+\item After we get all relevant variables by this way, we can learn
+  the r-junta with $O(r \cdot 2^r)$ more examples.
+\end{itemize}
+
+Note that there are $n^r$ possible $S$ here. And given a $S$, the
+estimation takes $\poly (2^r)$ time. So in total, this algorithm takes
+$n^r \cdot \poly (2^r)$ time. Due to the $n^r$ part, this algorithm is
+still not good enough.
+
+\section{Main Result}
+
+We can learn $\calc_r$ in $n^{0.704 \cdot r} \cdot \poly(2^r)$
+time. This result is shown in the paper ``Learning Juntas'' by
+Elchanan Mossel, Ryan O'Donnell and Rocco Servedio in 2003. \\
+
+Note that the state of the art result for learning r-juntas is
+$n^{0.61 \cdot r} \cdot \poly(2^r)$ by Greg Valiant. 
+
+\subsection{High level idea of the method}
+
+We will look at 2 different polynomial representations of $f$:
+
+\begin{itemize}
+\item Fourier representation
+\item GF(2) representation
+\end{itemize}
+
+The intuition of the method is if $f$ is ``bad'' for Fourier-based
+learning, i.e. all its non-constant Fourier coefficients are on
+high-degree monomials, then $f$ must be ``good'' for GF(2)-based
+learning.
+
+\subsection{Find 1 relevant variable efficiently is enough}
+
+In the previous observation, we know that the most difficult part of
+learning juntas is how to find $r$ relevant variables efficiently. We
+now show to learn r-juntas efficiently, all we need to do is to find 1
+relevant variable efficiently.
+
+\begin{claim}
+Suppose A is a T(n,r)-time algorithm which finds a relevant variable
+in an r-junta, given uniform (x, f(x)) random examples. Then there's
+an algorithm to learn r-juntas running in $T(n,r) \cdot \poly (n,
+2^r)$ time.
+\end{claim}
+
+\begin{proof}
+We will use A to get relevant variable ``i'', or find out no variable
+is relevant. If no variable is relevant, then done. \\
+
+Now we talk about the situation that function is not a constant
+function. Then, we will run A in a recursive style. It's like a binary
+search:
+
+\begin{enumerate}
+\item Run A to get a relevant variable i.
+\item Run A on $(x, f(x)) |_{x_i = 1}$.
+\item Run A on $(x, f(x)) |_{x_i = -1}$.
+\end{enumerate}
+
+In this way, we build a decision tree with depth $\le r$. As to the
+running time, we have
+
+\begin{eqnarray*}
+T(r)
+&\le& 2T(r-1) + T(n, r) \cdot \poly (n) \\
+&\le& 4T(r-2) + 2T(n, r-1) \cdot \poly (n) + T(n, r) \cdot \poly (n) \\
+&\le& (2^rT(n, 1) + 2^{r-1}T(n, 2) + ... 2T(n, r-1) + T(n, r)) \cdot
+\poly (n) \\
+&\le& (2^r + 2^{r-1} + ... + 2 + 1) \cdot T(n, r) \cdot \poly (n) \\
+&\le& (2^{r+1} - 1) \cdot T(n, r) \cdot \poly (n) \\
+&\le& T(n, r) \cdot \poly (n, 2^r) \\
+\end{eqnarray*}
+
+The running time of the algorithm to learn r-juntas is $T(n,r) \cdot
+\poly (n, 2^r)$. \\
+\end{proof}
+
+\subsection{Fourier-based learning}
+
+\begin{fact}
+If $f$ has $\hat {f}(S) \neq 0$ for some $S$ with $1 \le |S| \le c
+\cdot r$, then we can find  a relevant variable in $\le 2^r \cdot
+n^{cr}$ time.
+\end{fact}
+
+From the previous observation, we know that if $\hat {f}(S) \neq 0$,
+then all variables in $S$ is relevant. To find such a $S$, we simply
+try every possible S with $1 \le |S| \le c \cdot r$. There are $\le
+2^r \cdot n^{cr}$ different $S$ in total. \\
+
+Later, we'll see if $f$ has no such $S$ as stated in this fact, then
+a GF(2)-based learning algorithm will work.
+
+\subsection{GF(2)-based learning}
+
+GF(2) is the Galois field of two elements. It is the smallest finite
+field. The GF(2) representation of $f$ a multilinear polynomial over
+the filed $GF(2) = \{ 0, 1 \}$, and all math is done with modulo
+2. This ensures that the field is closed under addition and
+multiplication. In GF(2), 0 is equivalent to false, 1 is equivalent to
+true, addition is equivalent to parity function, and multiplication is
+equivalent to AND function. \\
+
+\begin{fact}
+Let $f: \{ 0, 1 \}^n \rightarrow \{ 0, 1\}$. Then $f$ has
+\begin{enumerate}
+\item a unique representation as a multilinear polynomial $P_R$ over
+  real numbers. All coefficients are integers.
+\item a unique representation as a GF(2) polynomial $P_{GF(2)}$.
+\item If $p_1, p_2$ are 2 degree-d GF(2) polynomials for $f$ and $g$,
+  and $f \neq g$, then $Pr_x \[ f(x) \neq g(x) \] \ge \frac
+  {1}{2^d}$.
+\end{enumerate}
+
+\end{fact}
+
+The proof is left as the official homework. \\
+
+An easy relation between $P_R$ and $P_{GF(2)}$: we can get $P_{GF(2)}$
+from $P_R$ by reducing all coefficients mod 2.
+
+\begin{eqnarray*}
+P_R = \sum_{S \subseteq \[ n \]}
+{C_S X_S}
+\Rightarrow P_{GF(2)} = \sum_{S \subseteq \[ n \]} (C_s \mod 2) X_S
+\end{eqnarray*}
+
+So $deg(P_{GF(2)}) \le deg(P_R)$ for all $f$. \\
+
+\begin{example}
+
+\end{example}
 
 
 
-\end{document} 
+\end{document}
