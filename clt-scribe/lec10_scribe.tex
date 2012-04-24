@@ -76,30 +76,30 @@
 
 {\bf Previously:}
 \begin{itemize}
-\item Use $NS_{\epsilon}$ to get Fourier Concentration
-\item Proved Peres theorem on $NS_{\epsilon}$ (halfspaces)
+\item Use noise sensitivity $NS_{\epsilon}$ to get Fourier concentration
+\item Proved Peres Theorem on $NS_{\epsilon}$
 \item Uniform distribution learning beyond LDA
   \begin{itemize}
-  \item LTFs, the ``Chow parameters''
-  \item ``random'' DNFs
+  \item Learning LTFs, the ``Chow parameters''
+  \item Learning random DNFs
   \end{itemize}
 \end{itemize}
 
 {\noindent \bf Today:}
 \begin{itemize}
-\item Learning r-juntas.
+\item Learning r-juntas under uniform distribution.
 \end{itemize}
 
 {\noindent \bf Relevant Readings:} 
 
 \begin{itemize}
 \item Elchanan Mossel, Ryan O'Donnell, Rocco A. Servedio
-  (2003). Learning Juntas
-\item T. Siegenthaler (1984). Correlation-Immunity of Nonlinear
-  Combining Functions for Cryptographic Applications
-\item Gregory Valiant (2012). Finding Correlations in
+  (2003). \emph {Learning Juntas}
+\item T. Siegenthaler (1984). \emph {Correlation-Immunity of Nonlinear
+  Combining Functions for Cryptographic Applications}
+\item Gregory Valiant (2012). \emph {Finding Correlations in
     Subquadratic Time, with Applications to Learning Parities and
-    Juntas with Noise
+    Juntas with Noise}
 \end{itemize}
 
 \section{Introduction}
@@ -112,7 +112,7 @@ Variable $i$ in $f(x_1,...,x_n)$ is relevant if $\; \exists x \in
 
 \begin{definition}
 Function $f: \{ -1, 1 \}^n \rightarrow \{ -1,1 \}$ is an r-junata if
-$f$ has at  $k \le r$ relevant variables.
+$f$ has $k \le r$ relevant variables.
 \end{definition}
 
 \begin{example}
@@ -172,8 +172,8 @@ variables. Given the $r$ relevant variables, $O(r \cdot 2^r)$ examples
 suffice to fill in the truth table.
 \end{observation}
 
-We can get $r \cdot 2^r$ by applying the method of coupon collector's
-problem:
+We can get $r \cdot 2^r$ by applying the method for solving coupon
+collector's problem:
 
 \begin{eqnarray*}
 E(T) = k \cdot H_k = k \ln k = 2^r \cdot \ln (2^r) = r \cdot 2^r
@@ -208,7 +208,7 @@ Inf_i(f)
 &=& \sum_{S \ni i} \hat {f}(S)^2 \\
 &=& 2^r \cdot \hat {f}(S)^2 \\
 &<& 2^r \cdot (\frac{1}{2^r})^2 \\
-&<& 2^r
+&<& \frac {1}{2^r}
 \end{eqnarray*}
 
 This contradicts with the fact that $Inf_i(f) \ge \frac{1}{2^r}$. So
@@ -216,11 +216,11 @@ some $S \ni i$ must have $|\hat {f}(S)| \ge \frac {1}{2^r}$. \\
 
 Note that from the first part of the observation, we know if $S$ has
 irrelevant variables, $\hat {f}(S) = 0$. So, there are at most 
-$2^r \; S$ whose $\hat {f}(S) \neq 0$. So we get the second
-equation. \\
+$2^r \; S$ whose $\hat {f}(S) \neq 0$. And that's how we get the
+second equation. \\
 
 From this observation, we know that we can learn concepts from
-$\calc_r$ in $n^r \cdot poly(2^r)$. Here is the algorithm:
+$\calc_r$ in $n^r \cdot poly(2^r)$. And here is the algorithm:
 
 \begin{itemize}
 \item For all S with $1 \le |S| \le r$, we estimate $\hat {f}(S)$
@@ -324,9 +324,9 @@ a GF(2)-based learning algorithm will work.
 \subsection{GF(2)-based learning}
 
 GF(2) is the Galois field of two elements. It is the smallest finite
-field. The GF(2) representation of $f$ a multilinear polynomial over
-the filed $GF(2) = \{ 0, 1 \}$, and all math is done with modulo
-2. This ensures that the field is closed under addition and
+field. The GF(2) representation of $f$ is a multilinear polynomial
+over the filed $GF(2) = \{ 0, 1 \}$, and all math is done with modulo
+2. This ensures that the field is closed under addition and 
 multiplication. In GF(2), 0 is equivalent to false, 1 is equivalent to
 true, addition is equivalent to parity function, and multiplication is
 equivalent to AND function. \\
@@ -338,7 +338,7 @@ Let $f: \{ 0, 1 \}^n \rightarrow \{ 0, 1\}$. Then $f$ has
   real numbers. All coefficients are integers.
 \item a unique representation as a GF(2) polynomial $P_{GF(2)}$.
 \item If $p_1, p_2$ are 2 degree-d GF(2) polynomials for $f$ and $g$,
-  and $f \neq g$, then $Pr_x \[ f(x) \neq g(x) \] \ge \frac
+  and $f \neq g$, then $Pr_x [ f(x) \neq g(x) ] \ge \frac
   {1}{2^d}$.
 \end{enumerate}
 
@@ -350,17 +350,216 @@ An easy relation between $P_R$ and $P_{GF(2)}$: we can get $P_{GF(2)}$
 from $P_R$ by reducing all coefficients mod 2.
 
 \begin{eqnarray*}
-P_R = \sum_{S \subseteq \[ n \]}
+P_R = \sum_{S \subseteq [n]}
 {C_S X_S}
-\Rightarrow P_{GF(2)} = \sum_{S \subseteq \[ n \]} (C_s \mod 2) X_S
+\Rightarrow P_{GF(2)} = \sum_{S \subseteq [n]} (C_s \mod 2) \chi_S
 \end{eqnarray*}
 
 So $deg(P_{GF(2)}) \le deg(P_R)$ for all $f$. \\
 
 \begin{example}
-
+Any parity function has a deg-1 GF(2) polynomial: $ x_3 + x_6 + x_7 +
+x_{10}$.
 \end{example}
 
+Note that, any parity function's R-polynomial is deg-n. 
 
+\begin{example}
+$AND(x_1,...,x_n)$ has deg-n GF(2) polynomial: $x_1x_2x_3...x_n$.
+\end{example}
+
+As mentioned, in $GF(2)$, addition is parity function and
+multiplication is AND function. So, a GF(2) polynomial is a parity of
+ANDs. So, the main focus of GF(2) learning is whether we can 
+learn parity functions over some unknown subset of variables easily by
+``thinking GF(2)''.
+
+\begin{claim}
+Let $C = \{ \text {all } 2^n \text { PARs over } x_1,...,x_n
+\}$. There's an algorithm to PAC learn C under any distribution \cald
+over $\{ 0, 1\}^n$ in time $(\frac {n}{\epsilon} \cdot \log {\frac
+  {1}{\delta}})^w$, where $w \approx 2.374$ is matrix multiplication
+exponent.
+\end{claim}
+
+\begin{proof}
+First we talk about the matrix multiplication problem. Trivially,
+For two $n \times n$ matrices, the algorithm for matrix multiplication
+problem takes $O(n^3)$ time. That is, the matrix multiplication
+exponent $w$ is 3. We know that we can solve this problem with $w \le
+2.374$. \\
+
+We know from ``Occam's Razor'' that with  probability $\ge 1 -
+\delta$, any PAR that is consistent with $O(\frac {n}{\epsilon} \cdot
+\log {\frac {1}{\delta}})$ examples is $\epsilon$-accurate. So, we
+can learn a parity function using $O(\frac {n}{\epsilon} \cdot \log
+{\frac {1}{\delta}})$ examples. \\
+
+Now, we will use $m = O(\frac {n}{\epsilon} \cdot \log {\frac
+  {1}{\delta}})$ examples to build $m$ linear equations. And the GF(2)
+PAR learning problem becomes a problem of solving a system of m
+equations: $Ma = b$. $M$ is a $m \times n$ matrix, each row of $M$
+represents one example's input $x_1, x_2, ..., x_n$. $a$ is a $n
+\times 1$ vector that each row represents if every variable $i$ is in
+the parity function. $b$ is a $n \times 1$ vector represents all
+examples' outputs. \\
+
+To sum up, from ``Occam's Razor'' we know that $m = O(\frac
+{n}{\epsilon} \cdot \log {\frac {1}{\delta}})$ examples is enough to
+give a $\epsilon$-accurate parity function. From the first part of the
+proof, we know that we can solve it in $O((\frac {n}{\epsilon} \cdot
+\log {\frac {1}{\delta}})^w)$ time, where $w \le 2.374$. 
+\end{proof}
+
+Using the same approach, we can get the following claim.
+
+\begin{claim}
+Let $C = \{ \text{all deg-d GF(2) polynomials over } x_1,...,x_n
+\}$. We can PAC learn any deg-d GF(2) polynomial to accuracy
+$\epsilon$ under any distribution $\cald$ in time $O(\frac
+{n^d}{\epsilon} \cdot \log {\frac {1}{\delta}}) \approx \frac
+{n^{dw}}{\epsilon^w}$.
+\end{claim}
+
+Note that we will learn r-juntas under uniform distribution on $\{ 0,1
+\}^n$. Since if the hypothesis given by this claim is not the target
+concept, then $error(h) \ge \frac {1}{2^d}$. In this case, we can set
+$\epsilon  = \frac {1}{2^{d+1}} < \frac {1}{2^d}$, then any
+$\epsilon$-accurate hypothesis must be exactly the target concept we
+want to learn. \\
+
+To sum up, we get the bottom line that we can exactly learn any deg-d
+GF(2) polynomial with this algorithm under uniform distribution in
+time $n^{w \cdot d} \cdot \poly (2^d)$.
+
+\subsection{The Algorithm to find a relevant variable}
+
+Given $r$, $c \; (c \ll 1 \text{; the reason will be given later})$,
+there is a algorithm to find a relevant variable:
+
+\begin{enumerate}
+\item For $d = 1,..., c \cdot r$, estimate all $\hat {f}(S)$ with $|S|
+  = d$ to $\pm \frac {0.1}{2^r}$. If we find one which is non-zero,
+  stop and output any variable in S. If $f$ is a constant function,
+  then stop.
+\item Otherwise, have $\hat {f}(S) = 0 \; \forall 1 \le |S| \le
+  r$. Then run algorithm to learn $(\alpha \cdot r)-deg$ GF(2)
+  polynomials, using $\epsilon = \frac {1}{2^{r+1}}$.
+\end{enumerate}
+
+\begin{claim}
+For $c = \frac {w}{w+1}$, $\alpha = \frac {1}{w+1}$, this algorithm
+works. And it runs in time $\approx O(n^{0.704 \cdot r})$.
+\end{claim}
+
+The running time can be easily verified. With the specific $c$ and
+$\alpha$, step 1 of the algorithm runs in $O(n^{c \cdot r}) =
+O(n^{\frac {w}{w+1} \cdot r})$. Step 2 of the algorithm runs in
+$O(n^{w \cdot d}) = O(n^{w \cdot \alpha \cdot r}) = O(n^{\frac
+  {w}{w+1} \cdot r})$. So this algorithm runs in $O(n^{\frac {w}{w+1}
+  \cdot r}) \approx n^{0.704 \cdot r}$. \\
+
+Now we will prove this algorithm works. The high level idea of this
+proof is that if $\hat {f}(S) = 0 \; \forall 1 \le |S| \le c \cdot r$,
+then $f$ is a deg-d GF(2) polynomial. In this proof, we will view $f$
+as $f: \{ -1, 1 \}^r \rightarrow \{ -1, 1 \}$. \\
+
+We first give an useful definition.
+
+\begin{definition}
+Let $f: \{ -1, 1 \}^r \rightarrow \{ -1, 1 \}$. We say $f$ is $d^{th}$
+order correlation immune (d-c.i.) if $\hat {f}(S) = 0 \; \forall 1 \le
+|S| \le d$.
+\end{definition}
+
+The proof of the algorithm works will be done if we can show the
+following theorem is correct.
+
+\begin{theorem}
+Let $f: \{ -1, 1 \}^r \rightarrow \{ -1, 1 \}$, $f \neq
+PAR(x_1,...,x_r)$ and $f \neq -PAR(x_1,...,x_r)$. Suppose $f$ is
+d-c.i., then f has GF(2) polynomial of deg $\le r - d$. 
+\end{theorem}
+
+\begin{proof}
+First, suppose $d = r$. Since $f$ is r-c.i., then $f$ is a constant
+function and it has deg-0 GF(2) polynomials. \\
+
+Now we assume $d < r$, we have
+
+\begin{eqnarray*}
+f(x) = \hat {f}(\emptyset) + \sum_{d < |s| \le r} {\hat {f}(S)\chi_s}
+\end{eqnarray*}
+
+Let $h(x) = f(x) \oplus PAR(x_1,...,x_r)$, i.e. $h(x) = f(x) \cdot
+x_1x_2...x_r = f(x) \cdot x_{[r]}$. The Fourier representation of $h$
+is:
+
+\begin{eqnarray*}
+h(x) 
+&=& \hat {f}(\emptyset) \chi_{[r]} + \sum_T {\hat {f}(T) \chi_T
+  \cdot \chi_{[r]}} \\
+&=& \hat {f}(\emptyset) \chi_{[r]} + \sum_{0 \le |T| \le d} {\hat
+  {f}(T) \chi_T \cdot \chi_{[r]}} + \sum_{d < |T| \le r} {\hat
+  {f}(T) \chi_T \cdot \chi_{[r]}} \\
+&=& \hat {f}(\emptyset) \chi_{[r]} + 0 + \sum_{d < |T| \le r}
+{\hat {f}(T) \chi_T \cdot \chi_{[r]}} \\
+&=& \hat {f}(\emptyset) \chi_{[r]} + \sum_{0 \le |T| < r-d} {\hat
+  {f}([r] \backslash T) \chi_T}
+\end{eqnarray*}
+
+Case 1: $\hat {f}(\emptyset) = 0$. Then
+
+\begin{eqnarray*}
+h(x) = \sum_{0 \le |T| < r-d} {\hat {f}([r] \backslash T) \chi_T}
+\end{eqnarray*}
+
+Let h' be 
+
+\begin{eqnarray*}
+h'(y_1,...,y_r) = \frac {1}{2} - \frac {h(1 - 2y_1, ..., 1 - 2y_r)}{2}
+\end{eqnarray*}
+
+As we can see, h' is equivalent to h but with 0/1 inputs and
+outputs. Since $deg_R(h') < r-d$. So $deg_{GF(2)}(h') < r-d$. \\
+
+Case 2: $\hat {f}(\emptyset) = 0$. As before,
+
+\begin{eqnarray*}
+h(x) &=& \hat {f}(\emptyset) \chi_{[r]} + \sum_{0 \le |T| < r-d} {\hat
+  {f}([r] \backslash T) \chi_T} \\
+h'(y_1,...,y_r) &=& \frac {1}{2} - \frac {h(1 - 2y_1, ..., 1 -
+  2y_r)}{2}
+\end{eqnarray*}
+
+We will show that the contribution from $\hat {f}(\emptyset)
+\chi_{[r]}$ to GF(2) polynomial for h' doesn't give us $deg >
+r-d$. This whole contribution of this term is
+
+\begin{eqnarray*}
+\frac {- \hat{f}(\emptyset)}{2} \prod^r_{i=1} {(1 - 2y_i)}
+= \frac {- \hat{f}(\emptyset)}{2} \sum_{S \subset [r]} (-2)^{|S|}y_S
+\end{eqnarray*}
+
+Fix $S' = \{ 1, 2,..., r-d\}$. What's the coefficient of $y_{S'}$ in
+h'? In the $non-\emptyset$ term, it must be 0. And in the $\emptyset$
+term, it's
+
+\begin{eqnarray*}
+\frac {- \hat{f}(\emptyset)}{2} (-2)^{r-d}
+\end{eqnarray*}
+
+Previous fact tells us that this term must be an integer. Now consider
+any set of $S$ of size $> r - d$. $h'$'s coefficient on $y_S$ is:
+
+\begin{eqnarray*}
+\frac {- \hat{f}(\emptyset)}{2} (-2)^{|S|} = \frac {-
+  \hat{f}(\emptyset)}{2} (-2)^{r-d} \cdot 2^t 
+\end{eqnarray*}
+
+That is, this term is an even integer. So $h'_{GF(2)}$ has
+coefficient 0 on every $S$ of size $> r-d$. So $deg(h'_{GF(2)}) \le
+r-d$.
+\end{proof}
 
 \end{document}
