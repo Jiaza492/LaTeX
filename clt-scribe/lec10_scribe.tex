@@ -105,7 +105,7 @@
 \section{Introduction}
 
 \begin{definition}
-Variable $i$ in $f(x_1,...,x_n)$ is relevant if $\; \exists x \in
+Variable $i$ in $f(x_1,...,x_n)$ is relevant if $\; \exists \; x \in
 \{-1, 1 \}$ such that $f(x^{i \leftarrow 1}) \neq f(x^{i \leftarrow
   -1})$.
 \end{definition}
@@ -232,7 +232,8 @@ $\calc_r$ in $n^r \cdot poly(2^r)$. And here is the algorithm:
 \end{itemize}
 
 Note that there are $n^r$ possible $S$ here. And given a $S$, the
-estimation takes $\poly (2^r)$ time. So in total, this algorithm takes
+estimation takes $\poly (2^r)$ time. This is due to the accuracy
+parameter $0.1 \cdot \frac {1}{2^r}$ So in total, this algorithm takes
 $n^r \cdot \poly (2^r)$ time. Due to the $n^r$ part, this algorithm is
 still not good enough.
 
@@ -362,7 +363,7 @@ Any parity function has a deg-1 GF(2) polynomial: $ x_3 + x_6 + x_7 +
 x_{10}$.
 \end{example}
 
-Note that, any parity function's R-polynomial is deg-n. 
+Note that any parity function's R-polynomial is deg-n. 
 
 \begin{example}
 $AND(x_1,...,x_n)$ has deg-n GF(2) polynomial: $x_1x_2x_3...x_n$.
@@ -376,7 +377,7 @@ learn parity functions over some unknown subset of variables easily by
 
 \begin{claim}
 Let $C = \{ \text {all } 2^n \text { PARs over } x_1,...,x_n
-\}$. There's an algorithm to PAC learn C under any distribution \cald
+\}$. There's an algorithm to PAC learn C under any distribution $\cald$
 over $\{ 0, 1\}^n$ in time $(\frac {n}{\epsilon} \cdot \log {\frac
   {1}{\delta}})^w$, where $w \approx 2.374$ is matrix multiplication
 exponent.
@@ -499,7 +500,7 @@ is:
 h(x) 
 &=& \hat {f}(\emptyset) \chi_{[r]} + \sum_T {\hat {f}(T) \chi_T
   \cdot \chi_{[r]}} \\
-&=& \hat {f}(\emptyset) \chi_{[r]} + \sum_{0 \le |T| \le d} {\hat
+&=& \hat {f}(\emptyset) \chi_{[r]} + \sum_{0 < |T| \le d} {\hat
   {f}(T) \chi_T \cdot \chi_{[r]}} + \sum_{d < |T| \le r} {\hat
   {f}(T) \chi_T \cdot \chi_{[r]}} \\
 &=& \hat {f}(\emptyset) \chi_{[r]} + 0 + \sum_{d < |T| \le r}
