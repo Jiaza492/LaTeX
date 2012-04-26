@@ -309,11 +309,11 @@ sample and of size polynomial in $n$, $s$, and $\log m$.
   \begin{eqnarray*}
     DL_{best} = r \cdot \log r + 2^r
   \end{eqnarray*}
-  As we can see, by using $DL{best}$, we achieve a compression rate of
+  As we can see, by using $DL_{best}$, we achieve a compression rate of
   \begin{eqnarray*}
-    r \approx = 1 - \frac {2^r}{2^n} = 1 - 2^{n-r}
+    r \approx = 1 - \frac {2^r}{2^n} = 1 - 2^{r-n}
   \end{eqnarray*}
-  That is, we saved about $1 - 2^{n-r} \time 100\%$ of the space.
+  That is, we saved about $1 - 2^{r-n} \time 100\%$ of the space.
 \item The compression model is already complicated enough.
 
   This is a long and winding road.
