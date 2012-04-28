@@ -1,101 +1,47 @@
 \documentclass[12pt]{article}
-\parindent=.25in
 
+\parindent=.25in
 \setlength{\oddsidemargin}{0pt}
 \setlength{\textwidth}{440pt}
 \setlength{\topmargin}{0in}
-\usepackage{amssymb}
-\usepackage{amsfonts}
+
 \usepackage{amsmath}
-\usepackage{latexsym}
-\usepackage[center]{subfigure}
-\usepackage{epsfig}
-\usepackage{hyperref}
+\usepackage{amsfonts}
+\usepackage[dvips]{graphicx}
+\usepackage{verbatim}
+\usepackage{appendix}
 
-
-\newtheorem{theorem}{Theorem}
-\newtheorem{lemma}[theorem]{Lemma}
-\newtheorem{remark}{Remark}
-\newtheorem{fact}[theorem]{Fact}
-\newtheorem{definition}[theorem]{Definition}
-\newtheorem{corollary}[theorem]{Corollary}
-\newtheorem{proposition}[theorem]{Proposition}
-\newtheorem{claim}[theorem]{Claim}
-\newtheorem{conjecture}[theorem]{Conjecture}
-\newtheorem{observation}[theorem]{Observation}
-\newtheorem{assumption}[theorem]{Assumption}
-\newtheorem{example}[theorem]{Example}
-
-\newcommand{\noi}{{\noindent}}
-\newcommand{\ms}{{\medskip}}
-\newcommand{\msni}{{\medskip \noindent}}
-
-\newcommand{\la}{\langle}
-\newcommand{\ra}{\rangle}
-\newcommand{\calc}{{\cal C}}
-\newcommand{\cald}{{\cal D}}
-\newcommand{\calh}{{\cal H}}
-\newcommand{\cala}{{\cal A}}
-
-\newcommand{\sign}{\mathrm{sign}}
-\newcommand{\eps}{\epsilon} 
-\newcommand{\poly}{\mathrm{poly}}
-\newcommand{\size}{\mathrm{size}}
-\newcommand{\depth}{\mathrm{depth}} 
-
-\pagestyle{headings}    % Go for customized headings
-
-\newcommand{\handout}[5]{
-   \noindent
-   \begin{center}
-   \framebox{
-      \vbox{
-    \parbox[t]{4in} {\bf #1 } \vspace{3mm}  {\hfill \bf #2 }
-       \vspace{2mm}
-       \hbox to 6.00in { {\Large \hfill #5  \hfill} }
-       \vspace{1mm}
-       \hbox to 6.00in { {\it #3 \hfill #4} }
-      }
-   }
-   \end{center}
-   \vspace*{1mm}
-}
+\title{COMS 6253 Problem 1}
+\author{Mengqi Zong $<mz2326@columbia.edu>$}
 
 \begin{document}
 
-\handout{COMS 6253: Advanced Computational Learning Theory}{Spring 2012}
-{Lecturer: Rocco Servedio}
-{Scribe: Mengqi Zong}{Lecture 10: March 29, 2012}
+\maketitle
 
-\thispagestyle{plain}
+\setlength{\parindent}{0in}
 
-\section{Last time and today}
+{\bf Problem 1.} The parity function on k 0/1-valued variables is
 
-{\bf Previously:}
-\begin{itemize}
-\item Use $NS_{\epsilon}$ to get Fourier Concentration
-\item Proved Peres theorem on $NS_{\epsilon}$ (halfspaces)
-\item Uniform distribution learning beyond LDA
-\end{itemize}
+\begin{equation*}
+PAR(x_1,...,x_k) = x_1 + ... + x_k \text { mod } 2,
+\end{equation*}
 
-{\noindent \bf Today:}
-\begin{itemize}
-\item Learning r-juntas.
-\end{itemize}
 
-{\noindent \bf Relevant Readings:} 
+a)  Show that the parity function on $\log s$ variables can be
+computed by a decision tree of size $s$. \\
 
-\begin{itemize}
-\item Elchanan Mossel, Ryan O'Donnell, Rocco A. Servedio
-  (2003). \emph {Learning Juntas}
-\item T. Siegenthaler (1984). \emph {Correlation-Immunity of Nonlinear
-  Combining Functions for Cryptographic Applications}
-\item Gregory Valiant (2012). \emph {Finding Correlations in
-    Subquadratic Time, with Applications to Learning Parities and
-    Juntas with Noise}
-\end{itemize}
+Since decision trees are a universal representation scheme, any
+Boolean function with $k$ variables can be computed by a complete
+decision tree of depth $k$ with $2^k$ leaves that exhaustively queries
+all $k$ variables on every path. \\
 
-\section{}
+For the parity function with $\log s$ variables, its complete decision
+tree has depth $\log s$ with $2^{\log s} = s$ leaves. That is, the
+parity function on $\log s$ variables can be computed by a decision
+tree of size $s$. \\
+
+b)  Show that any PTF for the parity function on $k$ variables must
+have degree at least k. \\
 
 
 
