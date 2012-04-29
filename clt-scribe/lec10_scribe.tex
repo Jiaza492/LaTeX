@@ -77,7 +77,7 @@
 {\bf Previously:}
 \begin{itemize}
 \item Use noise sensitivity $NS_{\epsilon}$ to get Fourier concentration
-\item Proved Peres Theorem on $NS_{\epsilon}$
+\item Proved Peres Theorem on $NS_{\epsilon}$ of halfspaces
 \item Uniform distribution learning beyond LDA
   \begin{itemize}
   \item Learning LTFs, the ``Chow parameters''
@@ -106,7 +106,7 @@
 
 \begin{definition}
 Variable $i$ in $f(x_1,...,x_n)$ is relevant if $\; \exists \; x \in
-\{-1, 1 \}$ such that $f(x^{i \leftarrow 1}) \neq f(x^{i \leftarrow
+\{-1, 1 \}^n$ such that $f(x^{i \leftarrow 1}) \neq f(x^{i \leftarrow
   -1})$.
 \end{definition}
 
@@ -126,8 +126,8 @@ Let $f$ be an r-junta. Then $f$ has a DT of size $2^r$ and a DNF of $s
 \le 2^r$ terms.
 \end{observation}
 
-So to learn w(1)-size DNFs, DTs in $\poly(n)$ time, we need to be able
-to learn juntas. \\
+So to learn $\omega(1)-size$ DNFs, DTs in $\poly(n)$ time, we need to
+be able to learn juntas. \\
 
 Let $\calc_r = \{\text {all r-juntas over n variables} \}$. By
 learning r-juntas, we mean learn any r-junta over the n variables. So
@@ -172,17 +172,19 @@ variables. Given the $r$ relevant variables, $O(r \cdot 2^r)$ examples
 suffice to fill in the truth table.
 \end{observation}
 
-We can get $r \cdot 2^r$ by applying the method for solving coupon
-collector's problem:
+We can get $r \cdot 2^r$ by applying the method of solving coupon
+collector's problem. Let $T$ be the time to collect all $k$
+coupons. Here, $T$ is the number of examples to collect all
+$2^r$ truth table entries. That is, $k = 2^r$. So we get
 
 \begin{eqnarray*}
-E(T) = k \cdot H_k = k \ln k = 2^r \cdot \ln (2^r) = r \cdot 2^r
+E(T) = k \ln k = 2^r \cdot \ln (2^r) = r \cdot 2^r
 \end{eqnarray*}
 
 Now the main focus of learning r-juntas turns to how to find the $r$
 relevant variables efficiently.
 
-\begin{observation}
+\begin{observation} \label{observation:rel}
 If variable $i$ is irrelevant in f, then $Inf_i(f) = 0$ and $\hat
 {f}(S) = 0 \; \forall S \ni i$. If variable $i$ is relevant in r-junta
 f, then $Inf_i(f) \ge \frac {1}{2^r}$ and some $S \ni i$ must have
@@ -206,18 +208,18 @@ Then for relevant variable $i$, if no $S \ni i$ has $|\hat {f}(S)| \ge
 \begin{eqnarray*}
 Inf_i(f)
 &=& \sum_{S \ni i} \hat {f}(S)^2 \\
-&=& 2^r \cdot \hat {f}(S)^2 \\
+&\le& 2^r \cdot \max_{S \ni i} {(\hat {f}(S)^2)} \\
 &<& 2^r \cdot (\frac{1}{2^r})^2 \\
-&<& \frac {1}{2^r}
+&=& \frac {1}{2^r}
 \end{eqnarray*}
+
+For the second inequality, note that from the first part of the
+observation, we know if $S$ has irrelevant variables, then $\hat
+{f}(S) = 0$. So, there are at most $2^r \; S_{S \ni i}$ whose $\hat
+{f}(S_{S \ni i}) \neq 0$. \\
 
 This contradicts with the fact that $Inf_i(f) \ge \frac{1}{2^r}$. So
 some $S \ni i$ must have $|\hat {f}(S)| \ge \frac {1}{2^r}$. \\
-
-Note that from the first part of the observation, we know if $S$ has
-irrelevant variables, $\hat {f}(S) = 0$. So, there are at most 
-$2^r \; S$ whose $\hat {f}(S) \neq 0$. And that's how we get the
-second equation. \\
 
 From this observation, we know that we can learn concepts from
 $\calc_r$ in $n^r \cdot poly(2^r)$. And here is the algorithm:
@@ -262,7 +264,7 @@ learning.
 
 \subsection{Find 1 relevant variable efficiently is enough}
 
-In the previous observation, we know that the most difficult part of
+From previous observations, we know that the most difficult part of
 learning juntas is how to find $r$ relevant variables efficiently. We
 now show to learn r-juntas efficiently, all we need to do is to find 1
 relevant variable efficiently.
@@ -278,7 +280,7 @@ an algorithm to learn r-juntas running in $T(n,r) \cdot \poly (n,
 We will use A to get relevant variable ``i'', or find out no variable
 is relevant. If no variable is relevant, then done. \\
 
-Now we talk about the situation that function is not a constant
+Now we talk about the situation that the function is not a constant
 function. Then, we will run A in a recursive style. It's like a binary
 search:
 
@@ -288,18 +290,22 @@ search:
 \item Run A on $(x, f(x)) |_{x_i = -1}$.
 \end{enumerate}
 
-In this way, we build a decision tree with depth $\le r$. As to the
-running time, we have
+In this way, we build a decision tree with depth $\le r$. Note that
+every time we get a relevant variable i, we will split the examples
+into 2 roughly equal-sized subsets. Since the subroutine to find a
+relevant variable requires certain number of examples, the more
+relevant variables we want to find, the more examples we must
+have. So, this algorithm has a $2^d$ slow factor slow down at depth
+$d$. The decision tree has a depth $\le r$, so the slow down factor is
+at most $2^r$. We will run A at most $2^{r+1} - 1$ times. Also, note
+that we have no restrictions on $T(n, r)$ and all examples are from
+$\{ -1, 1\}^n$. So we will add restriction $\poly {(n)}$ in the
+running time. At last, we get the running time
 
 \begin{eqnarray*}
 T(r)
-&\le& 2T(r-1) + T(n, r) \cdot \poly (n) \\
-&\le& 4T(r-2) + 2T(n, r-1) \cdot \poly (n) + T(n, r) \cdot \poly (n) \\
-&\le& (2^rT(n, 1) + 2^{r-1}T(n, 2) + ... 2T(n, r-1) + T(n, r)) \cdot
-\poly (n) \\
-&\le& (2^r + 2^{r-1} + ... + 2 + 1) \cdot T(n, r) \cdot \poly (n) \\
-&\le& (2^{r+1} - 1) \cdot T(n, r) \cdot \poly (n) \\
-&\le& T(n, r) \cdot \poly (n, 2^r) \\
+&\le& (2^{r+1} - 1) \cdot 2^r \cdot T(n, r) \cdot \poly {(n)} \\
+&=& T(n, r) \cdot \poly {(n, 2^r)}
 \end{eqnarray*}
 
 The running time of the algorithm to learn r-juntas is $T(n,r) \cdot
@@ -310,14 +316,17 @@ The running time of the algorithm to learn r-juntas is $T(n,r) \cdot
 
 \begin{fact}
 If $f$ has $\hat {f}(S) \neq 0$ for some $S$ with $1 \le |S| \le c
-\cdot r$, then we can find  a relevant variable in $\le 2^r \cdot
+\cdot r$, then we can find a relevant variable in $\le 2^r \cdot
 n^{cr}$ time.
 \end{fact}
 
-From the previous observation, we know that if $\hat {f}(S) \neq 0$,
-then all variables in $S$ is relevant. To find such a $S$, we simply
-try every possible S with $1 \le |S| \le c \cdot r$. There are $\le
-2^r \cdot n^{cr}$ different $S$ in total. \\
+From observation~\ref{observation:rel}, we know that if $\hat {f}(S)
+\neq 0$, then all variables in $S$ are relevant. To find a relevant
+variable, we just need to find a S with $\hat {f}(S) \neq 0$. To find
+such a $S$, we simply try every possible S with $1 \le |S| \le c \cdot
+r$. There are $n^{c \cdot r}$ different $S$ in total. And for the $\le
+r$ relevant variables, there are $2^r$ possible cases. Combine the two
+together, we get $\le 2^r \cdot n^{cr}$. \\
 
 Later, we'll see if $f$ has no such $S$ as stated in this fact, then
 a GF(2)-based learning algorithm will work.
@@ -326,7 +335,7 @@ a GF(2)-based learning algorithm will work.
 
 GF(2) is the Galois field of two elements. It is the smallest finite
 field. The GF(2) representation of $f$ is a multilinear polynomial
-over the filed $GF(2) = \{ 0, 1 \}$, and all math is done with modulo
+over the field $GF(2) = \{ 0, 1 \}$, and all math is done with modulo
 2. This ensures that the field is closed under addition and 
 multiplication. In GF(2), 0 is equivalent to false, 1 is equivalent to
 true, addition is equivalent to parity function, and multiplication is
@@ -435,7 +444,7 @@ time $n^{w \cdot d} \cdot \poly (2^d)$.
 
 \subsection{The Algorithm to find a relevant variable}
 
-Given $r$, $c \; (c \ll 1 \text{; the reason will be given later})$,
+Given $r$, $c \; (c < 1 \text{; the reason will be given later})$,
 there is a algorithm to find a relevant variable:
 
 \begin{enumerate}
@@ -443,8 +452,8 @@ there is a algorithm to find a relevant variable:
   = d$ to $\pm \frac {0.1}{2^r}$. If we find one which is non-zero,
   stop and output any variable in S. If $f$ is a constant function,
   then stop.
-\item Otherwise, have $\hat {f}(S) = 0 \; \forall 1 \le |S| \le
-  r$. Then run algorithm to learn $(\alpha \cdot r)-deg$ GF(2)
+\item Otherwise, have $\hat {f}(S) = 0 \; \forall \; 1 \le |S| \le c
+  \cdot r$. Then run algorithm to learn $(\alpha \cdot r)-deg$ GF(2)
   polynomials, using $\epsilon = \frac {1}{2^{r+1}}$.
 \end{enumerate}
 
