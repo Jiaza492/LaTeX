@@ -22,13 +22,34 @@
 \section*{Problem 1}
 
 
+
 \section*{Problem 2}
 
 1. It's easy to show that DFA Intersection problem is in NPSPACE. We
-simply guess a string and then verify if this string can be accepted
-by all $n$ DFAs. By Savitch's Theorem, this problem is in PSPACE. \\
+simply guess a string by first guessing its length and then guessing
+every tape cell of the string. Then verify if this string can be
+accepted by all $n$ DFAs. Trivially, we can use $n$ work tapes and
+each tape initially stores the string $x$. So, this problem is in
+NPSAPCE. By Savitch's Theorem, this problem is in PSPACE. \\
 
-2. 
+2. We will show that the DFA Intersection problem is PSPACE-hard
+by reducing LBA problem to this problem. \\
+
+Given an input $x$ to the LBA, we will construct the DFAs as follows:
+
+Let $n = |x| + 2$ (including endmarkers), we construct $n$ DFAs,
+$A_1,...,A_n$. Suppose the LBA has a transition $(q, a, i) \rightarrow
+(p, b, j)$. Then for all DFA except $A_i, A_j$, they will have a
+transition $(a, i) \rightarrow (b, j)$. As to $A_i$, it will have a
+transition $(p, a, i) \rightarrow (b, j)$. As to $A_j$, it will have a
+transition $(a, i) \rightarrow (q, b, j)$. And when LBA accepts, mark
+all DFAs corresponding states accepting. \\
+
+As we can see, all DFAs are different, and LBA accepts $x$ if and only
+if all DFAs accepts $x$. So, the DFA intersection problem is
+PSPACE-hard. \\
+
+To sum up, the DFA intersection problem is PSPACE-hard.  
 
 \section*{Problem 3}
 
@@ -56,10 +77,11 @@ Now we will show that the number of satisfying assignments of $\phi$
 equals to the number of matchings in G. For every satisfying
 assignment of $\phi$, for each variable $v_i$, if $v_i = 1$, then the
 edge represented by $v_i$ is not in the matching. That is, all the
-edges whose $v_i = 0$ forms a matching of G. We will show that all
-those edges don't share the same node. Because if there is one pair of
-edges share the same node, then one term in the \#2SAT will not be
-satisfied, then the formula $\phi$ will not be satisfied. This 
+edges whose $v_i = 0$ form a matching of G. We will show that all
+those edges don't share the same node. If there is one pair of
+edges share the same node, since all edges in the matching is
+equivalent to a variable $v_i = 0$, then one term in the \#2SAT will
+not be satisfied, then the formula $\phi$ will not be satisfied. This
 contradicts with the fact that the assignment is a satisfying
 assignment of $\phi$. So, \#2SAT is \#P-hard. \\
 
@@ -68,7 +90,7 @@ To sum up, \#2SAT is \#P-complete. \\
 2. It is trivial that \#Node Covers is in \#P. We will prove that
 \#Node Covers is \#P-hard by reducing \#2SAT to \#Node Covers. \\
 
-For any \#2SAT problem, given a \#2SAT formulas $\phi$, we will create
+For any \#2SAT problem, given a 2SAT formulas $\phi$, we will create
 a undirected graph G as follows:
 
 \begin{itemize}
