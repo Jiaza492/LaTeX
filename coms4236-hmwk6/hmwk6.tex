@@ -21,7 +21,22 @@
 
 \section*{Problem 1}
 
+For any input $x$, let the Boolean expression in disjunctive normal
+form in the input be $d$. We first guess a Boolean expression $c$ in
+conjunctive normal form that has at most $B$ clauses. Let $a$ be an
+assignment to the Boolean expression. Then $(d - c)(a)$ denote that
+the value of expression $d - c$ for assignment $a$. We now could show
+that the language $L$ defined by this problem is
 
+\begin{eqnarray*}
+L = \{ x: \exists \; c \; \forall a \text { such that } (d - c)(a) = 0
+\}
+\end{eqnarray*}
+
+Since $B$ is given in unary and $c$ has at most $B$ clauses, we can
+verify if $(d - c)(a) = 0$ for any $a$ in $poly(x)$ time. Then by the
+definition of the certificate version of $\Sigma_2$, we know that $L
+\in \Sigma_2$. So this problem is in $\Sigma_2$.
 
 \section*{Problem 2}
 
