@@ -11,6 +11,8 @@
 \usepackage{verbatim}
 \usepackage{appendix}
 
+\newcommand{\sign}{\mathrm{sign}}
+
 \title{COMS 6253 Problem 1}
 \author{Mengqi Zong $<mz2326@columbia.edu>$}
 
@@ -26,23 +28,48 @@
 PAR(x_1,...,x_k) = x_1 + ... + x_k \text { mod } 2,
 \end{equation*}
 
-
 a)  Show that the parity function on $\log s$ variables can be
 computed by a decision tree of size $s$. \\
-
-Since decision trees are a universal representation scheme, any
-Boolean function with $k$ variables can be computed by a complete
-decision tree of depth $k$ with $2^k$ leaves that exhaustively queries
-all $k$ variables on every path. \\
-
-For the parity function with $\log s$ variables, its complete decision
-tree has depth $\log s$ with $2^{\log s} = s$ leaves. That is, the
-parity function on $\log s$ variables can be computed by a decision
-tree of size $s$. \\
 
 b)  Show that any PTF for the parity function on $k$ variables must
 have degree at least k. \\
 
+{\bf Answer:} \\
 
+a) Since decision tree is an universal representation scheme, any
+Boolean function with $k$ variables can be computed by a complete
+decision tree with depth $k$ and $2^k$ leaves that exhaustively
+queries all $k$ variables on every path. \\
+
+For the parity function with $\log s$ variables, its complete decision
+tree has depth $\log s$ with $2^{\log s} = s$ leaves. So the parity
+function on $\log s$ variables can be computed by a decision tree of
+size $s$. \\
+
+
+b) Observed from $PAR(x_1,...,x_k) = x_1 + ... + x_k \text { mod } 2$,
+we can see that one important property of parity function is that the
+value of a parity function depends only on the sum of all k
+variables. So $PAR(x_1,  ..., x_k)$ can be computed by an univatiate
+polynomial threshold function $f(x_1 + ... + x_k)$. Define 
+
+\begin{equation*}
+f(x_1 + ... + x_k) = \sign {(p(x_1 + ... + x_k))}
+\end{equation*}
+
+where $p(x_1 + ... + x_k)$ is a degree-$d$ univariate polynomials. Note
+that for all $x_1, ..., x_k \in \{0,1\}^k$, $x_1 + ... + x_k \in \{0,
+1, ..., k\}$. Since $p(x_1 + ... + x_k)$ compute the parity, we have 
+
+\begin{eqnarray*}
+p(0) < 0 \\
+p(1) > 0 \\
+p(2) < 0 \\
+p(3) > 0 \\
+\vdots \\
+\end{eqnarray*}
+
+So, in order to fit the $k+1$ input values, function $p$ must have at
+least $k$ roots. As a result, we get $d \ge k$.
 
 \end{document} 
