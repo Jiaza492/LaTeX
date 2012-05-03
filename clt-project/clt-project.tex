@@ -63,33 +63,69 @@ The probably approximately correct learning model (PAC learning), proposed in 19
 
 In COMS 6253, we spent most of our time studying the results based on PAC-learning model. So it is worthy for us to take a closer look at this model. \\
 
-This paper consists of three parts. In the first part, we will talk about PAC-learning, Occam algorithm and the relationship between the two. In the second part, we will show that for many classes, PAC-learnability is equivalent to data compression. In the last part, we attempt to apply PAC-learning model to analyze data compression. This entire paper will have a note flavor.
+This paper consists of three parts. In the first part, we will talk about PAC-learning, Occam algorithm and the relationship between the two. In the second part, we will talk about the relationship between PAC-learnability and data compression. In the last part, we attempt to apply PAC-learning model to analyze data compression, particularly, relationship between learning r-junta and lossless compression is investigated. \\
 
-\section{PAC-learning and occam algorithm}
+This entire paper will focus on learning in discrete domains. 
+
+% have a \emph {notes} flavor.
+
+\section{Part I: PAC-learning and Occam algorithm}
 
 \subsection{PAC-learning}
 
-% put some definiton here; talk about the algorithm
+% put some definitions here; talk about the algorithm
 
+What is the PAC-learning model? Generally, it is a model for mathematical analysis of machine learning, particularly, for the phenomenon of learning from examples. \\
 
+In this model, the target concept we want to learn is a subset of a domain of elements, and a concept class is a set of such concepts. A learning algorithm is presented with a collection of examples, each example is a labeled domain element indicating whether or not it is a member of the target concept in the class. All these examples, the domain elements, are drawn randomly according to a fixed probability distribution. Informally, the concept class is PAC-learnable if the learning algorithm runs in polynomial time and, with high probability, outputs the description of a concept in the class that differs by only a small amount from the unknown concept.
 
-\subsection{Occam's razor and occam algorithm}
+\subsubsection{Preliminary notation and definitions}
+
+If $S$ and $T$ are sets, then we denote the symmetric difference of $S$ and $T$ by $S \oplus T = (S - T) \cup (T - S)$. The cardinality of a set $S$ is denoted by $|S|$. If $\Sigma$ is a alphabet, then $\Sigma^*$ denotes the set of all finite length strings of elements of $\Sigma$. If $w \in \Sigma^*$, then the length of $w$, denoted by $|w|$, is the number of symbols in the string $w$. Let $\Sigma^{[n]}$ denote the set $\{ w \in \Sigma^*: |w| \le n \}$. \\
+
+Define a \emph {concept class} to be a pair $C = (C,X)$, where $X$ is a set and $C \subseteq 2^X$. The domain of $C$ is $X$, and the elements of $C$ are \emph {concepts}. \\
+
+We describe a context for representing concepts over $X$. Define a class of representations to be a four-tuple ${\bf R} = (R, \Gamma, c, \Sigma)$. $\Sigma$ and $\Gamma$ are sets of characters. Strings composed of characters in $\Sigma$ are used to describe elements of $X$, and strings of characters in $\Gamma$ are used to describe concepts. $R \subseteq \Gamma^*$ is the set of strings that are concept descriptions or \emph {representations}. Let $c: R \rightarrow 2^{\Sigma^*}$ be a function that maps these representations into concepts over $\Sigma$. \\
+
+Note that if ${\bf R} = (R, \Gamma, c, \Sigma)$ is a class of representations, then there is an associated concept class ${\bf C(R)} = (c(R), \Sigma^*)$, where $c(R) = \{ c(r): r \in R \}$. \\
+
+We write $r(x) = 1$ if $x \in c(r)$, and $r(x) = 0$ if $x \notin c(r)$. An \emph {example} of $r$ is a pair $(x, r(x))$. The length of an example $(x, r(x))$ is $|x|$. A sample of size $m$ of concept $r$ is a multiset of $m$ examples of $r$. \\
+
+For a class of representations, the \emph {membership problem} is that of determining, given $r \in R$ and $x \in \Sigma^*$, whether or not $x \in c(r)$. For practical reasons, we only consider classes of representations for which the membership problem is decidable in polynomial time. That is, we only consider representation classes ${\bf R} = (R, \Gamma, c, \Sigma)$ for which there exists a polynomial-time algorithm EVAL such that for all $r \in R$, $x \in \Sigma^*$, $\text {EVAL}(r, x) = r(x)$. EVAL runs in time polynomial in $|r|$ and $|x|$. \\
+
+We let $R^{[s]}$ denote the set $\{ r \in R: |r| \le s\}$; that is, the set of all representations from $R$ of length at most $s$. If ${\bf R} = (R, \Gamma, c, \Sigma)$ is a class of representations, $r \in R$, and $\cald$ is a probability distribution on $\Sigma^*$, then $\text{EXAMPLE}(\cald, r)$ is an oracle that, when called, randomly chooses an $x \in \Sigma^*$ according to distribution $\cald$ and returns the pair $(x, r(x))$. \\
+
+A randomized algorithm is an algorithm that behaves like a deterministic one with the additional property that, at one or more steps during its execution, the algorithm can flip a fair two-sided coin and use the result of the coin flip in its ensuing computation.
+
+\subsubsection{PAC-learnability}
+
+\begin{definition}
+The representation class ${\bf R} = (R, \Gamma, c, \Sigma)$ is PAC-\emph {learnable} if there exists a (possibly randomized) algorithm L and a polynomial $p_L$ such that for all $s, n \ge 1$, for all $\epsilon$ and $\delta$, $0 < \epsilon, \delta < 1$, for all $r \in R^{[s]}$, and for all probability distributions $\cald$ on $\Sigma^{[n]}$, if L is given as input the parameters $s, \epsilon$, and $\delta$, and may access the oracle $\text {EXAMPLE}(\cald, r)$, then L halts in time $p_L(n, s, 1/\epsilon, 1/\delta)$ and, with probability at least $1 - \delta$, outputs a representation $r' \in R$ such that $\cald (r' \oplus r) \le \epsilon$. Such an algorithm L is a polynomial-time learning algorithm for {\bf R}.
+\end{definition}
+
+Here are few comments about PAC-learning and PAC-learnability:
+
+\begin{enumerate}
+  \item 
+\end{enumerate}
+
+\subsection{Occam's razor and Occam algorithm}
 
 % historical notes about Occam's Razor; Occam 
 
 
-\subsection{PAC-learnability and occam algorithm}
+\subsection{PAC-learnability and Occam algorithm}
 
 
 
 
-\section{PAC-learning and data compression}
+\section{Part II: PAC-learning and data compression}
 
 % the interpretation of PAC-learning as data compression
 
 
 
-\section{PAC-learning model for data compression algorithms: possibilities and difficulties}
+\section{Part III: PAC-learning model for data compression algorithms: possibilities and difficulties}
 
 % talk about the attempt I tried to use PAC-learning Model to model
 % data compression algorithm.
