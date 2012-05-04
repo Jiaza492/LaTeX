@@ -14,6 +14,8 @@
 
 \usepackage{amsthm}
 
+\usepackage{framed}
+
 \newtheorem{theorem}{Theorem}
 \newtheorem{lemma}[theorem]{Lemma}
 \newtheorem{remark}{Remark}
@@ -65,7 +67,7 @@ In COMS 6253, we spent most of our time studying the results based on PAC-learni
 
 This paper consists of three parts. In the first part, we will talk about PAC-learning, Occam algorithm and the relationship between the two. In the second part, we will talk about the relationship between PAC-learnability and data compression. In the last part, we attempt to apply PAC-learning model to analyze data compression, particularly, relationship between learning r-junta and lossless compression is investigated. \\
 
-This entire paper will focus on learning in discrete domains. 
+This entire paper will focus on learning on discrete domains. 
 
 % have a \emph {notes} flavor.
 
@@ -103,21 +105,219 @@ A randomized algorithm is an algorithm that behaves like a deterministic one wit
 The representation class ${\bf R} = (R, \Gamma, c, \Sigma)$ is PAC-\emph {learnable} if there exists a (possibly randomized) algorithm L and a polynomial $p_L$ such that for all $s, n \ge 1$, for all $\epsilon$ and $\delta$, $0 < \epsilon, \delta < 1$, for all $r \in R^{[s]}$, and for all probability distributions $\cald$ on $\Sigma^{[n]}$, if L is given as input the parameters $s, \epsilon$, and $\delta$, and may access the oracle $\text {EXAMPLE}(\cald, r)$, then L halts in time $p_L(n, s, 1/\epsilon, 1/\delta)$ and, with probability at least $1 - \delta$, outputs a representation $r' \in R$ such that $\cald (r' \oplus r) \le \epsilon$. Such an algorithm L is a polynomial-time learning algorithm for {\bf R}.
 \end{definition}
 
-Here are few comments about PAC-learning and PAC-learnability:
+For the rest of the paper, without loss of generality, we will let $\Sigma = \{ 0, 1 \}$. \\
+
+Here are a few comments about PAC-learning and PAC-learnability:
 
 \begin{enumerate}
-  \item 
+  \item Every concept class is learnable, but not necessarily PAC-learnable.
+
+    For any $f: \{0, 1 \}^n \rightarrow \{0, 1\}$, we can represent $f$ using a truth table with $2^n$ entries. That is, we can learn $f$ by trying every possible examples $(x, f(x))$. In this way, learning $f$ is just a matter of time.
+
+    For PAC-learnability, one important thing is the learning algorithm $L$ must run in polynomial time. Because any algorithm runs in time beyond polynomial time is useless in a practical setting.
+
+  \item The learning algorithm must output a representation $r'$ as the hypothesis of $r$ from {\bf R}. That is, both $r$ and $r'$ must come from the same concept class.
+
+    This is a strong restriction. For a given concept class, there are more than one representation form. And the PAC-learnability of concept class may depend on the choice of representations. That is, PAC-learnability is in fact a property of classes of representations rather than of classes of concepts.
+
+    For example, if $\text {RP} \neq \text {NP}$, we can show that the representation class of 3-term DNF formulae is not efficiently PAC learnable. However, the representation class of 3-CNF formulae is efficiently PAC learnable. Both representation classes can represent the concept class of 3-term DNF. 
+    
+    Note that $\text {3-term DNF} \subsetneq \text {3-CNF}$. Also, the reduction from 3-term DNF to 3-CNF can be done in polynomial-time while the reduction from 3-CNF to 3-term DNF is NP-hard.
+
+    We will later talk about some variants of the definition of PAC-learning.
+
+  \item The PAC-learning model is a distribution independent model.
+    
+    The key part of why it is distribution independent is that the goal of our querying the oracle is to build a training set. How well can we learn about the target concept depends on how many different examples we get, not how many time we query the oracle.
+
+    In this way, distribution matters on how many time do we have to query the oracle in order to get enough different examples. However, most of the PAC-learning results are about an upper bound of the size of the training set. This makes sense because if the minimum size of the training set to learn the concept is beyond polynomial, then this concept class can never be PAC-learnable.
+
+    In a sense, the reason why this model is distribution free is that we mostly care about the time complexity of processing a training set to learn the target concept, not the time complexity of creating the training set.
+
 \end{enumerate}
 
-\subsection{Occam's razor and Occam algorithm}
+\subsection{Occam's Razor and Occam algorithm}
 
 % historical notes about Occam's Razor; Occam 
 
+The PAC learning model defines learning directly in terms of the predictive power of the hypothesis output by the learning algorithm. Now we will introduce a rather different definition of learning that makes no assumptions about how the instances in a labeled sample are chosen, Occam learning. Instead of measuring the predictive power of a hypothesis, Occam learning judges the hypothesis by how succinctly it explains the observed data. 
+
+\subsubsection{Occam learning}
+
+Occam's Razor is a principle given by theologian William of Occam on simplicity. This principle can be interpreted into the methodology of experimental science in the following form: given two explanations of the data, all other things being equal, the simpler explanation is preferable. Today, in the filed of machine learning, this principle is still very alive because the goal of machine learning is often to discover the simplest hypothesis that is consistent with the sample data. \\
+
+Occam learning is a result of applying the principle of Occam's Razor to computational learning theory. Here is the definition of Occam learning.
+
+\begin{definition}
+  Let $\alpha \ge 0$ and $0 \le \beta < 1$ be constants. $L$ is an {\bf $(\alpha, \beta)$-Occam algorithm for concept class $\calc$ using representation class \calh} if on input a sample $S$ of cardinality $m$ labeled according to $c \in \calc_n$, $L$ outputs a hypothesis $h \in \calh$ such that:
+
+\begin{itemize}
+  \item $h$ is consistent with $S$.
+  \item $\text {size}(h) \le (n \cdot \text {size}(c))^{\alpha}m^{\beta}$.
+\end{itemize}
+
+We say that $L$ is an {\bf efficient} $(\alpha, \beta)$-Occam algorithm if its running time is bounded by a polynomial in $n$, $m$ and size($c$).
+\end{definition}
+
+The crucial difference between PAC learning and Occam learning is that PAC learning, the random sample drawn by the learning algorithm is intended only as an aid for reaching an accurate model of some external process (the target concept and distribution), while in Occam learning we are concerned only with the fixed sample before us, and not any external process. As we can see, the goal of PAC learning and Occam learning are different. Later we will show that there is relationship between the two.
+
+\subsubsection{Occam algorithm}
+
+We now give an definition of Occam algorithm that uses the same notation as the previous definition of PAC-learning.
+
+\begin{definition} \label{definition:occ}
+A randomized polynomial-time (length-based) Occam algorithm for a class of representations ${\bf R} = (R, \Gamma, c, \Sigma)$ is a (possibly randomized) algorithm $O$ such that there exists a constant $\alpha < 1$ and a polynomial $p_O$, and such that for all $m, n, s \ge 1$ and $r \in R^{[s]}$, if $O$ is given as input any sample $M \subseteq S_{m,n,r}$ and $1 / \gamma$, and, with probability at least $1 - \gamma$, outputs a representation $r' \in R$ that is consistent with M, and such that $|r'| \le p_O(n, s, 1 / \gamma)m^{\alpha}$.
+\end{definition}
+
+One thing worth mentioning about the definition is that any Occam algorithm must run in polynomial-time. The Occam algorithm we talk about is the same as the efficient Occam algorithm in the previous definition. Polynomial running time will become a very important factor when talking about the relationship between PAC-learnability and Occam algorithm. \\
+
+\subsubsection{Occam's Razor}
+
+The next two theorem shows that any Occam algorithm is also a PAC learning algorithm.
+
+\begin{theorem} [Occam's Razor] \label{theorem:occ}
+Let $L$ be an efficient $(\alpha, \beta)$-Occam algorithm for $\calc$ using $\calh$. Let $\cald$ be the target distribution over the instance space $X$, let $c \in \calc_n$ be the target concept, and $0 < \epsilon, \delta \le 1$. Then there is a constant $a > 0$ such that if $L$ is given as input a random sample $S$ of $m$ examples drawn from EXAMPLE($c, \cald$), where $m$ satisfies
+
+\begin{equation*}
+m \ge a (\frac {1}{\epsilon} \log {\frac {1}{\delta}} + (\frac {(n \cdot \text {size}(c))^{\alpha}}{\epsilon})^{\frac {1}{1 - \beta}})
+\end{equation*}
+
+then with probability at least $1 - \delta$ the output $h$ of $L$ satisfies $\text {error}(h) \le \epsilon$. Moreover, $L$ runs in time polynomial in $n, \text {size}(c), 1/\epsilon, \text{ and } 1/\delta$.
+\end{theorem}
+
+\begin{theorem} [Occam's Razor, Cardinality Version] \label{theorem:occ-cad}
+Let $\calc$ be a concept class and $\calh$ a representation class. Let $L$ be an algorithm such that for any $n$ and any $c \in \calc_n$, if $L$ is given as input a sample $S$ of $m$ labeled examples of $c$, then L runs in time polynomial in $n, m \text{ and size}(c)$, and outputs an $h \in \calh_{n,m}$ that is consistent with $S$. Then there is a constant $b > 0$ such that for any $n$, any distribution $\cald$ over $X_n$, and any target concept $c \in \calc_n$, if $L$ is given as input a random sample from $\text{EXAMPLE}(c, \cald)$ of $m$ examples, where $|H_{n,m}|$ satisfies
+
+\begin{equation*}
+\log {|\calh_{n,m}|} \le b \epsilon m - \log {\frac {1}{\delta}}
+\end{equation*}
+
+(or equivalently, where $m$ satisfies $m \ge (1 / {b \epsilon}) (\log {|\calh_{n,m}| + \log {1 / \delta}})$) \\
+then L is guaranteed to find a hypothesis $h \in \calh_n$ that with probability at least $1 - \delta$ obeys $\text {error}(h) \le \epsilon$.
+\end{theorem}
+
+Note that in Theorem \ref{theorem:occ-cad}, $L$ is not necessarily an (efficient) Occam algorithm. In order to assert that $L$ is a $(\alpha, \beta)$-Occam algorithm, every hypothesis has bit length at most $(n \cdot \text {size}(c))^{\alpha}m^{\beta}$. Thus implying $|H_{n,m}| \le 2^{(n \cdot \text {size}(c))^{\alpha}m^{\beta}}$. So, if each hypothesis is not that succinct enough as to have bit length at most $(n \cdot \text {size}(c))^{\alpha}m^{\beta}$, then $L$ is not a $(\alpha, \beta)$-Occam algorithm. \\
+
+Also, in Theorem \ref{theorem:occ-cad}, $L$ is not necessarily an (efficient) PAC learning algorithm. In order for the theorem to apply, we must pick $m$ large enough so that $b \epsilon m$ dominates $\log {|H_{n,m}|}$. Moreover, since the running time of $L$ has a polynomial dependence on $m$, in order to assert that $L$ is an (efficient) PAC algorithm, we also have to bound $m$ by some polynomial in $n$, size($c$), $1 / \epsilon$ and $1 / \delta$. That is, $m$ must be large, but not too large to the extent that it is beyond polynomial in $n$, size($c$), $1 / \epsilon$ and $1 / \delta$. This really depends on the bound of $|H_{n,m}|$. \\
+
+Theorem \ref{theorem:occ} shows that if $L$ is an Occam algorithm, then it must be a PAC learning algorithm. This is because the requirement of Occam algorithm gives us a bound of $|H_{n,m}|$. Using this bound, we can bound $m$ then reach the requirement of PAC learning algorithm. \\
+
+To sum up, the existence of Occam algorithm is the sufficient condition of PAC-learnability.
 
 \subsection{PAC-learnability and Occam algorithm}
 
+From the previous section, we know that the existence of Occam algorithm is the sufficient condition of PAC-learnability. But it remains an open question that whether PAC-learnability is equivalent to the existence of Occam algorithms; i.e. whether the existence of an Occam algorithm is also a necessary condition for PAC-learnability. \\
 
+In this section, we will show that for many natural concept classes that the PAC-learnability of the class implies the existence of an Occam algorithm for the class. More generally, the property of closure under exception lists is defined, and it is shown that for any concept class with this property, PAC-learnability of the class is equivalent to the existence of an Occam algorithm for the class.
 
+\subsubsection{Exception lists}
+
+To let PAC-learnability of the class equivalent to the existence of an Occam algorithm of the class, the class of representations must be closed under the operation of taking the symmetric difference of a representation's underlying concept with a finite set of elements from the domain. Further, there must exists an efficient algorithm that, when given as input such a representation and finite set, outputs the representation of their symmetric difference.
+
+\begin{definition} \label{definition:close}
+A class ${\bf R} = (R, \Gamma, c, \Sigma)$ is \emph {polynomially closed under exception lists} if there exists an algorithm EXLIST and a polynomial $p_{EX}$ such that for all $n \ge 1$, on input of any $r \in R$ and any finite set $E \subset \Sigma^{[n]}$, EXLIST halts in time $p_{EX}(n, |r|, |E|)$ and outputs a representation $EXLIST(r, E) = r_E \in R$ such that $c(r_E) = c(r) \oplus E$. Note that the polynomial running time of EXLIST implies that $|r_E| \le p_{EX}(n, |r|, |E|)$. If in addition there exist polynomials $p_1$ and $p_2$ such that tighter bound $|r_E| \le p_1(n, |r|, \log |E|) + p_2(n, \log |r|, \log |E|)|E|$ is satisfied, then we say that ${\bf R}$ is \emph {strongly polynomially closed under exception lists}.
+\end{definition}
+
+Note that any representation class that is strongly polynomially closed is also polynomially closed. The definition of polynomial closure can be easily understood - it asserts that the representation $r_E$ that incorporates exceptions $E$ into the representation $r$ has size at most polynomially larger than the size of $r$ and the total size of $E$, the latter of which is at most $n|E|$. \\
+
+Intuitively, the algorithm EXLIST is trying to build the new concept $r_E$ based on  $r$ and $E$ in polynomial time. Note that the running time is polynomial also indicates that the size of the $r_E$ is polynomial. That is, $|r_E| \le p_{EX}(n, |r|, |E|)$. Now, we also want to check the membership in the set E. In this case, we have to build a concept $E$. And the concept $E$ will have a size of $p'(n, \log |r|, \log |E|)|E|$. To sum up, we get $|r_E| \le p_{EX}(n, |r|, \log |E|) + p'(n, \log |r|, \log |E|)|E|$.
+
+\subsubsection{Results for finite representation alphabets}
+
+We will show that, over the discrete domains, strong polynomial closure under exception lists guarantees that learnability is equivalent to the existence of Occam algorithms. We already know from Theorem \ref{theorem:occ} that the existence of Occam algorithm is a sufficient condition of PAC-learnability, so we will focus on strong polynomial closure guarantees that the existence of Occam algorithm is a necessary condition of PAC-learnability.
+
+\begin{theorem} \label {theorem:ex}
+If ${\bf R} = (R, \Gamma, c, \Sigma)$ is strongly polynomially closed under exception lists and ${\bf R}$ is PAC-learnable, then there exists a randomized polynomial-time (length-based) Occam algorithm for ${\bf R}$.
+\end{theorem}
+
+\begin{proof}
+Let $L$ be a learning algorithm for ${\bf R} = (R, \Gamma, c, \Sigma)$ with running time bounded by the polynomial $p_L$. Let EXLIST witness that {\bf R} is strongly polynomially closed under exception lists, with polynomials $p_1$ and $p_2$ as mentioned in Definition \ref{definition:close}. Without loss of generality, we assume that $p_1$ and $p_2$ are monotonically nondecreasing in each argument. Recall our convention that $\log x$ denotes $\max \{ \log_2 x, 1\}$. Let $a \ge 1$ be a sufficiently large constant so that for all $n, s, t \ge 1$, and for all $\epsilon$ and $\delta$ such that $0 < \epsilon, \delta < 1$,
+
+\begin{equation*}
+p_1(n, p_L(n, s, \frac {1}{\epsilon}, \frac {1}{\delta}), \log t) \le \frac {a}{2} (\frac{ns \log t}{\epsilon \delta})^a.
+\end{equation*}
+
+Let $b \ge 1$ be a sufficiently large constant so that for all $n, s, t \ge 1$, and for all $\epsilon$ and $\delta$ such that $0 < \epsilon, \delta < 1$,
+
+\begin{equation*}
+p_2(n, \log (p_L(n, s, \frac {1}{\epsilon}, \frac {1}{\delta})), \log t) \le \frac {b}{2} (\frac{ns \log (t / \epsilon)}{\delta})^b.
+\end{equation*}
+
+Let $c_{a,b}$ be a constant such that for all $x \ge 1$, $\log x \le c_{a,b} (x^{1/(2a + 2)(a + b)})$. \\
+
+We show that algorithm $O$ (Fig. \ref{fig:o}) is a randomized polynomial-time (length-based) Occam algorithm for {\bf R}, with associated polynomial
+
+\begin{equation*}
+p_O(n, s, \frac {1}{\gamma}) = (c_{a,b})^{a+b}ab(\frac{ns}{\gamma})^{a+b} \text {    and constant    } \alpha = \frac {2a + 1}{2a + 2}
+\end{equation*}
+
+\begin{figure} [!b]
+  \begin{framed}
+    \center {Algorithm $O$ (Inputs: $s, \gamma; M \in S_{m,n,r}$)}
+    \begin{enumerate}
+      \item Run the algorithm $L$, giving $L$ the input parameters $s$, $\epsilon = m^{-1 / (\alpha + 1)}$, and $\delta = \gamma$. Whenever $L$ asks for a randomly generated example, choose an element $x \in \text{strings}(M)$ according to the probability distribution $\cald(x) = 1/ m$ for each of the $m$ (without loss of generality, distinct) elements of $M$, and supply the example $(x, r(x))$ to $L$. Let $r'$ be the output of $L$.
+      \item Compute the exception list $E = \{ x \in \text {strings}(M): r'(x) \neq r(x) \}$. The list $E$ is computed by running EVAL$(r',x)$ for each $x \in \text {strings}(M)$.
+      \item Output $r'_E = \text {EXLIST}(r', E)$.
+    \end{enumerate}
+  \end{framed}
+  \caption{Occam algorithm derived from learning algorithm $L$ \label{fig:o}}
+\end{figure}
+
+Since $r'$ correctly classifies every $x \in \text {strings}(M) - E$ and incorrectly classifies every $x \in E$, $r'_E$ is consistent with $M$. Since {\bf R} is closed under exception lists, $r'_E \in R$. \\
+
+The time required for the first step of algorithm $O$ is bounded by the running time of $L$, which is no more than
+
+\begin{equation*}
+p_L(n, s, \frac {1}{\epsilon}, \frac {1}{\delta}) = p_L(n, s, m^{\frac {1}{a + 1}}, \frac {1}{\gamma}),
+\end{equation*}
+
+which is polynomial in $n, s, m,$ and $1 / \gamma$. Note that this immediately implies that $|r'|$ is bounded by the same polynomial. \\
+
+For each of the $m$ distinct elements $x$ in strings($M$), each of length at most $n$, the second step executes EVAL($r', x$), so the total running time for step 2 is bounded by $(km)p_{eval}(|r'|, n)$, where $k$ is some constant and $p_{eval}$ is the polynomial that bounds the running time of algorithm EVAL. Since $|r'|$ is at most $p_L(n, s, m^{1/(a+1)}, 1 / \gamma)$, the running time for the second step is polynomial in $n, s, m$, and $1 / \gamma$. \\
+
+Since EXLIST is a polynomial-time algorithm, the time taken by the third step is a polynomial function of $|r'|$  and the length of the representation of $E$. Again, $|r'|$ is polynomial in $n, s, m$, and $1 / \gamma$, and the length of the representation of $E$ is bounded by some constant times $nm$, since $|E| \le m$ and each element $x \in E$ has size at most $n$. We conclude that $O$ is a polynomial-time algorithm. \\
+
+To complete the proof, it remains to be shown that with probability at least $1 - \gamma$, $|r'_E| \le p_O(n, s, 1 / \gamma)m^{\alpha}$. Since {\bf R} is strongly polynomially closed under exception lists,
+
+\begin{eqnarray*}
+|r'_E|
+&\le& p_1(n, |r|, \log |E|) + p_2(n, \log |r|, \log |E|)|E| \\
+&\le& p_1(n, p_L(n, s, \frac {1}{\epsilon}, \frac {1}{\gamma}), \log |E|) + p_2(n, \log (p_L(n, s, \frac {1}{\epsilon}, \frac {1}{\gamma})), \log |E|)|E| \\
+&\le& \frac {a}{2} (\frac{ns \log |E|}{\epsilon \gamma})^a + \frac {b}{2} (\frac{ns \log (|E| / \epsilon)}{\gamma})^b|E|
+\end{eqnarray*}
+
+Since $L$ is a polynomial-time learning algorithm for {\bf R}, with probability at least $1 - \delta$, $D(r \oplus r') \le \epsilon$. The probability distribution $\cald$ is uniform over the elements in strings($M$); thus, with probability at least $1 - \delta$, there are no more than $\epsilon m$ elements $x \in \text {strings}(M)$ such that $x \in r \oplus r'$. Since $\delta = \gamma$, with probability at least $1 - \delta$,
+
+\begin{eqnarray*}
+|E| \le \epsilon m = m^{- \frac{1}{a+1}}m = m^{\frac {a}{a+1}}.
+\end{eqnarray*}
+
+Substituting the bound on $|E|$ of the last inequality into the previous inequality, and substituting $m^{-1/(a+1)}$ for $\epsilon$, it follows that with probability at least $1 - \gamma$,
+
+\begin{eqnarray*}
+|r'_E| 
+&\le& \frac {a}{2} (\frac{ns \log m^{\frac {a}{a+1}}}{\gamma})^am^{\frac {a}{a+1}} + \frac {b}{2} (\frac{ns \log m}{\gamma})^bm^{\frac {a}{a+1}} \\
+&=& \frac {a}{2} (\frac{ns}{\gamma})^a (\frac {a}{a+1} \log m)^a m^{\frac {a}{a+1}} + \frac {b}{2} (\frac{ns}{\gamma})^b (\log m)^b m^{\frac {a}{a+1}} \\
+&\le& ab (\frac{ns}{\gamma})^{a+b} (\log m)^{a+b} m^{\frac {a}{a+1}},
+\end{eqnarray*}
+
+and by choice of $c_{a,b}$,
+
+\begin{eqnarray*}
+|r'_E|
+&\le& ab (\frac{ns}{\gamma})^{a+b} (c_{a,b} (m^{\frac {1}{(2a+2)(a+b)}}))^{a+b} m^{\frac {a}{a+1}} \\
+&\le& (c_{a,b})^{a+b} ab (\frac{ns}{\gamma})^{a+b} m^{\frac {1}{2a+2}}  m^{\frac {a}{a+1}} \\
+&\le& p_O(n, s, \frac {1}{\gamma})m^{\alpha},
+\end{eqnarray*}
+
+completing the proof of Theorem \ref{theorem:ex}
+\end{proof}
+
+\begin{corollary} \label {corollary:ex}
+Let $\Gamma$ be a finite alphabet. If ${\bf R} = (R, \Gamma, c, \Sigma)$ is strongly polynomially closed under exception lists, then ${\bf R}$ is PAC-learnable if and only if there exists a randomized polynomial-time (length-based) Occam algorithm for ${\bf R}$.
+\end{corollary}
+
+Corollary \ref{corollary:ex} follows immediately from Theorem \ref{theorem:occ} and Theorem \ref{theorem:ex}.
 
 \section{Part II: PAC-learning and data compression}
 
