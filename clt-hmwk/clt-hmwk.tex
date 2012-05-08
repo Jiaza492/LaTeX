@@ -46,30 +46,48 @@ tree has depth $\log s$ with $2^{\log s} = s$ leaves. So the parity
 function on $\log s$ variables can be computed by a decision tree of
 size $s$. \\
 
+b) We know from class that polynomial threshold function is an
+universal representation scheme. So any Boolean function with $k$
+variables can be computed by a PTF with degree at most $k$. As a
+result, the parity function can also be represented by a PTF with
+degree at most $k$. \\
 
-b) Observed from $PAR(x_1,...,x_k) = x_1 + ... + x_k \text { mod } 2$,
+Observed from $PAR(x_1,...,x_k) = x_1 + ... + x_k \text { mod } 2$,
 we can see that one important property of parity function is that the
-value of a parity function depends only on the sum of all k
-variables. So $PAR(x_1,  ..., x_k)$ can be computed by an univatiate
-polynomial threshold function $f(x_1 + ... + x_k)$. Define 
+value of a parity function depends only on the sum of all $k$
+variables. In other words, $PAR(x_1,  ..., x_k)$ is invariant under
+permutation of its input. That is, $PAR(x_1,  ..., x_k)$ is a
+symmetric polynomial. \\
+
+One property of symmetric polynomial is that \emph {for any symmetric
+  polynomial $p$ of degree $d$, there exists a polynomial $q$ of
+  degree $d$ such that}
 
 \begin{equation*}
-f(x_1 + ... + x_k) = \sign {(p(x_1 + ... + x_k))}
+p(x_1,...,x_n) = q(x_1 + ... + x_n)
 \end{equation*}
 
-where $p(x_1 + ... + x_k)$ is a degree-$d$ univariate polynomials. Note
-that for all $x_1, ..., x_k \in \{0,1\}^k$, $x_1 + ... + x_k \in \{0,
-1, ..., k\}$. Since $p(x_1 + ... + x_k)$ compute the parity, we have 
+Suppose $PAR(x_1,  ..., x_k)$ can be computed by a symmetric
+polynomial threshold function $p(x_1,  ..., x_k)$ of degree $d$. Then
+$PAR(x_1,  ..., x_k)$ can also be computed by an univariate polynomial
+threshold function $q(x_1 + ... + x_k)$ of degree $d$. \\
+
+Note that for all $x_1, ..., x_k \in \{0,1\}^k$, $x_1 + ... + x_k \in
+\{0, 1, ..., k\}$. Since $q(x_1 + ... + x_k)$ compute the parity, we
+have
 
 \begin{eqnarray*}
-p(0) < 0 \\
-p(1) > 0 \\
-p(2) < 0 \\
-p(3) > 0 \\
+q(0) < 0 \\
+q(1) > 0 \\
+q(2) < 0 \\
+q(3) > 0 \\
 \vdots \\
 \end{eqnarray*}
 
-So, in order to fit the $k+1$ input values, function $p$ must have at
-least $k$ roots. As a result, we get $d \ge k$.
+So, in order to fit the $k+1$ input values, function $q$ must have at
+least $k$ roots. As a result, we get $d \ge k$. \\
+
+To sum up, any PTF for the parity function on $k$ variables must have
+degree at least $k$.
 
 \end{document} 
