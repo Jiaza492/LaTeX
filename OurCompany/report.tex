@@ -1,0 +1,123 @@
+\documentclass[12pt]{article}
+
+\parindent=.25in
+\setlength{\oddsidemargin}{0pt}
+\setlength{\textwidth}{440pt}
+\setlength{\topmargin}{0in}
+
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage[dvips]{graphicx}
+\usepackage{verbatim}
+\usepackage{appendix}
+
+
+% Title Page
+\title{OurCompany Case Study Solution}
+\author{Mengqi Zong}
+
+\begin{document}
+\maketitle
+
+% No Indentation
+\setlength{\parindent}{0in}
+
+{\bf 1. Which Campaign was the most profitable?} \\
+
+First, we should talk about how to define ``most profitable''. There are three ways to define ``most profitable'':
+
+\begin{enumerate}
+\item Profit
+
+	\begin{equation*}
+		\text{Profit} = \text{Adv Cost} - \text{Pub Earning} - \text{Data Segment Cost}
+	\end{equation*}
+
+	Given the data, which campaign generates the greatest profit for OurCompany.
+
+\item Profit/Impressions
+
+	\begin{eqnarray*}
+		\frac {\text{Profit}}{\text{Impressions}}
+		&=& \frac {\text{Adv Cost} - \text{Pub Earning} - \text{Data Segment Cost}}{\text{Impressions}} \\
+		&=& \frac {\text{Clicks} \cdot \text{Price}_{\text{adv}} - \text{Clicks} \cdot \text{Price}_{\text{pub}}  - \text{Impressions} \cdot \text{Price}_{\text{data}}}{\text{Impressions}} \\
+		&=& \text{CTR} \cdot \text{Price}_{\text{adv}} - \text{CTR} \cdot \text{Price}_{\text{pub}} - \text{Price}_{\text{data}} \\
+		&=& \text{CTR} \cdot (\text{Price}_{\text{adv}} - \text{Price}_{\text{pub}}) - \text{Price}_{\text{data}}
+	\end{eqnarray*}
+
+	When OurCompany delivers the same amount of impressions for each campaign, which campaign generates the greatest profit for OurCompany.
+	
+\item ROI
+
+	\begin{eqnarray*}
+		\text{ROI} &=& \frac {\text{Profit}} {\text{Cost}} \\
+				   &=& \frac {\text{Profit}} {\text{Pub Earning} + \text{Data Segment Cost}}
+	\end{eqnarray*}
+	
+	When OurCompany pays the same amount of money for each campaign, which campaign generates the greatest profit for OurCompany.
+\end{enumerate}
+
+Here are the resuls using three different criteria:
+
+\begin{itemize}
+\item Profit
+
+	Campaign3. The Profit is \$21500.58.
+\item Profit/Impression
+
+	Campaign3. The Profit/Impression is 0.000844578.
+\item ROI
+
+	Campaign3. The ROI is 117.93\%.
+\end{itemize} 
+
+{\bf 2. Which publisher was the most profitable?} \\
+
+Similar to Question 1, we will give results using three different criteria:
+
+\begin{itemize}
+\item Profit
+
+	PubID 737367. The Profit is \$26723.12.
+\item Profit/Impression
+
+	PubID 737367. The Profit/Impression is 0.003066583.
+\item ROI
+
+	PubID 11911998. The ROI is 322.92\%.
+\end{itemize} 
+
+{\bf 3. What is the average CTR\% for Campaign1?} \\
+
+0.1519153\%. \\
+
+{\bf 4. On the publisher by publisher basis, which segments showed lift and performance over RON impressions. Would you say that segments actually cause differentiation in performance? Use CTR\% as the primary performance indicator.} \\
+
+The CTR\% for each ``Pub ID / Segment'' combination is shown in spreadsheet ``P4\_CTR'' of file ``dataset.xlsx''. Note that ``INV'' means there is no such ``Pub ID / Segment'' combination in the original data. \\
+
+We compared the CTR\% for RON with that of other segments on the publisher by publisher basis. There are 933 of 1580 segments showed lift and performance over RON impressions. \\
+
+If segments don't cause differentiation in performance, then the probability of one segment showed lift and performance over RON should be 0.5. In this case, we can use proportional test to test this hypothesis. Here is the result from R:
+
+\begin{verbatim}
+        1-sample proportions test with continuity correction
+
+data:  933 out of 1589, null probability 0.5 
+X-squared = 47.9396, df = 1, p-value = 4.396e-12
+alternative hypothesis: true p is not equal to 0.5 
+95 percent confidence interval:
+ 0.5624554 0.6114422 
+sample estimates:
+        p 
+0.5871617 
+\end{verbatim}
+
+The proportional test showed that the probability of segments showed lift and performance over RON is not 0.5 (p-value = $4.396e-12$). And the 95 percent confidence interval for the probability of segements showed lift and performance over RON is $[0.5624554, 0.6114422]$. \\
+
+That is, segments actually cause differentiation in performance. And segments tend to have a better performance over RON impressions. \\
+
+{\bf 5.	Is there a single data segment that is the most effective across publishers based on CTR\%? Is it effective for all publishers?}
+
+
+
+\end{document}
