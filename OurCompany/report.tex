@@ -12,7 +12,7 @@
 \usepackage{appendix}
 
 % Title Page
-\title{OurCompany Case Study Solution}
+\title{OurCompany Case Study Report}
 \author{Mengqi Zong}
 
 \begin{document}
@@ -23,7 +23,7 @@
 
 {\bf 1. Which Campaign was the most profitable?} \\
 
-First, we give three ways to define ``most profitable'':
+We first give three ways to measure ``most profitable'':
 
 \begin{enumerate}
 \item Profit
@@ -32,19 +32,21 @@ First, we give three ways to define ``most profitable'':
 		\text{Profit} = \text{Adv Cost} - \text{Pub Earning} - \text{Data Segment Cost}
 	\end{equation*}
 
-	Given the data, which campaign generates the greatest profit for OurCompany.
+	Which campaign generates the greatest profit for OurCompany.
 
-\item Profit/Impressions
+\item Profit/Impression
 
 	\begin{eqnarray*}
 		\frac {\text{Profit}}{\text{Impressions}}
-		&=& \frac {\text{Adv Cost} - \text{Pub Earning} - \text{Data Segment Cost}}{\text{Impressions}} \\
-		&=& \frac {\text{Clicks} \cdot \text{Price}_{\text{adv}} - \text{Clicks} \cdot \text{Price}_{\text{pub}}  - \text{Impressions} \cdot \text{Price}_{\text{data}}}{\text{Impressions}} \\
-		&=& \text{CTR} \cdot \text{Price}_{\text{adv}} - \text{CTR} \cdot \text{Price}_{\text{pub}} - \text{Price}_{\text{data}} \\
-		&=& \text{CTR} \cdot (\text{Price}_{\text{adv}} - \text{Price}_{\text{pub}}) - \text{Price}_{\text{data}}
+        &=& \frac {\text{Adv Cost} - \text{Pub Earning} - \text{Data Segment Cost}}{\text{Impressions}} \\
+        &=& \frac {\text{Clicks} \cdot \text{Price}_{\text{adv}} - \text{Clicks} \cdot \text{Price}_{\text{pub}}  - \text{Impressions} \cdot \text{Price}_{\text{data}}}{\text{Impressions}} \\
+        &=& \text{CTR} \cdot \text{Price}_{\text{adv}} - \text{CTR} \cdot \text{Price}_{\text{pub}} - \text{Price}_{\text{data}} \\
+        &=& \text{CTR} \cdot (\text{Price}_{\text{adv}} - \text{Price}_{\text{pub}}) - \text{Price}_{\text{data}}
 	\end{eqnarray*}
 
-	When OurCompany delivers the same amount of impressions for each campaign, which campaign generates the greatest profit for OurCompany.
+    When OurCompany delivers the same amount of impressions for each campaign, which campaign generates the greatest profit for OurCompany.
+
+    Note that it is reasonable to assume the traffic of a web site in a certain period of time is fixed. In this case, the number of impressions for a web site is fixed. So, given the publishers, the total number of impressions is fixed. That's why we want to consider the "Profit/Impression" ratio.
 	
 \item ROI
 
@@ -53,7 +55,7 @@ First, we give three ways to define ``most profitable'':
 				   &=& \frac {\text{Profit}} {\text{Pub Earning} + \text{Data Segment Cost}}
 	\end{eqnarray*}
 	
-	When OurCompany pays the same amount of money for each campaign, which campaign generates the greatest profit for OurCompany.
+    When OurCompany pays the same amount of money for each campaign, which campaign generates the greatest profit for OurCompany.
 \end{enumerate}
 
 Here are the results using three different criteria:
@@ -92,11 +94,11 @@ The average CTR\% for Campaign1 is 0.1519153\%. \\
 
 {\bf 4. On the publisher by publisher basis, which segments showed lift and performance over RON impressions. Would you say that segments actually cause differentiation in performance? Use CTR\% as the primary performance indicator.} \\
 
-The CTR\% for each ``Pub ID / Segment'' combination is shown in spreadsheet ``P4\_CTR'' of file ``dataset.xlsx''. Note that ``INV'' means there is no such ``Pub ID / Segment'' combination in the original data. \\
+We compared the CTR\% of "RON" with the CTR\% of other segments on the publisher by publisher basis. The result is shown in spreadsheet "P4\_CTR" of file"dataset.xlsx". \\
 
-We compared the CTR\% of RON with that of other segments on the publisher by publisher basis. There are 782 of 1565 segments showed lift and performance over RON impressions, while 783 of 1565 segments didn't. \\
+There are 782 of 1565 segments showed lift and performance over "RON" impressions, while 783 of 1565 segments didn't. \\
 
-If segments don't cause differentiation in performance, then the probability of one segment showed lift and performance over RON should be 0.5. In this case, we can use proportional test to test this hypothesis. Here is the test result from R:
+If segments don't cause differentiation in performance, then the probability of one segment showed lift and performance over "RON" should be $0.5$. In this case, we can use proportional test to test this hypothesis. Here is the test result from R:
 
 \begin{verbatim}
         1-sample proportions test with continuity correction
@@ -111,17 +113,50 @@ sample estimates:
 0.4996805
 \end{verbatim}
 
-The proportional test showed that the probability of segments showed lift and performance over RON is 0.5 (p-value = 1). \\
+The proportional test showed that the probability of segments showed lift and performance over "RON" is $0.5$ ($\text{p-value} = 1$). \\
 
-In conclusion, segments actually don't cause differentiation in performance. \\
+That is, if we treat all segments as a whole, then segments actually don't cause differentiation in performance compared with "RON". \\
+
+However, the previous method may be wrong. For example, if one segment always showed lift over "RON" while the other segment always showed down over "RON". In this case, if we treat the two segments as a whole, then the answer will be segments cause no difference in performance, while apparently it is not. \\
+
+So, we need to compare each segment with "RON" separately. The result is in Table~\ref{tab:p4}. \\
+
+\begin{table}[ht!]
+  \begin{center}
+    \begin{tabular}{|l|c|c|c|r|c|}
+      \hline
+      Segment        & Num(Lift) & Num(Down) & Num(Total) & p-value   & Different?    \\ \hline
+      General        &   783     &   782     &   1565     & 1.00      &  No           \\ \hline
+      Auto Parts     &   76      &   61      &   137      & 0.2137    &  No           \\ \hline
+      Bags           &   0       &   127     &   127      & 2.2e-16   &  $\downarrow$ \\ \hline
+      Books \& Mags  &   0       &   120     &   120      & 2.2e-16   &  $\downarrow$ \\ \hline
+      Cameras        &   64      &   65      &   129      & 1.00      &  No           \\ \hline
+      Cell Phones    &   109     &   30      &   139      & 3.694e-11 &  $\uparrow$   \\ \hline
+      Clothing       &   103     &   37      &   140      & 3.94e-08  &  $\uparrow$   \\ \hline
+      Computers      &   71      &   59      &   130      & 0.3347    &  No           \\ \hline
+      Consumers      &   55      &   66      &   121      & 0.3633    &  No           \\ \hline
+      DVD \& Movies  &   76      &   55      &   131      & 0.08057   &  No           \\ \hline
+      Home \& Garden &   83      &   50      &   133      & 0.005524  &  $\uparrow$   \\ \hline
+      Shopping       &   76      &   50      &   126      & 0.02594   &  $\uparrow$   \\ \hline
+      Video Games    &   70      &   62      &   132      & 0.5423    &  No           \\ \hline
+    \end{tabular}
+  \end{center}
+  \caption{Segments performance evaluation \label{tab:p4}}
+\end{table}
+
+From Table~\ref{tab:p4}, we can see that some of the segments definitely make a differentiation in performance: On one hand, segment "Bags" and "Book \& Mags" never showed lift over "RON". On the other hand, segment "Cell Phones" and "Clothing" showed lift over "RON" for the most of publishers. \\
+
+In conclusion, if we treat all segments as a whole, then segments don't show differentiation in performance. However, if consider each segment separately, some of the segments showed difference in performance while others didn't. \\
+
+Particularly, segment "Cell Phones", "Clothing", "Home \& Garden" and "Shopping" tend to show lift and performance over "RON". Segment "Bags" and "Shopping" tend to show tend to be less effective than "RON". And others don't show differentiation in performance. \\
 
 {\bf 5.	Is there a single data segment that is the most effective across publishers based on CTR\%? Is it effective for all publishers?} \\
 
 The most efficient segment is "Cell Phone", but it is not effective for all publishers. \\
 
-We first calculated the average CTR\% for each data segment. The segment which has the greatest average CTR\% is ``Cell Phones''. Its average CTR\% is 2.259422\%. \\
+We first calculated the average CTR\% for each data segment. The segment has the greatest average CTR\% is ``Cell Phones''. Its average CTR\% is 2.259422\%. \\
 
-We also counted the number of times that each segment is in the top 3 greatest CTR\% segments for each publisher. It turns out that "Cell Phone" has 33 of 107 times in the top 3 for all publishers. And 33 is the highest count among data segments. \\
+We also counted the number of times that each segment is the top 3 greatest CTR\% segments for a single publisher. It turns out that "Cell Phone" has 33 of 107 times of being top 3 CTR\%. And 33 is the highest count among all data segments. \\
 
 In conclusion, the most efficient segment is "Cell Phone", but it is not effective for all publishers. \\
 
@@ -129,9 +164,9 @@ In conclusion, the most efficient segment is "Cell Phone", but it is not effecti
 
 The CTR\% by publisher is not normally distributed in the data set. \\
 
-The CTR\% for all publishers are listed in spreadsheet "P2\&P6". The QQ plot for all the 164 CTR\% is shown in Fig~\ref{fig:qq}. As we can see, the click through rate metric by publisher is not normally distributed in the data set. \\
+The CTR\% for all publishers are listed in spreadsheet "P2\&P6". The Q-Q plot is shown in Fig~\ref{fig:qq}. As we can see, the click through rate metric by publisher is not normally distributed in the data set. \\
 
-\begin{figure}[ht!]
+\begin{figure}[tbh!]
   \centering
   \includegraphics[width=0.8\textwidth]{qq}
   \caption{Q-Q plot for CTR\% \label{fig:qq}}
@@ -148,7 +183,37 @@ W = 0.652, p-value < 2.2e-16
 
 As we can see, the data is not normally distributed ($p-value < 0.05$). \\
 
-{\bf 7. What combination of campaign/ publisher would result in the most profitable outcome? How much performance is lost on campaign level? Constraint here is to deliver the same number of impressions for each campaign.}
+{\bf 7. What combination of campaign / publisher would result in the most profitable outcome? How much performance is lost on campaign level? Constraint here is to deliver the same number of impressions for each campaign.} \\
+
+The result is shown in is shown in Table~\ref{tab:p7}. \\
+
+\begin{table}[ht!]
+  \begin{center}
+    \begin{tabular}{|l|c|c|c|c|c|}
+      \hline
+                        & Campaign1  & Campaign2  & Campaign3  & Campaign4  & Campaign5  \\ \hline
+      Pub ID            & 656597     & 102102105  & 737367     & 575752     & 494948     \\ \hline
+      Profit/Impression & \$0.023137 & \$0.000584 & \$0.004376 & \$0.001874 & \$0.000008 \\ \hline
+      Combination CTR\% & 5.263158\% & 0.360068\% & 1.179111\% & 0.512821\% & 0.064870\% \\ \hline
+      Campaign CTR\%    & 0.151915\% & 0.060012\% & 0.334134\% & 0.121817\% & 0.062189\% \\ \hline
+      Campaign Lvl Loss & 5.111243\% & 0.300056\% & 0.844977\% & 0.391004\% & 0.002681\% \\ \hline
+    \end{tabular}
+  \end{center}
+  \caption{The most profitable combination \label{tab:p7}}
+\end{table}
+
+First, we calculated the "Profit / Impression" for each "campaign / publisher" combination. The result is listed in spreadsheet "P7". Then we find out the most profitable combination for each campaign, as shown in Table~\ref{tab:p7}. \\
+
+For Campaign level performance loss, here is the formula:
+
+\begin{eqnarray*}
+\text{Campaign Level Loss} = \text{Combination CTR\%} - \text{Campaign CTR\%}
+\end{eqnarray*}
+
+That is, if we put all the advertises of each campaign to the publisher which generates the greatest profit to that campaign, how much performance we will gain. In other words, how much performance we have lost on campaign level. \\
+
+{\bf 8. While OurCompany's goal is to maximize profit, advertisers' monitor performance and ROI. Having multiple goals in mind, how would you allocate campaigns across publishers? Constraint here is to deliver the same number of impressions for each campaign.} \\
+
 
 
 
