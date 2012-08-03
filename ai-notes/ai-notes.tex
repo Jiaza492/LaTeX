@@ -1,0 +1,243 @@
+\documentclass[12pt]{article}
+\parindent=.25in
+
+\setlength{\oddsidemargin}{0pt}
+\setlength{\textwidth}{440pt}
+\setlength{\topmargin}{0in}
+
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+
+\title{Artificial Intelligence Note}
+\author{Mengqi Zong $<mz2326@columbia.edu>$}
+
+\begin{document}
+
+\maketitle
+
+\setlength{\parindent}{0in}
+
+\section{Chapter 2 Intelligent agents}
+
+1. An {\bf agent} is anything that can be viewed as perceiving environment throught sensors and acting upon that evnironment throught actuators. \\
+
+2. Property of task environments
+
+\begin{itemize}
+  \item Fully observable vs. partially observable
+  \item Signle angent vs. multiagent
+  \item Deterministic vs. stochastic
+  \item Episodic vs. sequential
+  \item Static vs. dynamic
+  \item Discrete vs. continuous
+  \item Known vs. unknown
+\end{itemize}
+
+\section{Chapter 3 Solving Problems by Searching}
+
+1. Uniformed search strategies
+
+\begin{enumerate}
+  \item Breadth-first search
+  \item Uniform-cost search ($g(n)$)
+  \item Depth-first search
+  \item Depth-limited search
+  \item Iterative deepening depth-first search
+  \item Bidirectional search
+\end{enumerate}
+
+2. Infromed (heuristic) search strategies
+
+\begin{enumerate}
+  \item Greedy best-first search ($h(n)$)
+  \item $A^*$ search \\
+    Admissibility: An admissible heuristic is one that never overestimates the cost to reach the goal. \\
+    Consistency (monotonicity): $h(n) \le c(n,a,n') + h(n')$. \\
+    * Every consistent heuristic is also admissible.
+  \item Iterative-deepening $A^*$
+  \item Recursive best-first search (RBFS) \\
+    backed-up value: the best $f$-value of its children
+\end{enumerate}
+
+\section{Chapter 4 Beyond Classical Search}
+
+1. Local Search Algorithms \\
+
+If the path to the goal does not matter... \\
+
+Local search algorithms operate using a single current node (rather than multiple paths) and generally move only to neighbors of that node.
+
+\begin{enumerate} 
+  \item Hill-climbing (greedy local search) \\
+    Stuck reasons: local maxima, ridges, plateaux. \\
+    Alternatives: stochastic hill climbing, first-choice hill climbing, random restart hill climbing.
+  \item Simulated annealing
+  \item Local beam search \\
+    In a local beam search, useful information is passed among the parallel search threads. \\
+    Alternatives: stochastic beam search
+  \item Genetic algorithms
+\end{enumerate}
+
+2. Searching with nondeterministic actions \\
+
+AND-OR search trees \\
+
+OR nodes: In a deterministic environment, the only branching is introduced by the agent's own choices in each state. \\
+AND nodes: In a nondeterministic environment, branching is also introduced by the environment's choice of outcome for each action. \\
+
+\section{Chapter 5 Adverserial Search}
+
+1. Zero-sum (constant-sum) games: a game where the total payoff to all players is the same for every instance of the game. \\
+
+2. The minimax algorithm \\
+
+The minimax algorithm performs a complete depth-first exploration of the game tree. \\
+
+3. Alpha-beta pruning
+
+$\alpha =$ the value of the best (i.e., highest-value) choice we have found so far at any choice point along the path for MAX. \\
+$\beta =$ the value of the best (i.e., lowest-value) choice we have found so far at any choice point along the path for MIN. \\
+
+4. Imperfect real-time decisions: cut off search
+
+\section{Chapter 7 Logical Agents}
+
+1. A knowledge base is a set of sentences. Each sentence is expressed in a language called a knowledge representation language and represents some assertion about the world. A knowledge base, KB, may initially contain some background knowledge. \\
+
+2. Entailment: a sentence follows logically from another sentence.
+
+\begin{equation*}
+  \alpha \models \beta \text{ if and only if } M(\alpha) \subseteq M(\beta)
+\end{equation*}
+
+if $\alpha \models \beta$, then $\alpha$ is a stronger assertion than $\beta$: it rules out more possible worlds. \\
+
+Sound: an inference algorithm that derives only entailed sentences is called sound or truth-preserving. \\
+
+Complete: an inference algorithm is complete if it can derive any sentence that is entailed. \\
+
+3. Deduction theorem
+
+\begin{equation*}
+  \alpha \models \beta \text{ if and only if the sentence } (\alpha \Rightarrow \beta) \text{ is valid.}
+\end{equation*}
+
+\begin{equation*}
+  \alpha \models \beta \text{ if and only if the sentence } (\alpha \lor \lnot \beta) \text{ is unsatisfiable.}
+\end{equation*}
+
+4. Modus Ponens
+
+\begin{equation*}
+  \frac {\alpha \Rightarrow \beta, \text{   } \alpha}{\beta}
+\end{equation*}
+
+5. And-Elimination
+
+\begin{equation*}
+  \frac {\alpha \land \beta}{\alpha} 
+\end{equation*}
+
+6. Unit resolution inference rule
+
+\begin{equation*}
+  \frac {\ell_1 \lor \cdots \lor \ell_k, \text{   } m}
+        {\ell_1 \lor \cdots \lor \ell_{i-1} \lor \ell_{i+1} \lor \cdots \lor \ell_k}
+\end{equation*}
+
+where each $\ell$ is a literal and $\ell_i$ and $m$ are complementary literals. \\
+
+7. Conjunctive normal form \\
+
+(Disjunct) conjunct (Disjunct) \\
+
+8. Ground resolution theorem \\
+
+If a set of clauses is unsatisfiable, then the resolution closure of those clauses contains the empty clause. \\
+
+9. Horn clause and definite clauses \\
+
+Definite clauses: a disjunction of literals of which exactly one is positive. For example, the clause $(\lnot L_{1,1} \lor \lnot Breeze \lor B_{1,1})$. \\
+
+Horn clause: a disjunction of literals of which at most one is positive. \\
+
+Horn clauses are closed under resolution: if you resolve two Horn clauses, you get back a Horn clause. \\
+
+\section{Chapter 8 First-order logic}
+
+1. Terms: A term is a logical expression that refers to an object. For example,
+
+\begin{equation*}
+  LeftLeg(John)
+\end{equation*}
+
+A term with no variables is called a ground term. \\
+
+2. Atomic sentences: an atomic sentence is formed from a predicate symbol optionally followed by a parenthesized list of terms, such as
+
+\begin{equation*}
+  Brother(Richard, John)
+\end{equation*}
+
+3. Complex sentences \\
+
+We can use logical connectives to construct more complex sentences, with the same syntax and semantics as in proportional calculus. \\
+
+4. Quantifiers \\
+
+Uuniversial quantification ($\forall$) \\
+Common mistake: use conjunction instead of implication with $\forall$ will lead to an overly strong statement.  \\
+
+Existential quantification ($\exists$) \\
+Common mistake: use implication instead of conjunction with $\exists$ will lead to a very weak statement. \\
+
+5. Equality
+
+\begin{equation*}
+  Father(John) = Henry
+\end{equation*}
+
+6. Universal instantation (UI) \\
+
+Every instantiation of a univerally quantified sentence is entailed by it:
+
+\begin{equation*}
+  \frac {\forall v \alpha}{Subst(\{v/g\}, \alpha)}
+\end{equation*}
+
+for any variable $v$ and ground term $g$. \\
+
+7. Exisential instantation (EI) \\
+
+For any sentence $\alpha$, variable $v$, and constant symbol $k$ that does not appear elsewhere in the knowledge base:
+
+\begin{equation*}
+  \frac {\exists v \alpha}{Subst(\{v/k\}, \alpha)}
+\end{equation*}
+
+E.g., $\exists x Crown(x) \land OnHead(x, John)$ yields:
+
+\begin{equation*}
+  Crown(C_1) \land OnHead(C_1, John)
+\end{equation*}
+
+provided $C_1$ is a new constant symbol, called a Skolem constant.
+
+\section{Quantifying uncertainty}
+
+1. Trying to use logic to cope with a domain like medical diagnosis fails for three main reasons: laziness, theoretical ignorance, practical ignorance. \\
+
+2. Decision theory = probability theory + utility theory \\
+
+3. Maximum expected utility (MEU): An agent is rational if and only if it chooses the action that yields the highest expected utility, averaged over all the possible outcomes of the action. \\
+
+4. Sample space: the set of all possible worlds (possible worlds are mutally exclusive). \\
+
+5.
+
+\begin{equation}
+  P(X|e) = \alpha P(X|e) = \alpha \sum_yP(X,e,y)
+\end{equation}
+
+\end{document}
