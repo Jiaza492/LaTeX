@@ -18,7 +18,7 @@
 
 \setlength{\parindent}{0in}
 
-\section{Chapter 2 Intelligent agents}
+\section{Intelligent Agents}
 
 1. An {\bf agent} is anything that can be viewed as perceiving environment throught sensors and acting upon that evnironment throught actuators. \\
 
@@ -34,7 +34,7 @@
   \item Known vs. unknown
 \end{itemize}
 
-\section{Chapter 3 Solving Problems by Searching}
+\section{Solving Problems by Searching}
 
 1. Uniformed search strategies
 
@@ -60,7 +60,7 @@
     backed-up value: the best $f$-value of its children
 \end{enumerate}
 
-\section{Chapter 4 Beyond Classical Search}
+\section{Beyond Classical Search}
 
 1. Local Search Algorithms \\
 
@@ -86,7 +86,7 @@ AND-OR search trees \\
 OR nodes: In a deterministic environment, the only branching is introduced by the agent's own choices in each state. \\
 AND nodes: In a nondeterministic environment, branching is also introduced by the environment's choice of outcome for each action. \\
 
-\section{Chapter 5 Adverserial Search}
+\section{Adverserial Search}
 
 1. Zero-sum (constant-sum) games: a game where the total payoff to all players is the same for every instance of the game. \\
 
@@ -94,14 +94,14 @@ AND nodes: In a nondeterministic environment, branching is also introduced by th
 
 The minimax algorithm performs a complete depth-first exploration of the game tree. \\
 
-3. Alpha-beta pruning
+3. Alpha-beta pruning \\
 
 $\alpha =$ the value of the best (i.e., highest-value) choice we have found so far at any choice point along the path for MAX. \\
 $\beta =$ the value of the best (i.e., lowest-value) choice we have found so far at any choice point along the path for MIN. \\
 
-4. Imperfect real-time decisions: cut off search
+4. Imperfect real-time decisions: cut-off search
 
-\section{Chapter 7 Logical Agents}
+\section{Logical Agents}
 
 1. A knowledge base is a set of sentences. Each sentence is expressed in a language called a knowledge representation language and represents some assertion about the world. A knowledge base, KB, may initially contain some background knowledge. \\
 
@@ -162,9 +162,9 @@ Definite clauses: a disjunction of literals of which exactly one is positive. Fo
 
 Horn clause: a disjunction of literals of which at most one is positive. \\
 
-Horn clauses are closed under resolution: if you resolve two Horn clauses, you get back a Horn clause. \\
+Horn clauses are closed under resolution: if you resolve two Horn clauses, you get back a Horn clause.
 
-\section{Chapter 8 First-order logic}
+\section{First-order Logic}
 
 1. Terms: A term is a logical expression that refers to an object. For example,
 
@@ -224,7 +224,7 @@ E.g., $\exists x Crown(x) \land OnHead(x, John)$ yields:
 
 provided $C_1$ is a new constant symbol, called a Skolem constant.
 
-\section{Quantifying uncertainty}
+\section{Quantifying Uncertainty}
 
 1. Trying to use logic to cope with a domain like medical diagnosis fails for three main reasons: laziness, theoretical ignorance, practical ignorance. \\
 
@@ -234,10 +234,260 @@ provided $C_1$ is a new constant symbol, called a Skolem constant.
 
 4. Sample space: the set of all possible worlds (possible worlds are mutally exclusive). \\
 
-5.
+5. Normalization
 
-\begin{equation}
-  P(X|e) = \alpha P(X|e) = \alpha \sum_yP(X,e,y)
-\end{equation}
+\begin{equation*}
+\boldsymbol{P}(X|\boldsymbol{e}) =
+\alpha \boldsymbol{P}(X, \boldsymbol{e}) = \alpha \sum_y \boldsymbol{P}(X, \boldsymbol{e}, \boldsymbol{y})
+\end{equation*}
+
+6. Independence
+
+\begin{equation*}
+P(X,Y) = P(X)P(Y)
+\end{equation*}
+
+7. Bayes' rule
+
+\begin{equation*}
+P(b|a) = \frac {P(a|b)P(b)}{P(a)}
+\end{equation*}
+
+8. Naive Bayes model
+
+\begin{equation*}
+P(Cause, Effect_1,..., Effect_n) =
+P(Cause) \prod_iP(Effect_i|Cause)
+\end{equation*}
+
+\section{Probabilistic Reasoning}
+
+1. CPT: conditional probability table. \\
+
+2. Representing the full joint distribution
+
+\begin{equation*}
+P(x_1,...,x_n) = \prod^n_{i=1} \theta(x_i | parents(X_i))
+\end{equation*}
+
+3. The chain rule
+
+\begin{equation*}
+P(x_1,...,x_n) = \prod^n_{i=1} P(x_i | x_{i-1},...,x_1)
+\end{equation*}
+
+4. Locally structured (sparse) system \\
+
+In a locally structured system, each subcomponent interacts directly with only a bounded number of other components, regardless of the total number of components. Local structure is usually associated with linear rather than exponential growth in complexity. \\
+
+5. Inference by enumeration (p523)
+\begin{eqnarray*}
+\boldsymbol{P}(B|j,m)
+&=& \alpha \boldsymbol{P}(B,j,m)
+= \alpha \sum_e \sum_a \boldsymbol{P}(B,j,m,e,a) \\
+P(b|j,m)
+&=& \alpha \sum_e \sum_a P(b) P(e) P(a|b,e) P(j|a) P(m|a) \\
+P(b|j,m)
+&=& \alpha P(b) \sum_e P(e) \sum_a P(a|b,e) P(j|a) P(m|a)
+\end{eqnarray*}
+
+6. The complexity of exact inference \\
+
+Singly connected netowrks (polytrees): The time and space complexity of exact inference in polytrees is linear in the size of the network. \\
+
+Multiply connected networks: \#P-hard. \\
+
+7. Direct sampling methods \\
+
+Suppose there are $N$ total samples, and let $N_{PS}(x_1,...,x_n)$ be the number of times the specific event $x_1,...,x_n$ occurs in the set of samples. Then
+\begin{equation*}
+  \lim_{N\rightarrow \infty} \frac {N_{PS}(x_1,...,x_n)}{N}
+  = S_{PS}(x_1,...,x_n) = P(x_1,...,x_n)
+\end{equation*}
+
+Whenever we use an approximate equality (``$approx$") in what follows, we mean it in exactly this sense--that the estimated probability becomes exact in the large-sample limit. Such an estimate is called consistent.
+\begin{equation*}
+  P(x_1,...,x_m) \approx N_{PS}(x_1,...,x_m)/N
+\end{equation*}
+
+8. Rejection sampling \\
+
+Rejection sample is a general method for producing samples from a hard-to-sample distribution given an easy-to-sample distribution.
+\begin{eqnarray*}
+  \hat{\boldsymbol{P}}(X|\boldsymbol{e})
+  &=& \alpha \boldsymbol{N}_{PS}(X, \boldsymbol{e})
+  = \frac {\boldsymbol{N}_{PS}(X, \boldsymbol{e})}
+          {N_{PS}(\boldsymbol{e})} \\
+  \hat{\boldsymbol{P}}(X|\boldsymbol{e})
+  &\approx& \frac {\boldsymbol{P}(X, \boldsymbol{e})}
+                  {P(\boldsymbol{e})}
+  = \boldsymbol{P}(X | \boldsymbol{e})
+\end{eqnarray*}
+
+9. Likelihood weighting \\
+
+Likelihood weighting avoids the inefficiency of rejection sampling by generating only events that are consistent with the evidence {\bf e}. It is a particular instance of the general statistical technique of importance sampling, tailored for inference in Bayesian networks.
+\begin{eqnarray*}
+S_{WS}(\boldsymbol{z}, \boldsymbol{e})
+&=& \prod^l_{i=1} P(z_i | parents(Z_i)) \\
+w(\boldsymbol{z}, \boldsymbol{e})
+&=& \prod^m_{i=1} P(e_i | parents(E_i)) \\
+S_{WS}(\boldsymbol{z}, \boldsymbol{e}) w(\boldsymbol{z}, \boldsymbol{e})
+&=& \prod^l_{i=1} P(z_i | parents(Z_i)) \prod^m_{i=1} P(e_i | parents(E_i)) \\
+&=& P(\boldsymbol{z}, \boldsymbol{e})
+\end{eqnarray*}
+
+The likelihood weighting estimates are consistent.
+\begin{eqnarray*}
+\hat{P}(x | \boldsymbol{e})
+&=& \alpha \sum_{\boldsymbol{y}} N_{WS}(x, \boldsymbol{y}, \boldsymbol{e})
+    w(x, \boldsymbol{\boldsymbol{y}}, \boldsymbol{e}) \\
+&\approx& \alpha' \sum_{\boldsymbol{y}} S_{WS}(x, \boldsymbol{y}, \boldsymbol{e})
+          w(x, \boldsymbol{y}, \boldsymbol{e}) \\
+&=& \alpha' \sum_{\boldsymbol{y}} P(x, \boldsymbol{y}, \boldsymbol{e}) \\
+&=& \alpha' P(x, \boldsymbol{e}) = P(x | \boldsymbol{e})
+\end{eqnarray*}
+
+10. Markov blanket \\
+
+The Markov blanket of a variable consists of its parents, children, and children's parents. \\
+
+11. Gibbs sampling in Bayesian networks
+\begin{eqnarray*}
+\pi_{t+1}(\boldsymbol{x'})
+= \sum_{\boldsymbol{x}} \pi_t(\boldsymbol{x}) q(\boldsymbol{x} 
+  \rightarrow \boldsymbol{x'})
+\end{eqnarray*}
+
+We say that the chain has reached its stationary distribution if $\pi_t = \pi_{t+1}$. Let us call this stationary distribution $\pi$; its defining equation is therefore
+\begin{eqnarray*}
+\pi(\boldsymbol{x'})
+= \sum_{\boldsymbol{x}} \pi_t(\boldsymbol{x}) q(\boldsymbol{x}
+  \rightarrow \boldsymbol{x'})
+\end{eqnarray*}
+
+Provided the transition probability distribution q is ergodic--that is, every state is reachable from every other and there are no strictly periodic cycles--there is exactly one distribution $\pi$ satisfying this equation for any given $q$. \\
+
+We say that $q(\boldsymbol{x} \rightarrow \boldsymbol{x'})$ is in detailed balance with $\pi(\boldsymbol{x})$ if 
+\begin{eqnarray*}
+\pi(\boldsymbol{x}) q(\boldsymbol{x} \rightarrow \boldsymbol{x'})
+= \pi(\boldsymbol{x'}) q(\boldsymbol{x'} \rightarrow \boldsymbol{x})
+\end{eqnarray*}
+
+Detailed balance implies stationarity.
+\begin{eqnarray*}
+\sum_{\boldsymbol{x}} \pi(\boldsymbol{x}) q(\boldsymbol{x} \rightarrow \boldsymbol{x'}) = \sum_{\boldsymbol{x}} \pi(\boldsymbol{x'}) q(\boldsymbol{x'} \rightarrow \boldsymbol{x}) = \pi(\boldsymbol{x'}) \sum_{\boldsymbol{x}} q(\boldsymbol{x'} \rightarrow \boldsymbol{x}) =\pi(\boldsymbol{x'})
+\end{eqnarray*}
+
+Define $\overline{\boldsymbol{X_i}}$ to be these other variables (except the evidence variables); their values in the current state are $\overline{\boldsymbol{x_i}}$. We have
+\begin{eqnarray*}
+q_i(\boldsymbol{x} \rightarrow \boldsymbol{x'})
+= q_i((x_i, \overline{\boldsymbol{x_i}}) \rightarrow 
+  (x'_i, \overline{\boldsymbol{x_i}}))
+= P(x'_i | \overline{\boldsymbol{x_i}}, \boldsymbol{e})
+\end{eqnarray*}
+
+Now we show that the transition probability for each step of the Gibbs sampler is in detailed balance with the true posterior:
+\begin{eqnarray*}
+\pi(\boldsymbol{x}) q_i(\boldsymbol{x} \rightarrow \boldsymbol{x'})
+&=& P(\boldsymbol{x}|\boldsymbol{e})
+    P(x'_i| \overline{\boldsymbol{x_i}},\boldsymbol{e}) \\
+&=& P(x_i, \overline{\boldsymbol{x_i}} | \boldsymbol{e})
+    P(x'_i| \overline{\boldsymbol{x_i}},\boldsymbol{e}) \\
+&=& P(x_i | \overline{\boldsymbol{x_i}}, \boldsymbol{e})
+    P(\overline{\boldsymbol{x_i}} | \boldsymbol{e})
+    P(x'_i | \overline{\boldsymbol{x_i}},\boldsymbol{e}) \\
+&=& P(x_i | \overline{\boldsymbol{x_i}}, \boldsymbol{e})
+    P(x'_i, \overline{\boldsymbol{x_i}} 
+      | \overline{\boldsymbol{x_i}},\boldsymbol{e}) \\
+&=& \pi(\boldsymbol{x'}) q_i(\boldsymbol{x'} \rightarrow \boldsymbol{x})
+\end{eqnarray*}
+
+Sampling $X_i$ from $\boldsymbol{P}(X_i | \overline{\boldsymbol{x_i}}, \boldsymbol{e})$ in a Bayesian network. \\
+
+Since a varible is indenpendent of all other variables given its Markov blanket, we have
+\begin{eqnarray*}
+P(x'_i | \overline{\boldsymbol{x_i}}, \boldsymbol{e}) = P(x'_i | mb(X_i))
+\end{eqnarray*}
+
+where $mb(X_i)$ denotes the values of variables in $X_i$'s Markov blanket, $MB(X_i)$. As the probability of a variable given its Markov blanket is proportional to the probability of the variable given its parents times the probability of each child given its respective parents:
+\begin{eqnarray*}
+P(x'_i|mb(X_i))
+= \alpha P(x'_i | parents(X_i)) \times
+  \prod_{Y_j \in Children(X_i)} P(y_j | parents(Y_j))
+\end{eqnarray*}
+
+Hence, to flip each variable $X_i$ conditioned on its Markov blanket, the number of multiplications required is equal to the number of $X_i$'s children.
+
+\section{Probabilistic Reasoning Over Time}
+
+1. States and observations
+\begin{itemize}
+\item $\boldsymbol{X}_t$: the set of state variables at time t, which are assumed to be unobservable.
+\item $\boldsymbol{X}_{a:b}$: the set of variables from $\boldsymbol{X}_a$ to $\boldsymbol{X}_b$.
+\item $\boldsymbol{E}_t$: the set of observable evidence variables. The observation at time t is $\boldsymbol{E}_t = \boldsymbol{e}_t$ for some set of values $\boldsymbol{e}_t$.
+\end{itemize}
+
+2. Markov assumption: the current state depends on only a finite fixed number of previous states. \\
+
+3. First order Markov process: the current state depends only on the previous state and not on any earlier state.
+\begin{equation*}
+\boldsymbol{P}(\boldsymbol{X}_t | \boldsymbol{X}_{0:t-1})
+= \boldsymbol{P}(\boldsymbol{X}_t | \boldsymbol{X}_{t-1})
+\end{equation*}
+
+4. Sensor Markov assumption
+\begin{equation*}
+\boldsymbol{P}(\boldsymbol{E}_t | \boldsymbol{X}_{0:t}, \boldsymbol{E}_{0:t-1})
+= \boldsymbol{P}(\boldsymbol{E}_t | \boldsymbol{X}_t)
+\end{equation*}
+
+5.
+\begin{equation*}
+\boldsymbol{P}(\boldsymbol{X}_{0:t} | \boldsymbol{E}_{1:t})
+= \boldsymbol{P}(\boldsymbol{X}_0)
+  \prod^t_{i=1} \boldsymbol{P}(\boldsymbol{X}_i | \boldsymbol{X}_{i-1})
+  \boldsymbol{P}(\boldsymbol{E}_i | \boldsymbol{X}_i)
+\end{equation*}
+
+6. Inference in temporal models
+\begin{itemize}
+\item Filtering (state estimation): The task of computing the belief state--the posterior distribution over the most recent state--given all evidence to date. $\boldsymbol{P}(\boldsymbol{X}_t | \boldsymbol{e}_{1:t})$. \\
+The probability of rain today, given all the observations of the umbrella carrier made so far.
+\item Prediction: The task of computing the posterior distribution over the future state, give all evidence to date. $\boldsymbol{P}(\boldsymbol{X}_{t+k} | \boldsymbol{e}_{1:t})$ for some $k>0$. \\
+The probability of rain three days from now, given all the observations to date.
+\item Smoothing: The task of computing the posterior distribution over a past state, given all evidence up to the present. $\boldsymbol{P}(\boldsymbol{X}_k | \boldsymbol{e}_{1:t})$ for some $0 \le k < t$. \\
+The probability that it rained last Wednesday, given all the observations of the umbrella carrier made up to today.
+\item Most likely explanation: Given a sequence of observations, try to find the sequence of states that is most likely to have generated those observations. \\
+$\text{argmax}_{\boldsymbol{X}_{1:t}}\boldsymbol{P}(\boldsymbol{X}_{1:t} | \boldsymbol{e}_{1:t})$ for some $0 \le k < t$.
+\item Learning: The transition and sensor models, if not yet known, can be learned from observations. Inference provides an estimate of what transitions actually occurred and of what states generated the sensor readings, and these estimates can be used to update the models.
+\end{itemize}
+
+7. Filtering
+
+\begin{equation*}
+\boldsymbol{P}(\boldsymbol{X}_{t+1} | \boldsymbol{e}_{1:t+1})
+= f(\boldsymbol{e}_{1:t+1}, 
+    \boldsymbol{P}(\boldsymbol{X}_{t+1} | \boldsymbol{e}_{1:t+1}))
+\end{equation*}
+
+8.
+\begin{eqnarray*}
+\boldsymbol{f}_{1:t+1}
+&=& \alpha \text{FORWARD}(\boldsymbol{f}_{1:t}, \boldsymbol{e}_{t+1}) \\
+\boldsymbol{b}_{k+1:t}
+&=& \alpha \text{BACKWARD}(\boldsymbol{b}_{k+2:t}, \boldsymbol{e}_{k+1})
+\end{eqnarray*}
+
+9. Hidden Markov Models
+\begin{eqnarray*}
+\boldsymbol{f}_{1:t+1}
+&=& \alpha \boldsymbol{O}_{t+1} \boldsymbol{T}^T \boldsymbol{f}_{1:t} \\
+\boldsymbol{b}_{k+1:t}
+&=& \alpha \boldsymbol{T} \boldsymbol{O}_{k+1} \boldsymbol{b}_{k+2:t}
+\end{eqnarray*}
+
+
+
 
 \end{document}
