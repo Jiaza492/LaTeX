@@ -487,7 +487,70 @@ $\text{argmax}_{\boldsymbol{X}_{1:t}}\boldsymbol{P}(\boldsymbol{X}_{1:t} | \bold
 &=& \alpha \boldsymbol{T} \boldsymbol{O}_{k+1} \boldsymbol{b}_{k+2:t}
 \end{eqnarray*}
 
+\section{Making Complex Decisions}
 
+1. Markov decision process (MDP) \\
 
+MDP is a sequential decision problem for a fully observable, stochastic environment with a Markovian transition model and additive reward. \\
+
+It consists of a set of states (with initial state $s_0$); a set ACTIONS($s$) of actions in each state; a transition model $P(s'| s, a)$; and a reward function $R(s)$. \\
+
+2. Policy \\
+
+A solution is called a policy. $\pi(s)$ is the action recommended by the policy $\pi$ for state $s$. \\
+
+An optimal policy is a policy that yields the highest expected utility. A proper policy is a policy that is guaranteed to reach a terminal state. \\
+
+3. Finite horizon: There is a fixed time $N$ after which nothing matters--the game is over. Thus $U_h([s_0, s_1,...,s_{N+k}]) = U_h([s_0, s_1,...,s_{N+k}])$ for all $k>0$.  With a finite horizon, the optimal action in a given state could change over time (nonstationary). \\
+
+4. Rewards
+\begin{itemize}
+\item Additive rewards: The utility of a state sequence is
+  \begin{equation*}
+    U_h([s_0,s_1,s_2,...]) = R(s_0)+R(s_1)+R(s_2)+...
+  \end{equation*}
+\item Discounted rewards: The utility of a state sequence is
+  \begin{equation*}
+    U_h([s_0,s_1,s_2,...])
+    = R(s_0) + \gamma R(s_1) + \gamma^2 R(s_2)+...
+  \end{equation*}
+  where the discount factor $\gamma$ is a number between 0 and 1. The discount factor describes the preference of an agent for current rewards over future rewards.
+\end{itemize}
+
+5. The expected utility obtained by executing $\pi$ starting in $s$ is given by
+\begin{eqnarray*}
+U^{\pi}(s) &=& E \left[ \sum^{\infty}_{t=0} \gamma^t R(S_t) \right] \\
+pi^*_s &=& \arg\max_{pi} U^{\pi}(s) \\
+\end{eqnarray*}
+
+A remarkable consequence of using discounted utilities with infinite horizons is that the optimal policy is independent of the starting state. $\pi^*$ the optimal policy:
+\begin{equation*}
+\pi^*(s) = \arg\max_{a \in A(s)} \sum_{s'} P(s'|s,a) U(s')
+\end{equation*}
+
+6. The Bellman equation for utilities
+\begin{eqnarray*}
+U(s) = R(s) + \gamma \max_{a \in A(s)} \sum_{s'} P(s' | s, a) U(s')
+\end{eqnarray*}
+
+7. The Bellman update
+\begin{eqnarray*}
+U_{i+1}(s) = R(s) + \gamma \max_{a \in A(s)} \sum_{s'} P(s' | s, a) U_i(s')
+\end{eqnarray*}
+
+8. The policy iteration algorithm
+\begin{itemize}
+\item Policy evaluation: Given a policy $\pi_i$, calculate $U_i = U^{\pi}$, the utility of each state if $\pi_i$ were to be executed.
+\item Policy improvement: Calculate a new MEU policy $\pi_{i+1}$, using one-step look-ahead based on $U_i$.
+\end{itemize}
+
+The algorithm terminates when the policy improvement step yields no change in the utilities.
+
+9. The simplified Bellman update
+\begin{eqnarray*}
+U_{i+1}(s) = R(s) + \gamma \sum_{s'} P(s' | s, \pi(s)) U_i(s')
+\end{eqnarray*}
+
+The resulting algorithm is called modified policy iteration.
 
 \end{document}
