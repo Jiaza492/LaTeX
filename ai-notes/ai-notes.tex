@@ -9,6 +9,8 @@
 \usepackage{amsfonts}
 \usepackage{amsmath}
 
+\DeclareMathOperator*{\argmax}{arg\,max}
+
 \title{Artificial Intelligence Note}
 \author{Mengqi Zong $<mz2326@columbia.edu>$}
 
@@ -264,23 +266,40 @@ P(Cause) \prod_iP(Effect_i|Cause)
 
 1. CPT: conditional probability table. \\
 
-2. Representing the full joint distribution
+2. Representation of conditional distribution
+
+\begin{itemize}
+  \item Probit distribution
+    \begin{eqnarray*}
+      \Phi(x) &=& \int^x_{-\infty} N(0,1)(x)dx \\
+      P(buys | Cost = c) &=& \Phi((-c + \mu) / \sigma)
+    \end{eqnarray*}
+  \item Logit distribution
+    \begin{eqnarray*}
+      P(buys | Cost = c) &=&
+      \frac {1}{1 + \exp(-2 \frac {-c + \mu}{\sigma})}
+    \end{eqnarray*}
+\end{itemize}
+
+The two distributions look similar, but the logit distribution actually has much longer "tails''. The probit is often better fit to real situations, but the logit is sometimes easier to deal with mathematically. It is widely used in neural networks. \\
+
+3. Representing the full joint distribution
 
 \begin{equation*}
 P(x_1,...,x_n) = \prod^n_{i=1} \theta(x_i | parents(X_i))
 \end{equation*}
 
-3. The chain rule
+4. The chain rule
 
 \begin{equation*}
 P(x_1,...,x_n) = \prod^n_{i=1} P(x_i | x_{i-1},...,x_1)
 \end{equation*}
 
-4. Locally structured (sparse) system \\
+5. Locally structured (sparse) system \\
 
 In a locally structured system, each subcomponent interacts directly with only a bounded number of other components, regardless of the total number of components. Local structure is usually associated with linear rather than exponential growth in complexity. \\
 
-5. Inference by enumeration (p523)
+6. Inference by enumeration (p523)
 \begin{eqnarray*}
 \boldsymbol{P}(B|j,m)
 &=& \alpha \boldsymbol{P}(B,j,m)
@@ -291,13 +310,13 @@ P(b|j,m)
 &=& \alpha P(b) \sum_e P(e) \sum_a P(a|b,e) P(j|a) P(m|a)
 \end{eqnarray*}
 
-6. The complexity of exact inference \\
+7. The complexity of exact inference \\
 
 Singly connected netowrks (polytrees): The time and space complexity of exact inference in polytrees is linear in the size of the network. \\
 
 Multiply connected networks: \#P-hard. \\
 
-7. Direct sampling methods \\
+8. Direct sampling methods \\
 
 Suppose there are $N$ total samples, and let $N_{PS}(x_1,...,x_n)$ be the number of times the specific event $x_1,...,x_n$ occurs in the set of samples. Then
 \begin{equation*}
@@ -310,9 +329,9 @@ Whenever we use an approximate equality (``$approx$") in what follows, we mean i
   P(x_1,...,x_m) \approx N_{PS}(x_1,...,x_m)/N
 \end{equation*}
 
-8. Rejection sampling \\
+9. Rejection sampling \\
 
-Rejection sample is a general method for producing samples from a hard-to-sample distribution given an easy-to-sample distribution.
+Rejection sampling is a general method for producing samples from a hard-to-sample distribution given an easy-to-sample distribution.
 \begin{eqnarray*}
   \hat{\boldsymbol{P}}(X|\boldsymbol{e})
   &=& \alpha \boldsymbol{N}_{PS}(X, \boldsymbol{e})
@@ -324,7 +343,7 @@ Rejection sample is a general method for producing samples from a hard-to-sample
   = \boldsymbol{P}(X | \boldsymbol{e})
 \end{eqnarray*}
 
-9. Likelihood weighting \\
+10. Likelihood weighting \\
 
 Likelihood weighting avoids the inefficiency of rejection sampling by generating only events that are consistent with the evidence {\bf e}. It is a particular instance of the general statistical technique of importance sampling, tailored for inference in Bayesian networks.
 \begin{eqnarray*}
@@ -348,11 +367,11 @@ The likelihood weighting estimates are consistent.
 &=& \alpha' P(x, \boldsymbol{e}) = P(x | \boldsymbol{e})
 \end{eqnarray*}
 
-10. Markov blanket \\
+11. Markov blanket \\
 
 The Markov blanket of a variable consists of its parents, children, and children's parents. \\
 
-11. Gibbs sampling in Bayesian networks
+12. Gibbs sampling in Bayesian networks
 \begin{eqnarray*}
 \pi_{t+1}(\boldsymbol{x'})
 = \sum_{\boldsymbol{x}} \pi_t(\boldsymbol{x}) q(\boldsymbol{x} 
@@ -459,7 +478,7 @@ The probability of rain three days from now, given all the observations to date.
 \item Smoothing: The task of computing the posterior distribution over a past state, given all evidence up to the present. $\boldsymbol{P}(\boldsymbol{X}_k | \boldsymbol{e}_{1:t})$ for some $0 \le k < t$. \\
 The probability that it rained last Wednesday, given all the observations of the umbrella carrier made up to today.
 \item Most likely explanation: Given a sequence of observations, try to find the sequence of states that is most likely to have generated those observations. \\
-$\text{argmax}_{\boldsymbol{X}_{1:t}}\boldsymbol{P}(\boldsymbol{X}_{1:t} | \boldsymbol{e}_{1:t})$ for some $0 \le k < t$.
+$\argmax_{\boldsymbol{X}_{1:t}}\boldsymbol{P}(\boldsymbol{X}_{1:t} | \boldsymbol{e}_{1:t})$ for some $0 \le k < t$.
 \item Learning: The transition and sensor models, if not yet known, can be learned from observations. Inference provides an estimate of what transitions actually occurred and of what states generated the sensor readings, and these estimates can be used to update the models.
 \end{itemize}
 
@@ -467,8 +486,8 @@ $\text{argmax}_{\boldsymbol{X}_{1:t}}\boldsymbol{P}(\boldsymbol{X}_{1:t} | \bold
 
 \begin{equation*}
 \boldsymbol{P}(\boldsymbol{X}_{t+1} | \boldsymbol{e}_{1:t+1})
-= f(\boldsymbol{e}_{1:t+1}, 
-    \boldsymbol{P}(\boldsymbol{X}_{t+1} | \boldsymbol{e}_{1:t+1}))
+= f(\boldsymbol{e}_{t+1}, 
+    \boldsymbol{P}(\boldsymbol{X}_t | \boldsymbol{e}_{1:t}))
 \end{equation*}
 
 8.
@@ -486,6 +505,90 @@ $\text{argmax}_{\boldsymbol{X}_{1:t}}\boldsymbol{P}(\boldsymbol{X}_{1:t} | \bold
 \boldsymbol{b}_{k+1:t}
 &=& \alpha \boldsymbol{T} \boldsymbol{O}_{k+1} \boldsymbol{b}_{k+2:t}
 \end{eqnarray*}
+
+\section{Making Simple Decisions}
+
+1. MEU \\
+
+The agent's preferences are captured by a utility function, $U(s)$, which assigns a single number to express the desirability of a state. The expected utility of an action given the evidence, $EU(a | \boldsymbol{e})$, is just the average utility value that maximizes the agent's expected utility:
+\begin{equation*}
+  EU(a | \boldsymbol{e}) 
+  = \sum_{s'} P(\text{RESULT}(a) = s'|a,\boldsymbol{e})U(s')
+\end{equation*}
+
+The principle of {\bf maximum expected utility} (MEU) says that a rational agent should choose the action that maximizes the agent's expected utility:
+\begin{equation*}
+  \text{action} = \argmax_a EU(a|\boldsymbol{e})
+\end{equation*}
+
+2. Constraints on rational preference \\
+
+Notation to describe an agent's preferences:
+\begin{itemize}
+  \item $A \succ B$ the agent prefers $A$ over $B$
+  \item $A \sim B$ the agent is indifferent between $A$ and $B$
+  \item $A \succcurlyeq B$ the agent prefers $A$ over $B$ or is indifferent between them
+\end{itemize}
+
+A lottery $L$ with pssible outcomes $S_1,...,S_n$ that occur with probabilities $p_1,...,p_n$ is written
+\begin{equation*}
+  L = [p_1, S_1; p_2, S_2; ..., p_n,S_n]
+\end{equation*}
+
+Six constraints that any reasonable preference relation should obey
+
+\begin{itemize}
+  \item Orderability
+    \begin{equation*}
+      \text{Exactly one of } (A \succ B), (B \succ A), or  (A \sim B)
+      \text{ holds.}
+    \end{equation*}
+  \item Transitivity
+    \begin{equation*}
+      (A \succ B) \land (B \succ C) \Rightarrow (A \succ C)
+    \end{equation*}
+  \item Continuity
+    \begin{equation*}
+      (A \succ B \succ C) \Rightarrow \exists p [p, A; 1-p,C] \sim B.
+    \end{equation*}
+  \item Substitutability
+    \begin{equation*}
+      A \sim B \Rightarrow [p,A; 1-p,C] \sim [p,V; 1-p,C].
+    \end{equation*}
+    This also holds if we substitute $\succ$ for $\sim$ in this axiom.
+  \item Montonicity
+    \begin{equation*}
+      A \succ B \Rightarrow
+      (p > q \Leftrightarrow [p,A;1-p,B] \succ [q,A;1-q,B]).
+    \end{equation*}
+  \item Decomposability
+    \begin{equation*}
+      [p, A; 1-p, [q, B; 1-q, C]] \sim [p, A; (1-p)q, B; (1-p)(1-q), C].
+    \end{equation*}
+\end{itemize}
+
+3. Preferences lead to utility
+
+\begin{itemize}
+  \item Existence of Utility Function
+    \begin{eqnarray*}
+      U(A) > U(B) \Rightarrow A \succ B \\
+      U(A) = U(B) \Rightarrow A \sim B
+    \end{eqnarray*}
+  \item Expected Utility of a Lottery
+    \begin{eqnarray*}
+      U([p_1,S_1;...;p_n,S_n]) = \sum_i p_i U(S_i).
+    \end{eqnarray*}
+\end{itemize}
+
+The preceding theorems establish that a utility function exists for any rational agent, but they do not establish tat it is unique.
+\begin{equation*}
+  U'(S) = aU(S) + b,
+\end{equation*}
+
+where $a$ and $b$ are constants and $a>0$. \\
+
+As in game-playing, in a deterministic environment an agent just needs a preference ranking on states-the numbers don't matter. This is called a value function or ordinal utility function.
 
 \section{Making Complex Decisions}
 
@@ -520,12 +623,12 @@ An optimal policy is a policy that yields the highest expected utility. A proper
 5. The expected utility obtained by executing $\pi$ starting in $s$ is given by
 \begin{eqnarray*}
 U^{\pi}(s) &=& E \left[ \sum^{\infty}_{t=0} \gamma^t R(S_t) \right] \\
-pi^*_s &=& \arg\max_{pi} U^{\pi}(s) \\
+pi^*_s &=& \argmax_{pi} U^{\pi}(s) \\
 \end{eqnarray*}
 
 A remarkable consequence of using discounted utilities with infinite horizons is that the optimal policy is independent of the starting state. $\pi^*$ the optimal policy:
 \begin{equation*}
-\pi^*(s) = \arg\max_{a \in A(s)} \sum_{s'} P(s'|s,a) U(s')
+\pi^*(s) = \argmax_{a \in A(s)} \sum_{s'} P(s'|s,a) U(s')
 \end{equation*}
 
 6. The Bellman equation for utilities
