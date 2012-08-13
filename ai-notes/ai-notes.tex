@@ -604,7 +604,9 @@ A solution is called a policy. $\pi(s)$ is the action recommended by the policy 
 
 An optimal policy is a policy that yields the highest expected utility. A proper policy is a policy that is guaranteed to reach a terminal state. \\
 
-3. Finite horizon: There is a fixed time $N$ after which nothing matters--the game is over. Thus $U_h([s_0, s_1,...,s_{N+k}]) = U_h([s_0, s_1,...,s_{N+k}])$ for all $k>0$.  With a finite horizon, the optimal action in a given state could change over time (nonstationary). \\
+3. Finite horizon \\
+
+There is a fixed time $N$ after which nothing matters--the game is over. Thus $U_h([s_0, s_1,...,s_{N+k}]) = U_h([s_0, s_1,...,s_{N+k}])$ for all $k>0$.  With a finite horizon, the optimal action in a given state could change over time (nonstationary). \\
 
 4. Rewards
 \begin{itemize}
@@ -617,43 +619,64 @@ An optimal policy is a policy that yields the highest expected utility. A proper
     U_h([s_0,s_1,s_2,...])
     = R(s_0) + \gamma R(s_1) + \gamma^2 R(s_2)+...
   \end{equation*}
-  where the discount factor $\gamma$ is a number between 0 and 1. The discount factor describes the preference of an agent for current rewards over future rewards.
+  where the discount factor $\gamma$ is a number between 0 and 1. The discount factor describes the preference of an agent for current rewards over future rewards. A discount factor of $gamma$ is equivalent to an interest rate of $(1 / \gamma -1)$.
 \end{itemize}
 
-5. The expected utility obtained by executing $\pi$ starting in $s$ is given by
-\begin{eqnarray*}
-U^{\pi}(s) &=& E \left[ \sum^{\infty}_{t=0} \gamma^t R(S_t) \right] \\
-pi^*_s &=& \argmax_{pi} U^{\pi}(s) \\
-\end{eqnarray*}
+5. Optimal policies and the utilities of states \\
 
-A remarkable consequence of using discounted utilities with infinite horizons is that the optimal policy is independent of the starting state. $\pi^*$ the optimal policy:
+We assume the agent is in some initial state $s$ and define $S_t$ (a random variable) to be the state the agent reaches at time $t$ when executing a particular policy $\pi$.  The probability distribution over state sequences $S_1, S_2,...,$ is determined by the initial state $s$, the policy $\pi$, and the transition model for the environment. \\
+
+The expected utility obtained by executing $\pi$ starting in $s$ is given by
+\begin{equation*}
+U^{\pi}(s) = E \left[ \sum^{\infty}_{t=0} \gamma^t R(S_t) \right]
+\end{equation*}
+
+where the expectation is with respect to the probability distribution over state sequences determined by $s$ and $\pi$. We'll use $\pi^*_S$ to denote:
+\begin{equation*}
+\pi^*(s) = \argmax_{a \in A(s)} U^{\pi}(s')
+\end{equation*}
+
+A remarkable consequence of using discounted utilities with infinite horizons is that the optimal policy is independent of the starting state. \\
+
+The utility function $U(s)$ allows the agent to select actions by using the principle of maximum expected utility:
 \begin{equation*}
 \pi^*(s) = \argmax_{a \in A(s)} \sum_{s'} P(s'|s,a) U(s')
 \end{equation*}
 
-6. The Bellman equation for utilities
+6. The value iteration algorithm \\
+
+The basic idea is to calculate the utility of each state and then use the state utilities to select an optimal action in each state. \\
+
+7. The Bellman equation for utilities
 \begin{eqnarray*}
 U(s) = R(s) + \gamma \max_{a \in A(s)} \sum_{s'} P(s' | s, a) U(s')
 \end{eqnarray*}
 
-7. The Bellman update
+8. The Bellman update
 \begin{eqnarray*}
-U_{i+1}(s) = R(s) + \gamma \max_{a \in A(s)} \sum_{s'} P(s' | s, a) U_i(s')
+U_{i+1}(s) \leftarrow
+R(s) + \gamma \max_{a \in A(s)} \sum_{s'} P(s' | s, a) U_i(s')
 \end{eqnarray*}
 
-8. The policy iteration algorithm
+where the update is assumed to be applied simultaneously to all the states at each iteration. \\
+
+9. The policy iteration algorithm \\
+
+The policy iteration algorithm alternates the following two steps, beginning from some initial policy $\pi_0$:
 \begin{itemize}
 \item Policy evaluation: Given a policy $\pi_i$, calculate $U_i = U^{\pi}$, the utility of each state if $\pi_i$ were to be executed.
 \item Policy improvement: Calculate a new MEU policy $\pi_{i+1}$, using one-step look-ahead based on $U_i$.
 \end{itemize}
 
-The algorithm terminates when the policy improvement step yields no change in the utilities.
+The algorithm terminates when the policy improvement step yields no change in the utilities. \\
 
-9. The simplified Bellman update
+For small state spaces, policy evaluation using exact solution methods is often the most efficient approach. For large state spaces, $O(n^3)$ time might be prohibitive. \\
+
+10. The simplified Bellman update
 \begin{eqnarray*}
 U_{i+1}(s) = R(s) + \gamma \sum_{s'} P(s' | s, \pi(s)) U_i(s')
 \end{eqnarray*}
 
-The resulting algorithm is called modified policy iteration.
+The resulting algorithm is called modified policy iteration. It is often more efficient than standard policy iteration or value iteration.
 
 \end{document}
