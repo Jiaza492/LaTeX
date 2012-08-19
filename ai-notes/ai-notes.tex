@@ -10,6 +10,7 @@
 \usepackage{amsmath}
 
 \DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
 
 \title{Artificial Intelligence Note}
 \author{Mengqi Zong $<mz2326@columbia.edu>$}
@@ -20,7 +21,7 @@
 
 \setlength{\parindent}{0in}
 
-\section{Intelligent Agents}
+\section*{Intelligent Agents}
 
 1. An {\bf agent} is anything that can be viewed as perceiving environment throught sensors and acting upon that evnironment throught actuators. \\
 
@@ -36,59 +37,70 @@
   \item Known vs. unknown
 \end{itemize}
 
-\section{Solving Problems by Searching}
+\section*{Solving Problems by Searching}
 
 1. Uniformed search strategies
 
-\begin{enumerate}
+\begin{itemize}
   \item Breadth-first search
   \item Uniform-cost search ($g(n)$)
   \item Depth-first search
   \item Depth-limited search
   \item Iterative deepening depth-first search
   \item Bidirectional search
-\end{enumerate}
+\end{itemize}
 
 2. Infromed (heuristic) search strategies
 
-\begin{enumerate}
+\begin{itemize}
   \item Greedy best-first search ($h(n)$)
-  \item $A^*$ search \\
-    Admissibility: An admissible heuristic is one that never overestimates the cost to reach the goal. \\
-    Consistency (monotonicity): $h(n) \le c(n,a,n') + h(n')$. \\
+  \item $A^*$ search
+
+    Admissibility: An admissible heuristic is one that never overestimates the cost to reach the goal.
+
+    Consistency (monotonicity): $h(n) \le c(n,a,n') + h(n')$.
+
     * Every consistent heuristic is also admissible.
   \item Iterative-deepening $A^*$
-  \item Recursive best-first search (RBFS) \\
+  \item Recursive best-first search (RBFS)
+
     backed-up value: the best $f$-value of its children
-\end{enumerate}
+\end{itemize}
 
-\section{Beyond Classical Search}
+\section*{Beyond Classical Search}
 
-1. Local Search Algorithms \\
+1. Local search algorithms \\
 
-If the path to the goal does not matter... \\
+Local search algorithms operate using a single current node (rather than multiple paths) and generally move only to neighbors of that node. \\
 
-Local search algorithms operate using a single current node (rather than multiple paths) and generally move only to neighbors of that node.
+Local search algorithms are suitable for problems in which all that matters is the solution state, not the path cost to reach it. \\
 
-\begin{enumerate} 
-  \item Hill-climbing (greedy local search) \\
-    Stuck reasons: local maxima, ridges, plateaux. \\
+A complete local search algorithm always finds a goal if one exists; an optimal algorithm always finds a global minimum/maximum.
+
+\begin{itemize} 
+  \item Hill-climbing (greedy local search)
+
+    Stuck reasons: local maxima, ridges, plateaux.
+
     Alternatives: stochastic hill climbing, first-choice hill climbing, random restart hill climbing.
   \item Simulated annealing
-  \item Local beam search \\
-    In a local beam search, useful information is passed among the parallel search threads. \\
+  \item Local beam search
+
+    In a local beam search, useful information is passed among the parallel search threads.
+
     Alternatives: stochastic beam search
   \item Genetic algorithms
-\end{enumerate}
+\end{itemize}
 
 2. Searching with nondeterministic actions \\
 
 AND-OR search trees \\
 
 OR nodes: In a deterministic environment, the only branching is introduced by the agent's own choices in each state. \\
-AND nodes: In a nondeterministic environment, branching is also introduced by the environment's choice of outcome for each action. \\
 
-\section{Adverserial Search}
+AND nodes: In a nondeterministic environment, branching is also introduced by the environment's choice of outcome for each action.
+
+\section*{Adversarial Search}
 
 1. Zero-sum (constant-sum) games: a game where the total payoff to all players is the same for every instance of the game. \\
 
@@ -99,13 +111,16 @@ The minimax algorithm performs a complete depth-first exploration of the game tr
 3. Alpha-beta pruning \\
 
 $\alpha =$ the value of the best (i.e., highest-value) choice we have found so far at any choice point along the path for MAX. \\
+
 $\beta =$ the value of the best (i.e., lowest-value) choice we have found so far at any choice point along the path for MIN. \\
 
 4. Imperfect real-time decisions: cut-off search
 
-\section{Logical Agents}
+\section*{Logical Agents}
 
-1. A knowledge base is a set of sentences. Each sentence is expressed in a language called a knowledge representation language and represents some assertion about the world. A knowledge base, KB, may initially contain some background knowledge. \\
+1. Knowledge base \\
+
+A knowledge base is a set of sentences. Each sentence is expressed in a language called a knowledge representation language and represents some assertion about the world. A knowledge base, KB, may initially contain some background knowledge. \\
 
 2. Entailment: a sentence follows logically from another sentence.
 
@@ -113,21 +128,17 @@ $\beta =$ the value of the best (i.e., lowest-value) choice we have found so far
   \alpha \models \beta \text{ if and only if } M(\alpha) \subseteq M(\beta)
 \end{equation*}
 
-if $\alpha \models \beta$, then $\alpha$ is a stronger assertion than $\beta$: it rules out more possible worlds. \\
+(Note the direction of $\subseteq$ here: if $\alpha \models \beta$, then $\alpha$ is a stronger assertion than $\beta$: it rules out more possible worlds.) \\
 
 Sound: an inference algorithm that derives only entailed sentences is called sound or truth-preserving. \\
 
 Complete: an inference algorithm is complete if it can derive any sentence that is entailed. \\
 
 3. Deduction theorem
-
-\begin{equation*}
-  \alpha \models \beta \text{ if and only if the sentence } (\alpha \Rightarrow \beta) \text{ is valid.}
-\end{equation*}
-
-\begin{equation*}
-  \alpha \models \beta \text{ if and only if the sentence } (\alpha \lor \lnot \beta) \text{ is unsatisfiable.}
-\end{equation*}
+\begin{eqnarray*}
+  \alpha &\models& \beta \text{ if and only if the sentence } (\alpha \Rightarrow \beta) \text{ is valid.} \\
+  \alpha &\models& \beta \text{ if and only if the sentence } (\alpha \lor \lnot \beta) \text{ is unsatisfiable.}
+\end{eqnarray*}
 
 4. Modus Ponens
 
@@ -166,41 +177,44 @@ Horn clause: a disjunction of literals of which at most one is positive. \\
 
 Horn clauses are closed under resolution: if you resolve two Horn clauses, you get back a Horn clause.
 
-\section{First-order Logic}
+\section*{First-order Logic}
 
-1. Terms: A term is a logical expression that refers to an object. For example,
+1. Symbols and interpretations
 
-\begin{equation*}
-  LeftLeg(John)
-\end{equation*}
+\begin{itemize}
+  \item Terms
 
-A term with no variables is called a ground term. \\
+    A term is a logical expression that refers to an object. For example,
+    \begin{equation*}
+      LeftLeg(John)
+    \end{equation*}
 
-2. Atomic sentences: an atomic sentence is formed from a predicate symbol optionally followed by a parenthesized list of terms, such as
+    A term with no variables is called a ground term.
+  \item Atomic sentences
 
-\begin{equation*}
-  Brother(Richard, John)
-\end{equation*}
+    An atomic sentence is formed from a predicate symbol optionally followed by a parenthesized list of terms, such as
+    \begin{equation*}
+      Brother(Richard, John)
+    \end{equation*}
+  \item Complex sentences
 
-3. Complex sentences \\
+    We can use logical connectives to construct more complex sentences, with the same syntax and semantics as in proportional calculus.
+  \item Quantifiers
+    \begin{itemize}
+      \item Universal quantification ($\forall$)
 
-We can use logical connectives to construct more complex sentences, with the same syntax and semantics as in proportional calculus. \\
+        Common mistake: Use conjunction ($land$) instead of implication ($\Rightarrow$) with $\forall$ will lead to an overly strong statement.
+      \item Existential quantification ($\exists$)
 
-4. Quantifiers \\
+        Common mistake: Use implication ($\Rightarrow$) instead of conjunction ($\land$) with $\exists$ will lead to a very weak statement.
+    \end{itemize}
+  \item Equality
+    \begin{equation*}
+      Father(John) = Henry
+    \end{equation*}
+\end{itemize}
 
-Uuniversial quantification ($\forall$) \\
-Common mistake: use conjunction instead of implication with $\forall$ will lead to an overly strong statement.  \\
-
-Existential quantification ($\exists$) \\
-Common mistake: use implication instead of conjunction with $\exists$ will lead to a very weak statement. \\
-
-5. Equality
-
-\begin{equation*}
-  Father(John) = Henry
-\end{equation*}
-
-6. Universal instantation (UI) \\
+2. Universal instantation (UI) \\
 
 Every instantiation of a univerally quantified sentence is entailed by it:
 
@@ -210,7 +224,7 @@ Every instantiation of a univerally quantified sentence is entailed by it:
 
 for any variable $v$ and ground term $g$. \\
 
-7. Exisential instantation (EI) \\
+3. Exisential instantation (EI) \\
 
 For any sentence $\alpha$, variable $v$, and constant symbol $k$ that does not appear elsewhere in the knowledge base:
 
@@ -226,7 +240,7 @@ E.g., $\exists x Crown(x) \land OnHead(x, John)$ yields:
 
 provided $C_1$ is a new constant symbol, called a Skolem constant.
 
-\section{Quantifying Uncertainty}
+\section*{Quantifying Uncertainty}
 
 1. Trying to use logic to cope with a domain like medical diagnosis fails for three main reasons: laziness, theoretical ignorance, practical ignorance. \\
 
@@ -262,7 +276,7 @@ P(Cause, Effect_1,..., Effect_n) =
 P(Cause) \prod_iP(Effect_i|Cause)
 \end{equation*}
 
-\section{Probabilistic Reasoning}
+\section*{Probabilistic Reasoning}
 
 1. CPT: conditional probability table. \\
 
@@ -438,7 +452,7 @@ P(x'_i|mb(X_i))
 
 Hence, to flip each variable $X_i$ conditioned on its Markov blanket, the number of multiplications required is equal to the number of $X_i$'s children.
 
-\section{Probabilistic Reasoning Over Time}
+\section*{Probabilistic Reasoning Over Time}
 
 1. States and observations
 \begin{itemize}
@@ -461,7 +475,7 @@ Hence, to flip each variable $X_i$ conditioned on its Markov blanket, the number
 = \boldsymbol{P}(\boldsymbol{E}_t | \boldsymbol{X}_t)
 \end{equation*}
 
-5.
+5. Hidden Markov Models
 \begin{equation*}
 \boldsymbol{P}(\boldsymbol{X}_{0:t} | \boldsymbol{E}_{1:t})
 = \boldsymbol{P}(\boldsymbol{X}_0)
@@ -490,7 +504,7 @@ $\argmax_{\boldsymbol{X}_{1:t}}\boldsymbol{P}(\boldsymbol{X}_{1:t} | \boldsymbol
     \boldsymbol{P}(\boldsymbol{X}_t | \boldsymbol{e}_{1:t}))
 \end{equation*}
 
-8.
+8. Forward backward equations
 \begin{eqnarray*}
 \boldsymbol{f}_{1:t+1}
 &=& \alpha \text{FORWARD}(\boldsymbol{f}_{1:t}, \boldsymbol{e}_{t+1}) \\
@@ -498,7 +512,7 @@ $\argmax_{\boldsymbol{X}_{1:t}}\boldsymbol{P}(\boldsymbol{X}_{1:t} | \boldsymbol
 &=& \alpha \text{BACKWARD}(\boldsymbol{b}_{k+2:t}, \boldsymbol{e}_{k+1})
 \end{eqnarray*}
 
-9. Hidden Markov Models
+9. Forward backward equations for HMM
 \begin{eqnarray*}
 \boldsymbol{f}_{1:t+1}
 &=& \alpha \boldsymbol{O}_{t+1} \boldsymbol{T}^T \boldsymbol{f}_{1:t} \\
@@ -506,7 +520,7 @@ $\argmax_{\boldsymbol{X}_{1:t}}\boldsymbol{P}(\boldsymbol{X}_{1:t} | \boldsymbol
 &=& \alpha \boldsymbol{T} \boldsymbol{O}_{k+1} \boldsymbol{b}_{k+2:t}
 \end{eqnarray*}
 
-\section{Making Simple Decisions}
+\section*{Making Simple Decisions}
 
 1. MEU \\
 
@@ -590,13 +604,15 @@ where $a$ and $b$ are constants and $a>0$. \\
 
 As in game-playing, in a deterministic environment an agent just needs a preference ranking on states-the numbers don't matter. This is called a value function or ordinal utility function.
 
-\section{Making Complex Decisions}
+\section*{Making Complex Decisions}
 
 1. Markov decision process (MDP) \\
 
 MDP is a sequential decision problem for a fully observable, stochastic environment with a Markovian transition model and additive reward. \\
 
 It consists of a set of states (with initial state $s_0$); a set ACTIONS($s$) of actions in each state; a transition model $P(s'| s, a)$; and a reward function $R(s)$. \\
+
+We assume the transitions are Markovian in the sense that the probability of reaching $s'$ from $s$ depends only on $s$ and not on the history of earlier states. \\
 
 2. Policy \\
 
@@ -678,5 +694,150 @@ U_{i+1}(s) = R(s) + \gamma \sum_{s'} P(s' | s, \pi(s)) U_i(s')
 \end{eqnarray*}
 
 The resulting algorithm is called modified policy iteration. It is often more efficient than standard policy iteration or value iteration.
+
+\section*{Learning From Examples}
+
+1. Learning \\
+
+An agent is learning if it improves its performance on future tasks after making observations about the world. \\
+
+2. Forms of learning \\
+
+Any component of an agent can be improved by learning from data. The improvements, and the techniques used to make them, depend on four major factors:
+\begin{itemize}
+  \item Which component is to be improved.
+  \item What prior knowledge that agent already has.
+  \item What representation is used for the data and the component.
+
+    Factored representation: a vector of attribute values.
+  \item What feedback is available to learn from.
+    \begin{itemize}
+      \item Unsupervised learning
+
+        In unsupervised learning the agent learns patterns in the input even though no explicit feedback is supplied. The most common unsupervised learning task is clustering: detecting potentially useful clusters of input examples.
+      \item Reinforcement learning
+
+        In reinforcement learning the agent learns from a series of reinforcement--reward or punishments.
+      \item Supervised learning
+
+        In supervised learning the agent observes some example input-output pairs and learns a function that maps from input to output.
+      \item Semi-supervised learning*
+
+        In semi-supervised learning we are given a few labeled examples and must make what we can of a large collection of unlabeled examples.
+    \end{itemize}
+\end{itemize}
+
+3. Learning decision trees \\
+
+A Boolean decision tree is logically equivalent to the assertion that the goal attribute is true if and only if the input attributes satisfy one of the paths leading to a leaf with value true:
+\begin{equation*}
+  Goal \Leftrightarrow (Path_1 \lor Path_2 \lor ...).
+\end{equation*}
+
+{\bf Entropy} is a measure of the uncertainty of a random variable; acquisition of information corresponds to a reduction in entropy.
+\begin{equation*}
+  Entropy: \; H(V) = \sum_k P(v_k) \log_2{\frac{1}{P(v_k)}}
+                   = -\sum_k P(V_k) \log_2{P(v_k)}
+\end{equation*}
+
+Define $B(q)$ as the entrop of a Boolean random variable that is true with probability $q$:
+\begin{equation*}
+  B(q) = -(q \log_2 {q} + (1-q) \log_2 (1-q)).
+\end{equation*}
+
+If a traning set contains $p$ positive examples and $n$ negative examples, then the entrop of the goal attribute on the whole set is
+\begin{equation*}
+  H(Goal) = B(\frac{p}{p+n}).
+\end{equation*}
+
+An attribute $A$ with $d$ distinct values divides the training set $E$ into subsets $E_1,...,E_d$. Each subset $E_k$ has $p_k$ positive examples and $n_k$ negative examples, then the expected entropy remaining after testing attribute $A$ is
+\begin{equation*}
+  Remainder(A) = \sum^d_{k=1} \frac{p_k+n_k}{p+n}B(\frac{p_k}{p_k+n_k}).
+\end{equation*}
+
+The {\bf inforamtion gain} from the attribute test on $A$ is the expected reduction in entropy:
+\begin{equation*}
+  Gain(A) = B(\frac{p}{p+n}) - Remainder(A).
+\end{equation*}
+
+4. From error rates to loss \\
+
+The {\bf loss function} is defined as the amount of utility lost by predictiong $h(x) = \hat {y}$ when the correct answer is $f(x) = y$:
+\begin{eqnarray*}
+  L(x, y, \hat{y})
+  &=& Utility(\text {result of using $y$ given an input $x$}) \\
+  &-& Utility(\text {result of using $\hat{y}$ given an input $x$})
+\end{eqnarray*}
+
+In general, small errors are better than large ones; two functions that implement that idea are the absolute value of the difference (called $L_1$ loss), and the square of the difference (called the $L_2$ loss), If we are content with the idea of minimizing error rate, we can use the $L_{0/1}$ loss function, which has a loss of 1 for an incorrect answer and is appropriate for discrete-valued outputs:
+
+\begin{itemize}
+  \item Absolute value loss: $L_1(y, \hat{y}) = |y - \hat{y}|$
+  \item Squared error loss: $L_2(y, \hat{y}) = (y - \hat{y})^2$
+  \item Absolute value loss: $L_{0/1}=0$ if $y = \hat{y}$, else 1
+\end{itemize}
+
+Let $\varepsilon$ be the set of all possible input-output examples. Then the expected generalization loss for a hypothesis $h$ (with respect to loss function $L$) is
+\begin{equation*}
+  GenLoss_L(h) = \sum_{(x,y) \in \varepsilon} L(y,h(x)) P(x,y),
+\end{equation*}
+
+and the best hypothesis, $h^*$, is the one with the minimum expected generalization loss:
+\begin{equation*}
+  h^* = \argmin_{h \in \mathcal{H}} GenLoss_L (h).
+\end{equation*}
+
+Because $P(x,y)$ is not known, the learning agnet can only estimate generalization loss with empirical loss on a set of examples, $E$:
+\begin{equation*}
+  EmpLoss_L(h) = \frac{1}{N} \sum_{(x,y) \in E} L(y,h(x)) P(x,y).
+\end{equation*}
+
+The estimated best hypothesis, $\hat{h}^*$, is the one with the minimum expected generalization loss:
+\begin{equation*}
+  \hat{h}^* = \argmin_{h \in \mathcal{H}} GenLoss_L (h).
+\end{equation*}
+
+The process of explicityly penalizing complex hypotheses is called {\bf regularization} (because it looks for a function that is more regular, or less complex):
+\begin{eqnarray*}
+  Cost(h) &=& EmpLoss(h) + \lambda Complexity(h) \\
+  \hat{h}^* &=& \argmin_{h \in \mathcal{H}} Cost(h).
+\end{eqnarray*}
+
+5. Artificial neural networks \\
+
+Neural networks are composed of nodes or units connected by directed links. A link from unit $i$ to unit $j$ serves to propagate the activation $a_i$ from $i$ to $j$. Each link also has a numeric weight $w_{i,j}$ associated with it, which determines the strength and sign of the connection. Just as an linear regression models, each unit has a dummy input $a_0=1$ with an associated weight $w_{0,j}$. Each unit $j$ first computes a weighted sum of its input:
+\begin{equation*}
+  in_j = \sum^n_{i=0} w_{i,j} a_i.
+\end{equation*}
+
+Then it applies an activation function $g$ to this sum derive the output:
+\begin{equation*}
+  a_j = g(in_j) = g \left( \sum^n_{i=0} w_{i,j}a_i \right).
+\end{equation*}
+
+The activation function $g$ is typically either a hard threshold, in which case the unit is called a {\bf perceptron}, or a logistic function, in which case the term {\bf sigmoid perceptron} is sometimes used. Both of these nonlinear activation function ensure the important property that the entire network of units can represent a nonlinear function. \\
+
+A feed-forward network has connections only in one direction--that is, it forms a directed acyclic graph. A recurrent network, on the other hand, feeds its outputs back into its own inputs. \\
+
+6. Support vector machine \\
+
+Instead of minimizing expected empirical loss on the training data, SVMs attempt to minimize expected generalization loss. \\
+
+Notations: SVMs use the convention that class labels are +1 and -1.The separator is defined as the set of points $\{\boldsymbol{x}: \boldsymbol{w} \cdot \boldsymbol{x} + b = 0 \}$. \\
+
+SVMs can be represented in the form of dual representation, in which the optimal solution is found by solving
+\begin{equation*}
+  \argmax_{\alpha} \sum_j \alpha_j - \frac{1}{2} \sum_{j,k} \alpha_j \alpha_k y_j y_k (\boldsymbol{x}_j, \boldsymbol{x}_k)
+\end{equation*}
+
+subject to the constraints $\alpha_j \ge 0$ and $\sum_j \alpha_j y_j = 0$. This is a quadratic programming optimization problem. Once we have found the vector $\alpha$ we can get back to $\boldsymbol{w}$ with the equation $\boldsymbol{w} = \sum_j \alpha_j \boldsymbol{x}_j$, or we can stay in the dual representation. Once the optimal $\alpha_j$ have been calculated, it is
+\begin{equation*}
+  h(\boldsymbol{x})
+  = sign \left( \sum_j \alpha_j y_j (\boldsymbol{x \cdot x_j}) - b \right).
+\end{equation*}
+
+Note that the weights $\alpha_j$ associated with each data point are zero expect for {\bf support vectors}--the points closet to the separator. (They are called ``support'' vectors because they ``hold up'' the separating plane). \\
+
+The expression $(\boldsymbol{x_j \cdot x_k})^2$ is called a {\bf kernel function}, and is usually written as $K(\boldsymbol{x_j \cdot x_k})$.
 
 \end{document}
