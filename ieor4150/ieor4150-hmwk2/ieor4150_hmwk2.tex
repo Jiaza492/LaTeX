@@ -1,0 +1,97 @@
+\documentclass[12pt]{article}
+\parindent=.25in
+
+\setlength{\oddsidemargin}{0pt}
+\setlength{\textwidth}{440pt}
+\setlength{\topmargin}{0in}
+
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+
+\title{IEOR 4150 Homework 2}
+\author{Mengqi Zong $<mz2326@columbia.edu>$}
+
+\begin{document}
+
+\maketitle
+
+\setlength{\parindent}{0in}
+
+4. \\
+a) \\
+b)
+\begin{eqnarray*}
+P(2 < X \le 4)
+&=& F(4) - F(2) \\
+&=& 1 - \frac {11}{12} \\
+&=& \frac {1}{12}
+\end{eqnarray*}
+c)
+\begin{eqnarray*}
+P(X < 3)
+&=& F(3^-) \\
+&=& \frac {11}{12}\\
+\end{eqnarray*}
+d)
+\begin{eqnarray*}
+P(X == 1)
+&=& F(1) - F(1^-) \\
+&=& \frac {2}{3} - \frac {1}{2} \\
+&=& \frac {1}{6}
+\end{eqnarray*}
+
+6. We first compute factor $\lambda$
+\begin{eqnarray*}
+\int_{-\infty}^{+\infty} f(x) dx
+&=& \int_{-\infty}^{0} f(x) dx + \int_{0}^{+\infty} f(x) dx \\
+&=& \int_{-\infty}^{0} 0 dx + \int_{0}^{+\infty} \lambda e^{-x/100} dx \\
+&=& \int_{0}^{+\infty} \lambda e^{-x/100} dx \\
+&=& -100 \lambda e^{-x/100}|_0^{+\infty} \\
+&=& 0 + 100 \lambda = 1 \\
+\Longrightarrow \lambda = \frac {1}{100} \\
+\end{eqnarray*}
+Then we get
+\begin{eqnarray*}
+P(50 \le X \le 150)
+&=& \int_{50}^{150} f(x) dx \\
+&=& \int_{50}^{150} \frac {1}{100} e^{-x/100} dx \\
+&=& -e^{-x/100}|_{50}^{150} \\
+&=& e^{-1/2}-e^{-3/2}
+\end{eqnarray*}
+and
+\begin{eqnarray*}
+P(X < 100)
+&=& \int_{-\infty}^{100} f(x) dx \\
+&=& \int_{-\infty}^{0} f(x) dx + \int_{0}^{100} f(x) dx \\
+&=& \int_{-\infty}^{0} 0 dx + \int_{0}^{100} \frac {1}{100} e^{-x/100} dx \\
+&=& \int_{0}^{100} \frac {1}{100} e^{-x/100} dx \\
+&=& -e^{-x/100}|_0^{100} \\
+&=& -e^{-1} + 1 \\
+&=& 1 - \frac {1}{e}
+\end{eqnarray*}
+
+8. We first compute factor $c$
+\begin{eqnarray*}
+\int_{-\infty}^{+\infty} f(x) dx
+&=& \int_{-\infty}^{0} f(x) dx + \int_{0}^{+\infty} f(x) dx \\
+&=& \int_{-\infty}^{0} 0 dx + \int_{0}^{+\infty} c e^{-2x} dx \\
+&=& \int_{0}^{+\infty} c e^{-2x} dx \\
+&=& - \frac {1}{2} c e^{-2x}|_0^{+\infty} \\
+&=& \frac {1}{2} c = 1 \\
+\Longrightarrow c = 2 \\
+\end{eqnarray*}
+Then we get
+\begin{eqnarray*}
+P(X > 2)
+&=& \int_{2}^{+\infty} f(x) dx \\
+&=& \int_{2}^{+\infty} 2 e^{-2x} dx \\
+&=& -e^{-2x}|_{2}^{+\infty} \\
+&=& 0 + e^{-4} \\
+&=& \frac {1}{e^4}
+\end{eqnarray*}
+
+9. \\
+
+
+\end{document}
