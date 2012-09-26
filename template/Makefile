@@ -11,7 +11,7 @@
 # location.
 #
 
-PROGRAM = temp
+PROGRAM = template
 
 #
 # The DVI macro defines the LaTeX compiler
