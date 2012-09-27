@@ -110,7 +110,20 @@ From Table-\ref{tab:p3_cov}, we can see that, on one hand, when $h$ is too small
 
 \section{Problem 4}
 
+For the first approach, consider Fig-\ref{fig:p4_1}. In Fig-\ref{fig:p4_1}, $p1$, $p2$, $p3$ denote 3 points from three different classes $C_1, C_2, C_3$. $y_1, y_2, y_3$ denote the 3 hyperplanes for class $C_1, C_2, C_3$. $R_{1,2}$ is the region of the upper intersection of $y_1$ and $y_2$. We could show that $\forall p \in R_{1,2}$, $y_1(p) > 0$ and $y_2(p) > 0$. This means that $p$ belongs to both class $C_1$ and $C_2$, which is impossible. So the first approach does not work.
 
+\begin{figure}[ht!]
+  \centering
+  \includegraphics[width=0.7 \textwidth]{p4_1}
+  \caption{P4-1 counter example for the first approach \label{fig:p4_1}}
+\end{figure}
 
+For the second approach, consider Fig-\ref{fig:p4_2}. In Fig-\ref{fig:p4_2}, $p1$, $p2$, $p3$ denote three points from three different classes $C_1, C_2, C_3$. $y_{1,2}, y_{2,3}, y_{3,1}$ denote the three hyperplanes for pair of classes $(C_1, C_2), (C_2, C_3), (C_3,C_1)$. $R_{1,2}$ is the region of the upper intersection of $y_{1,2}$ and $y_{2,3}$. We could show that $\forall p \in R_{1,2}$, $y_{1,2}(p) > 0$, $y_{2,3}(p) < 0$ and $y_{3,1} > 0$. That is, $p$ belongs to both class $C_1$ and $C_2$, which is impossible. So the second approach also does not work.
+
+\begin{figure}[ht!]
+  \centering
+  \includegraphics[width=0.7 \textwidth]{p4_2}
+  \caption{P4-2 counter example for the second approach \label{fig:p4_2}}
+\end{figure}
 
 \end{document}
