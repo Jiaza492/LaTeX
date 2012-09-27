@@ -5,6 +5,7 @@
 \setlength{\textwidth}{440pt}
 \setlength{\topmargin}{0in}
 
+\usepackage[dvips]{graphicx}
 \usepackage{amssymb}
 \usepackage{amsfonts}
 \usepackage{amsmath}
@@ -21,7 +22,95 @@
 
 \section{Problem 1}
 
-The data set in the file {\bf regression_dataset.txt} has 10 samples. 
+Based on the results of several experiments, the best degree of polynomial should be 5.
+
+The data set in the file {\bf regression\_dataset.txt} has 10 samples. Intuitively, degree $d$ should be no more than 9. And I experimented with $d = 1, 2, ..., 7$, using both leave-one-out cross-validation (LOOCV) and 2-fold cross-validation.
+
+For leave-one-out cross-validation, The losses with various choices of $d$ are shown in Fig-\ref{fig:p1_loocv}. And the polynomial fit with degree 4 achieves the minimum loss: 0.137. The corresponding weights are: $w_0 = 0.2585, w_1 = 3.4502, w_2 = -8.9993, w_3 = -2.6477, w_4 = 9.0503$. And the corresponding plot is shown in Fig-\ref{fig:fit}.
+
+\begin{figure}[ht!]
+  \centering
+  \includegraphics[width=0.7 \textwidth]{p1_loocv}
+  \caption{P1 Losses of LOOCV for various degrees \label{fig:p1_loocv}}
+\end{figure}
+
+\begin{figure}[ht!]
+  \centering
+  \includegraphics[width=0.7 \textwidth]{p1_fit}
+  \caption{P1 Fit Plot for d = 5 \label{fig:p1_fit}}
+\end{figure}
+
+For 2-fold cross-validation, the loss depends heavily on how the 2-folds are formed. As a result, the loss varies with runs. This is the main reason to use the result from leave-one-out cross-validation. Losses of one 2-fold cross-validation run is shown in Fig-\ref{fig:p1_tfcv}. And the polynomial fit with degree 4 achieves the minimum loss: 0.019. The corresponding weights are: $w_0 = -1.3899, w_1 = 27.4013, w_2 = -122.3515, w_3 = 213.1881, w_4 = -132.1107$.
+
+\begin{figure}[ht!]
+  \centering
+  \includegraphics[width=0.7 \textwidth]{p1_tfcv}
+  \caption{P1 Losses of TFCV for various degrees \label{fig:p1_tfcv}}
+\end{figure}
+
+\section{Problem 2}
+
+Following the instruction, I fit the data in ``dataset1.mat'' with the first 100 points as training and the second 100 points as testing and set the RBF's sigma parameter equal to 1.0. The training error is 0.0463, and the testing error is 0.0742. The corresponding fit graph is shown in Fig-\ref{fig:p2_s1}.
+
+\begin{figure}[ht!]
+  \centering
+  \includegraphics[width=0.7 \textwidth]{p2_s1}
+  \caption{P2 RBF Fit with $\sigma = 1.0$ \label{fig:p2_s1}}
+\end{figure}
+
+Then several experiments with various sigma parameters are performed. For performance evaluation, I use the testing error as the performance indicator. The results are shown in Table-\ref{tab:p2_exp}.
+
+\begin{table}[ht!]
+  \begin{center}
+    \begin{tabular}{|c|c|c|c|c|c|c|c|c|c|}
+      \hline
+      $\sigma$	  &   0.5  &  1.0   &  10    &  30    &  50   
+      	          &   100  &  1000  & 10000  & 100000 \\ \hline
+      Test Error  & 0.0769 & 0.0742 & 0.0716 & 0.0635 & 0.0604
+      		  & 0.0605 & 0.4040 & 0.4032 & 0.9855 \\ \hline
+    \end{tabular}
+  \end{center}
+  \caption{P2 Results\label{tab:p2_exp}}
+\end{table}
+
+From Table-\ref{tab:p2_exp}, we can see that when $\sigma = 50$, we get the smallest testing error 0.0604 among all the $\sigma$ I have tried. Intuitively, the performance gets better as $\sigma$ approaches 50. The fit plot with $\sigma = 0.5$ is shown in Fig-\ref{fig:p2_s05}. The fit plot with $\sigma = 100000$ is shown in Fig-\ref{fig:p2_s100000}.
+
+\begin{figure}[ht!]
+  \centering
+  \includegraphics[width=0.7 \textwidth]{p2_s05}
+  \caption{P2 RBF Fit with $\sigma = 0.5$ \label{fig:p2_s05}}
+\end{figure}
+
+\begin{figure}[ht!]
+  \centering
+  \includegraphics[width=0.7 \textwidth]{p2_s100000}
+  \caption{P2 RBF Fit with $\sigma = 100000$ \label{fig:p2_s100000}}
+\end{figure}
+
+\section{Problem 3}
+
+The perceptron algorithm is implemented using stochastic gradient descent. Since the perceptron is implemented with random initialization, the result varies from every run. 
+
+Then several experiments with various $h$ parameters are performed. Both the perceptron loss and classification is 0 for each $h$ parameter. This indicates that all models can correctly classify all the data points. Here, we will try to explore the relationship between $h$ and iteration to converge. The results are shown in Table-\ref{tab:p3_cov}.
+
+\begin{table}[ht!]
+  \begin{center}
+    \begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|}
+      \hline
+      $h$	  & 0.05 & 0.1 & 0.2 & 0.4 & 0.8 & 1  & 2  &  4
+      	          &   8  &  16 \\ \hline
+      Iteration   &  20  &  2  & 14  & 13  & 12  & 13 & 17 & 13
+      		  &  14  &  20 \\ \hline
+    \end{tabular}
+  \end{center}
+  \caption{P3 Results\label{tab:p3_cov}}
+\end{table}
+
+From Table-\ref{tab:p3_cov}, we can see that, on one hand, when $h$ is too small, it takes many iteration to converge since the update for each step is small. On the other hand, when $h$ is too large, it also takes many iteration to converge sine $\theta$ will wander around $\theta^*$. Also, we notice that the convergence speed will depend on the initiation value of $\theta$. For $h = 0.1$, it only takes 2 iteration to converge. This probably dues to a good initiation state of $\theta$.
+
+\section{Problem 4}
+
+
 
 
 \end{document}
