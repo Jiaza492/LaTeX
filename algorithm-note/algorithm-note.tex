@@ -23,7 +23,8 @@
 
 \section{Growth of Functions}
 
-1. Asymptotic Notation
+\subsection{Asymptotic notation}
+
 \begin{eqnarray*}
   \Theta (g(n)) = \{ f(n): && \text{there exist positive constants
     $c_1$, $c_2$, and $n_0$ such that} \\
@@ -36,7 +37,8 @@
   && 0 \le cg(n) \le f(n) \text{ for all } n \ge n_0 \}
 \end{eqnarray*}
 
-2. 
+\subsection{Common functions}
+
 \begin{eqnarray*}
   e^x &=& \sum_0^{\infty} \frac {x^i}{i!} \\
   e^x &=& \lim_{n \rightarrow \infty} (1 + \frac {x}{n})^n \\
@@ -44,6 +46,19 @@
           \left( 1 + \Theta \left( \frac {1}{n} \right) \right)
 \end{eqnarray*}
 
+\section{Recurrences}
 
+\subsection{The master method}
+
+Let $a \ge 1$ and $b \ge 1$ be constants, let $f(n)$ be a function, and let $T(n)$ be defined on the nonnegative integers by recurrence
+\begin{equation*}
+  T(n) = aT(n/b) + f(n),
+\end{equation*}
+where we interpret $n/b$ to mean either $\lfloor n/b \rfloor$ or $\lceil n/b \rceil$. Then $T(n)$ can be bounded asymptotically as follows.
+\begin{enumerate}
+  \item If $f(n) = O(n^{\log_b^a - \epsilon})$ for some constant $\epsilon > 0$, then $T(n) = \Theta (n^{\log_b a})$.
+  \item If $f(n) = O(n^{\log_b^a})$, then $T(n) = \Theta (n^{\log_b a} \lg n)$.
+  \item If $f(n) = O(n^{\log_b^a + \epsilon})$ for some constant $\epsilon > 0$, and if $af(n/b) \le cf(n)$ for some constant $c < 1$ and all sufficiently large $n$, then $T(n) = \Theta \left( f(n) \right)$.
+\end{enumerate}
 
 \end{document}
