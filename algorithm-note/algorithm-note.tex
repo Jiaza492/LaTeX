@@ -23,6 +23,27 @@
 
 \section{Growth of Functions}
 
-1. 
+1. Asymptotic Notation
+\begin{eqnarray*}
+  \Theta (g(n)) = \{ f(n): && \text{there exist positive constants
+    $c_1$, $c_2$, and $n_0$ such that} \\
+  && 0 \le c_1 g(n) \le f(n) \text{ for all } n \ge n_0 \} \\
+  O(g(n)) = \{ f(n): && \text{there exist positive constants
+    $c$ and $n_0$ such that} \\
+  && 0 \le f(n) \le cg(n) \text{ for all } n \ge n_0 \} \\
+  \Omega (g(n)) = \{ f(n): && \text{there exist positive constants
+    $c$ and $n_0$ such that} \\
+  && 0 \le cg(n) \le f(n) \text{ for all } n \ge n_0 \}
+\end{eqnarray*}
+
+2. 
+\begin{eqnarray*}
+  e^x &=& \sum_0^{\infty} \frac {x^i}{i!} \\
+  e^x &=& \lim_{n \rightarrow \infty} (1 + \frac {x}{n})^n \\
+  n!  &=& \sqrt {2 \pi n} \left(\frac {n}{e} \right)^n 
+          \left( 1 + \Theta \left( \frac {1}{n} \right) \right)
+\end{eqnarray*}
+
+
 
 \end{document}
