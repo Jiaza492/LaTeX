@@ -19,7 +19,150 @@
 
 \setlength{\parindent}{0in}
 
-\section*{Problem 1}
+\section*{Chapter 4}
+
+22. \\
+From the description, we can get the sample space is
+\begin{eqnarray*}
+  S = \{ HHH, HHT, HTH, HTT, THH, THT, TTH, TTT\}
+\end{eqnarray*}
+where $H$ means head and $T$ means tail. \\
+
+We first compute the probabilities associated with the values that X can take on
+\begin{eqnarray*}
+  P(X = -3) &=& \frac {|\{ TTT \}|}{|S|} = \frac {1}{8} \\
+  P(X = -1) &=& \frac {|\{ HTT, THT, TTH \}|}{|S|} = \frac {3}{8} \\
+  P(X =  1) &=& \frac {|\{ HHT, HTH, THH \}|}{|S|} = \frac {3}{8} \\
+  P(X =  3) &=& \frac {|\{ HHH \}|}{|S|} = \frac {1}{8} \\
+\end{eqnarray*}
+Then we get
+\begin{eqnarray*}
+  E(X) &=& \sum_x x Pr(x) \\
+       &=& (-3) \cdot \frac {1}{8} + (-1) \cdot \frac {3}{8}
+           + 1 \cdot \frac {3}{8} + 3 \cdot \frac {1}{8} \\
+       &=& 0
+\end{eqnarray*}
+
+34. \\
+a)
+\begin{eqnarray*}
+  F(x) &=& \int_0^x e^{-x} dx \\
+       &=& -e^{-x}|_0^x \\
+       &=& 1 - e^{-x}
+\end{eqnarray*}
+To find the median, we have
+\begin{eqnarray*}
+  F(m) &=& \frac {1}{2} \\
+  1 - e^{-m} &=& \frac {1}{2} \\ 
+  e^{-m} &=& \frac {1}{2} \\
+  m &=& \ln 2
+\end{eqnarray*}
+b)
+\begin{eqnarray*}
+  F(x) &=& \int_0^x 1 dx \\
+       &=& x|_0^x \\
+       &=& x
+\end{eqnarray*}
+To find the median, we have
+\begin{eqnarray*}
+  F(m) &=& \frac {1}{2} \\
+  x &=& \frac {1}{2} \\ 
+\end{eqnarray*}
+
+45. \\
+a) The marginal probability distribution of $X_1$ is
+\begin{eqnarray*}
+  f(X_1 = 0) &=& f(X_1 = 0, X_2 = 1) + f(X_1 = 0, X_2 = 2) = \frac {3}{16} \\ 
+  f(X_1 = 1) &=& f(X_1 = 1, X_2 = 1) + f(X_1 = 1, X_2 = 2) = \frac {1}{8} \\ 
+  f(X_1 = 2) &=& f(X_1 = 2, X_2 = 1) + f(X_1 = 2, X_2 = 2) = \frac {1}{4} \\ 
+  f(X_1 = 3) &=& f(X_1 = 3, X_2 = 1) + f(X_1 = 3, X_2 = 2) = \frac {3}{8}
+\end{eqnarray*}
+The marginal probability distribution of $X_2$ is
+\begin{eqnarray*}
+  f(X_2 = 1) &=& f(X_1 = 0, X_2 = 1) + f(X_1 = 1, X_2 = 1) 
+    + f(X_1 = 2, X_2 = 1) + f(X_1 = 3, X_2 = 1) = \frac {1}{2} \\ 
+  f(X_2 = 2) &=& f(X_1 = 0, X_2 = 2) + f(X_1 = 1, X_2 = 2)
+    + f(X_1 = 2, X_2 = 2) + f(X_1 = 3, X_2 = 2) = \frac {1}{2}
+\end{eqnarray*}
+b)
+\begin{eqnarray*}
+  E[(X_1)] &=& \sum_{x_1} x_1 f(x_1) \\
+           &=& 0 \cdot \frac {3}{16} + 1 \cdot \frac{1}{8}
+               + 2 \cdot \frac {1}{4} + 3 \cdot \frac{3}{8} \\
+           &=& 1.75 \\
+  E[(X_2)] &=& \sum_{x_2} x_2 f(x_2) \\
+           &=& 1 \cdot \frac{1}{2} + 2 \cdot \frac {1}{2} \\
+           &=& 1.5 \\
+  Var(X_1) &=& E[(X_1 - \mu_{X_1})^2] \\
+           &=& (0 - 1.75)^2 \cdot \frac {3}{16}
+               + (1 - 1.75)^2 \cdot \frac {1}{8}
+               + (2 - 1.75)^2 \cdot \frac {1}{4}
+               + (3 - 1.75)^2 \cdot \frac {3}{8} \\
+           &=& \frac {319}{196} \\
+  Var(X_2) &=& E[(X_1 - \mu_{X_2})^2] \\
+           &=& (1 - 1.5)^2 \cdot \frac {1}{2}
+               + (2 - 1.5)^2 \cdot \frac {1}{2} \\
+           &=& \frac {1}{4} \\
+  Cov(X_1, X_2)
+  &=& E[(X_1 - \mu_{X_1})(X_2 - \mu_{X_2})] \\
+  &=& (0 - 1.75)(1 - 1.5) \cdot \frac {3}{16} \cdot \frac {1}{2}
+      + (1 - 1.75)(1 - 1.5) \cdot \frac {1}{8} \cdot \frac {1}{2} \\
+  &+& (2 - 1.75)(1 - 1.5) \cdot \frac {1}{4} \cdot \frac {1}{2}
+      + (3 - 1.75)(1 - 1.5) \cdot \frac {3}{8} \cdot \frac {1}{2} \\
+  &+& (0 - 1.75)(2 - 1.5) \cdot \frac {3}{16} \cdot \frac {1}{2}
+      + (1 - 1.75)(2 - 1.5) \cdot \frac {1}{8} \cdot \frac {1}{2} \\
+  &+& (2 - 1.75)(2 - 1.5) \cdot \frac {1}{4} \cdot \frac {1}{2}
+      + (3 - 1.75)(2 - 1.5) \cdot \frac {3}{8} \cdot \frac {1}{2} \\
+  &=& 0
+\end{eqnarray*}
+
+46. \\
+a)
+\begin{eqnarray*}
+  \int_{-\infty}^{+\infty} f(z) dz
+  &=& \int_{0}^{1} kz^2 dz + \int_{1}^{\frac {4}{3}} 1 dz \\
+  &=& \frac {k}{3} z^3|_0^1 + z|_1^{\frac {4}{3}} \\
+  &=& \frac {k}{3} (1 - 0) + (\frac {4}{3} - 1) \\
+  &=& \frac {k}{3} + \frac{1}{3} \\
+  &=& \frac {k+1}{3} = 1 \\
+  &\Longrightarrow& k = 2
+\end{eqnarray*}
+b)
+\begin{eqnarray*}
+  P(b)
+  &=&\int_{0}^{1} 2 z^2 dz \\
+  &=& \frac {2}{3} z^3|_0^1 \\
+  &=& \frac {2}{3}
+\end{eqnarray*}
+c)
+\begin{eqnarray*}
+  E[(z)]
+  &=& \int_{-\infty}^{+\infty} zf(z) dz \\
+  &=& \int_{0}^{1} 2z^3 dz + \int_{1}^{\frac {4}{3}} z dz \\
+  &=& \frac {1}{2} z^4|_0^1 + \frac {1}{2} z^2|_1^{\frac {4}{3}} \\
+  &=& \frac {1}{2} + \frac {7}{18} \\
+  &=& \frac {8}{9} \\
+  Var(z)
+  &=& \int_{-\infty}^{+\infty} (z - \frac {8}{9})^2 f(z) dz \\
+  &=& \int_{0}^{1} (z - \frac {8}{9})^2 2z^2 dz
+  + \int_{1}^{\frac {4}{3}} (z - \frac {8}{9})^2 dz \\
+  &=& \int_{0}^{1} (2 z^4 - \frac {32}{9} z^3 + \frac {128}{81} z^2) dz
+  + \int_{1}^{\frac {4}{3}} (z^2 - \frac {16}{9} z + \frac {64}{81}) dz \\
+  &=& (\frac {2}{5} z^5 - \frac {8}{9} z^4 + \frac {128}{243} z^3)|_0^1
+  + (\frac{1}{3} z^3 - \frac{8}{9} z^2 + \frac{64}{81} z)|_1^{\frac {4}{3}} \\
+  &=& \frac {2}{5} - \frac {8}{9} + \frac {128}{243}
+  + \frac {1}{3} (\frac{64}{27} - 1) - \frac{8}{9}(\frac{16}{9} - 1)
+  + \frac{64}{81} (\frac {4}{3} - 1) \\
+  &=& \frac {1}{15}
+\end{eqnarray*}
+
+50. \\
+
+
+
+53. \\
+
+55. \\
 
 
 \end{document}
