@@ -331,5 +331,84 @@ RANDOMIZED-QUICKSORT($A, p, r$)
 
 The expected running time of RANDOMIZED-QUICKSORT is $O(n \lg n)$.
 
+\section{Sorting in Linear Time}
+
+\subsection{Lower bounds for sorting}
+
+Any comparison sort algorithm requires $\Omega (n \lg n)$ comparisons in the worst case.
+
+\subsection{Counting sort}
+
+COUNTING-SORT($A, B, k$)
+\begin{algorithmic}[1]
+\State let $C[0..k]$ be a new array
+\For {$i = 0 \textbf { to } k$}
+	\State $C[i] = 0$
+\EndFor
+\For {$j = 1 \textbf { to } A.length$}
+	\State $C[A[j]] = C[A[j]] + 1$
+\EndFor
+\State // $C[i]$ now contains the number of elements equal to $i$.
+\For {i = 1 \textbf { to } k}
+	\State $C[i] = C[i] + C[i-1]$
+\EndFor
+\State // $C[i]$ now contains the number of elements less than or equal to $i$.
+\For {j = A.length \textbf { downto } 1}
+	\State $B[C[A[j]]] = A[j]$
+        \State $C[A[j]] = C[A[j]] - 1$
+\EndFor
+\end{algorithmic}
+
+\subsection{Radix sort}
+
+RADIX-SORT($A, d$)
+\begin{algorithmic}[1]
+\For {$i = 1 \textbf { to } d$}
+	\State use a stable sort to sort array $A$ on digit $i$
+\EndFor
+\end{algorithmic}
+
+Given $n$ $d-$digit numbers in which each digit can take on up to $k$ possible values, RADIX-SORT correctly sorts these numbers in $\Theta(d(n+k))$ time if the stable sort it uses takes $\Theta (n+k)$. \\
+
+When $d$ is constant and $k = O(n)$, we can make radix sort run in linear time. More generally, we have some flexibility in how to break each key into digits.
+
+\subsection{Bucket sort}
+
+\textbf {Bucket sort} assumes that the input is drawn from a uniform distribution and has an average-case running time of $O(n)$. Bucket sort divides the interval $[0,1)$ into $n$ equal-sized subintervals, or \textbf {buckets}, and then distributes the $n$ input numbers into the buckets. \\
+
+Our code for bucket sort assumes that the input is an $n$-element array $A$ and that each element $A[i]$ in the array satisfies $0 \le A[i] < 1$. The code requires an auxiliary array $B[0..n-1]$ of linked lists (buckets) and assumes that there is a mechanism for maintaining such lists. \\
+
+BUCKET-SORT($A$)
+\begin{algorithmic}[1]
+\State let $B[0..n-1]$ be a new array
+\State $n = A.length$
+\For {$i = 0 \textbf { to } n-1$}
+	\State make $B[i]$ an empty list
+\EndFor
+\For {$i = 1 \textbf { to } n$}
+	\State insert $A[i]$ into list $B[\lfloor nA[i] \rfloor ]$
+\EndFor
+\For {$i = 0 \textbf { to } n-1$}
+	\State sort list $B[i]$ with insertion sort
+\EndFor
+\State concatenate the lists $B[0], B[1], \dots, B[n-1]$ together in order
+\end{algorithmic}
+
+Since insertion sort runs in quadratic time, the running time of bucket sort is
+\begin{equation*}
+  T(n) = \Theta(n) + \sum_{i=0}^{n-1} O(n_i^2).
+\end{equation*}
+
+We now analyze the average-case running time of bucket sort, by computing the expected value of the running time, where we take the expectation over the input distribution. We have
+\begin{eqnarray*}
+  E[T(n)]
+  &=& E \left[ \Theta (n) + \sum_{i=0}^{n-1} O(n_i)^2 \right] \\
+  &=& \Theta (n) + \sum_{i=0}^{n-1} E \left[ O(n_i)^2 \right] \\
+  &=& \Theta (n) + \sum_{i=0}^{n-1} E \left( O[n_i]^2 \right) \\
+  &=& \Theta (n) + \sum_{i=0}^{n-1} (2 - 1/n) \\
+  &=& \Theta (n)
+\end{eqnarray*}
+
 
 \end{document}
+
