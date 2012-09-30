@@ -28,8 +28,8 @@
 \subsection{Insertion sort}
 
 INSERTION-SORT(A)
-\begin{algorithmic}
-\For {$j = 2 \to A.legnth$}
+\begin{algorithmic}[1]
+\For {$j = 2 \textbf { to } A.legnth$}
 	\State $key = A[j]$
         \State // Insert $A[j]$ into the sorted sequence $A[1..j-1]$.
         \State $i = j - 1$
@@ -44,21 +44,21 @@ INSERTION-SORT(A)
 \subsection{Merge sort}
 
 MERGE($A, p, q, r$)
-\begin{algorithmic}
+\begin{algorithmic}[1]
 \State $n_1 = q - p + 1$
 \State $n_2 = r - q$
 \State let $L[1..n_1+1]$ and $R[1..n_2+1]$ be new arrays
-\For {$i = 1 \to n_1$}
+\For {$i = 1 \textbf { to } n_1$}
 	\State $L[i] = A[p+i-1]$
 \EndFor
-\For {$j = 1 \to n_2$}
+\For {$j = 1 \textbf { to } n_2$}
 	\State $R[j] = A[q+j]$
 \EndFor
 \State $L[n_1 + 1] = \infty$
 \State $R[n_2 + 1] = \infty$
 \State $i = 1$
 \State $j = 1$
-\For {$k = p \to r$}
+\For {$k = p \textbf { to } r$}
 	\If {$L[i] \le R[j]$}
         	\State $A[k] = L[i]$
                 \State $i = i + 1$
@@ -70,8 +70,8 @@ MERGE($A, p, q, r$)
 \end{algorithmic}
 
 MERGE-SORT($A, p, r$)
-\begin{algorithmic}
-\If $p < r$
+\begin{algorithmic}[1]
+\If {$p < r$}
 	\State $q = \lfloor (p+r)/2 \rfloor$
         \State MERGE-SORT($A, p, q$)
         \State MERGE-SORT($A, q+1, r$)
@@ -131,17 +131,17 @@ Like merge sort, but unlike insertion sort, heapsort's running time is $O(n \lg 
 \subsection{Heaps}
 
 PARENT($i$)
-\begin{algorithmic}
+\begin{algorithmic}[1]
 \State \textbf {return} $\lfloor i/2 \rfloor$
 \end{algorithmic}
 
 LEFT($i$)
-\begin{algorithmic}
+\begin{algorithmic}[1]
 \State \textbf {return} $2i$
 \end{algorithmic}
 
 RIGHT($i$)
-\begin{algorithmic}
+\begin{algorithmic}[1]
 \State \textbf {return} $2i+1$
 \end{algorithmic}
 
@@ -156,7 +156,7 @@ Viewing a heap as a tree, we define the {\bf height} of a node in a heap to be t
 \subsection{Maintaining the heap property}
 
  MAX-HEAPIFY($A,i$)
-\begin{algorithmic}
+\begin{algorithmic}[1]
 \State $l = \text {LEFT}(i)$
 \State $r = \text {RIGHTT}(i)$
 \If {$l \le A.heap-size$ and $A[l] > A[i]$}
@@ -182,9 +182,9 @@ The solution to this recurrence is $T(n) = O(\lg n)$. Alternatively, we can char
 \subsection{Building a heap}
 
 BUILD-MAX-HEAP(A)
-\begin{algorithmic}
+\begin{algorithmic}[1]
 \State $A.heap-size = A.length$
-\For $i = \lfloor A.length/2 \rfloor \text {{ \bf downto} } 1$
+\For {$i = \lfloor A.length/2 \rfloor \text {{ \bf downto} } 1$}
 	\State MAX-HEAPIFY($A, i$)
 \EndFor
 \end{algorithmic}
@@ -201,9 +201,9 @@ The time required by MAX-HEAPIFY when called on a node of height $h$ is $O(h)$, 
 \subsection{The heapsort algorithm}
 
 HEAPSORT(A)
-\begin{algorithmic}
+\begin{algorithmic}[1]
 \State BUILD-MAX-HEAP(A)
-\For $i = A.length \text {{ \bf downto} } 2$
+\For {$i = A.length \text {{ \bf downto} } 2$}
 	\State exchange $A[1]$ with $A[i]$
         \State $A.heap-size = A.heap-size - 1$
 	\State MAX-HEAPIFY($A, 1$)
@@ -215,12 +215,12 @@ The HEAPSORT procedure takes time $O(n \lg n)$, since the call to BUILD-MAX-HEAP
 \subsection{Priority queues}
 
 HEAP-MAXIMUM(A)
-\begin{algorithmic}
+\begin{algorithmic}[1]
 \State \textbf {return} $A[1]$
 \end{algorithmic}
 
 HEAP-EXTRACT-MAX(A)
-\begin{algorithmic}
+\begin{algorithmic}[1]
 \If {$A.heap-size < 1$}
 	\State \textbf {error} ``heap underflow''
 \EndIf
@@ -234,12 +234,12 @@ HEAP-EXTRACT-MAX(A)
 The running time of HEAP-EXTRACT-MAX is $O(\lg n)$, since it performs only a constant amount of work on top of the $O(\lg n)$ time for MAX-HEAPIFY. \\
 
 HEAP-INCREASE-KEY($A, i, key$)
-\begin{algorithmic}
-\If $key < A[i]$
+\begin{algorithmic}[1]
+\If {$key < A[i]$}
 	\State \textbf {error} ``new key is smaller than current key''
 \EndIf
 \State $A[i] = key$
-\While $i > 1$ and $A[\text {PARENT}(i)] < A[i]$
+\While {$i > 1$ and $A[\text {PARENT}(i)] < A[i]$}
 	\State exchange $A[i]$ with $A[\text {PARENT}(i)]$
         \State $i = \text {PARENT}(i)$
 \EndWhile
@@ -248,7 +248,7 @@ HEAP-INCREASE-KEY($A, i, key$)
 The running time of HEAP-INCREASE-KEY on an $n-$element heap is $O(\lg n)$. \\
 
 MAX-HEAP-INSERT($A, key$)
-\begin{algorithmic}
+\begin{algorithmic}[1]
 \State $A.heap-size = A.heap-size + 1$
 \State $A[A.heap-size] = -\infty$
 \State HEAP-INCREASE-KEY($A, A.heap-size,key$)
@@ -258,8 +258,78 @@ The running time of MAX-HEAP-INSERT on an $n-$element heap is $O(\lg n)$. \\
 
 In summary, a heap can support any priority-queue operation on a set of size $n$ in $O(\lg n)$ time.
 
+\section{Quicksort}
 
+\subsection{Description of quicksort}
 
+QUICKSORT($A, p, r$)
+\begin{algorithmic}[1]
+\If {$p < r$}
+	\State $q = \text {PARTITION}(A, p, r)$
+        \State QUICKSORT($A, p, q-1$)
+        \State QUICKSORT($A, q+1, r$)
+\EndIf
+\end{algorithmic}
+
+To sort an array $A$, the initial call is QUICKSORT($A, 1, A.length$). \\
+
+PARTITION($A, p, r$)
+\begin{algorithmic}[1]
+\State $x = A[r]$
+\State $i = p - 1$
+\For {$j = p \textbf { to } r-1$}
+	\If {$A[j] \le x$}
+        	\State $i = i + 1$
+                \State exchange $A[i]$ with $A[j]$
+        \EndIf
+\EndFor
+\State exchange $A[i+1]$ with $A[r]$
+\State \textbf{return } $i+1$
+\end{algorithmic}
+
+\subsection{Performance of quicksort}
+
+\begin{itemize}
+  \item \textbf{Worst-case partitioning}
+    \begin{eqnarray*}
+      T(n)
+      &=& T(n-1) + T(0) + \Theta(n) \\
+      &=& T(n-1) + \Theta(n).
+    \end{eqnarray*}
+    We get $T(n) = \Theta (n^2)$. This occurs when the input array is already completely sorted.
+  \item \textbf {Best-case partitioning}
+    \begin{eqnarray*}
+      T(n)
+      &=& 2T(n/2) + \Theta(n)
+    \end{eqnarray*}
+    We get $T(n) = \Theta (n \lg n)$.
+  \item \textbf {Balanced partitioning}
+    \begin{eqnarray*}
+      T(n)
+      &=& T(9n/10) + T(n/10) + cn.
+    \end{eqnarray*}    
+    We get $T(n) = \Theta (n \lg n)$.
+\end{itemize}
+
+\subsection{A randomized version of quicksort}
+
+RANDOMIZED-PARTITION($A, p, r$)
+\begin{algorithmic}[1]
+\State $i = \text{RANDOM}(p,r)$
+\State exchange $A[r]$ with $A[i]$
+\State \textbf{return } PARTITION($A, p, r$)
+\end{algorithmic}
+
+RANDOMIZED-QUICKSORT($A, p, r$)
+\begin{algorithmic}[1]
+\If {$p < r$}
+	\State $q = \text {RANDOMIZED-PARTITION}(A, p, r)$
+        \State RANDOMIZED-QUICKSORT($A, p, q-1$)
+        \State RANDOMIZED-QUICKSORT($A, q+1, r$)
+\EndIf
+\end{algorithmic}
+
+The expected running time of RANDOMIZED-QUICKSORT is $O(n \lg n)$.
 
 
 \end{document}
