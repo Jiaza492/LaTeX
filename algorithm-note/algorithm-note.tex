@@ -134,7 +134,6 @@ MERGE-SORT($A, p, r$)
 \subsection{Indicator random variables}
 
 Suppose we are given a sample space $S$ and an event $A$. Then the \textbf {indicator random variable} $I\{A\}$ associated with event A is defined as
-
 \begin{equation*}
   I\{A\} =
   \begin{cases}
@@ -182,7 +181,6 @@ Let $X$ be the random variable whose value equals the number of times we hire a 
 How many people must be in a room before there is a $50 \%$ chance that two of them were born on the same day of the year? \\
 
 The event that $k$ people have distinct birthday is
-
 \begin{equation*}
   B_k = \bigcap_{i=1}^k A_i,
 \end{equation*}
@@ -219,7 +217,6 @@ Consider the process of randomly tossing identical balls into $b$ bins, numbered
 \emph{How many balls must one toss until every bin contains at least one ball?} Let us call a toss in which a ball falls into an empty bin a ``hit''. We want to know the expected number $n$ of tosses required to get $b$ hits. \\
 
 The hits can be used to partition the $n$ tosses into stages. The $i$th stage consists of the tosses after the $(i-1)$st hit until the $i$th hit. Let $n_i$ denote the number of tosses in the $i$th stage. We get
-
 \begin{equation*}
   E[n_i] = \frac {b}{b - i + 1}
 \end{equation*}
@@ -241,7 +238,6 @@ The problem is also known as the \textbf {coupon collector's problem}.
 Suppose you flip a fair coin $n$ times. What is the longest streak of consecutive heads that you expect to see? The answer is $\Theta (\lg n)$. \\
 
 Let $A_{i,k}$ be the event that a streak of heads of length at least $k$ begins with the $i$th coin flip or, more precisely, the event that the k consecutive coin flips $i, i + 1, \dots, i + k -1$ yield only heads, where $1 \le k \le n$ and $1 \le i \le n - k + 1$. Since coin flips are mutually independent, for any given event $A_{ik}$, the probability that all $k$ flips are heads is
-
 \begin{equation*}
   Pr \{ A_{ik} \} = 1 / 2^k.
 \end{equation*}
@@ -263,7 +259,6 @@ There are at most $n - 2 \lceil \lg n \rceil + 1$ positions where such a streak 
 \end{eqnarray*}
 
 since Boole's inequality,
-
 \begin{equation*}
   Pr \{ A_1 \cup A_2 \cup \cdots \} \le Pr \{ A_1 \} + Pr \{ A_2 \} + \cdots,
 \end{equation*}
@@ -293,7 +288,7 @@ The chances that a streak of heads exceeds $r \lceil \lg n \rceil$ flips diminis
 
 Thus, the probability is at most $n / n^r = 1 / n^{r-1}$ that the longest streak is at least $r \lceil \lg n \rceil$. \\
 
-We now prove a complementary lower bound: the expected length of the longest streak of heads in $n$ coin flips is $\Omega (\lg n)$. To prove this bound, we look for streaks of length $s$ by partitioning the $n$ flips into approximately $n/s$ groups of $s$ flips each. If we choose $s = \lfloor (\lg n)/2 \rfloor$, we can show that it is likely that at least one of these groups comes up all heads, and hence it is likely that the longest streak has length at least $s = \Omega (\lg n)$. We then show that the longest streak has expected length $\Omega (\lg n)$. \\
+We now prove a complementary lower bound: the expected length of the longest streak of heads in $n$ coin flips is $\Omega (\lg n)$. To prove this bound, we look for streaks of length $s$ by partitioning the $n$ flips into approximately $n/s$ groups of $s$ flips each. If we choose $s = \lfloor (\lg n)/2 \rfloor$, we can show that it is likely that at least one of these groups comes up all heads, and hence it is likely that the longest streak has length at least $s = \Omega (\lg n)$. We then show that the longest streak has expected length $\Omega (\lg n)$.
 \begin{eqnarray*}
   Pr \{ A_{i, \lfloor (\lg n)/2 \rfloor} \}
   &=& 1 / 2^{\lfloor (\lg n)/2 \rfloor} \\
@@ -313,7 +308,6 @@ The probability that a streak of heads of length at least $\lfloor (\lg n)/2 \rf
 For this argument, we used $(2n / {\lg n} - 1) / {\sqrt n} \ge \lg n$ for sufficiently large $n$. \\
 
 Thus , the probability that the longest streak exceeds $\lfloor (\lg n)/2 \rfloor$ is
-
 \begin{equation*}
   \sum_{j = \lfloor (\lg n)/2 \rfloor + 1}^{n} Pr \{ L_j \} \ge 1 - O(1/n)
 \end{equation*}
@@ -335,13 +329,11 @@ We can now calculate a lower bound on the expected length of the longest streak:
 \end{eqnarray*}
 
 As with the birthday paradox, we can obtain a simpler but approximate analysis using indicator random variables. We let $X_{ik} = I \{ A_{ik} \}$ be the indicator random variable associated with a streak of heads of length at least $k$ beginning with the $i$th coin flip. To count the total number of such streaks, we define
-
 \begin{equation*}
   X = \sum_{i=1}^{n-k+1} X_{ik}.
 \end{equation*}
 
 Taking expectations and using linearity of expectation, we have
-
 \begin{eqnarray*}
   E[X]
   &=& E \left[ \sum_{i=1}^{n-k+1} X_{ik} \right] \\
@@ -352,7 +344,6 @@ Taking expectations and using linearity of expectation, we have
 \end{eqnarray*}
 
 By plugging in various values for $k$, we can calculate the expected number of streaks of length $k$. If $k = c \lg n$, for some positive constant $c$, we obtain
-
 \begin{eqnarray*}
   E[X]
   &=& \frac {n - c \lg n + 1}{2^{c \lg n}} \\
@@ -411,7 +402,6 @@ Viewing a heap as a tree, we define the {\bf height} of a node in a heap to be t
 \end{algorithmic}
 
 We can describe the running time of MAX-HEAPIFY by recurrence
-
 \begin{equation*}
   T(n) \le T(2n/3) + \Theta(1).
 \end{equation*}
@@ -648,13 +638,11 @@ BUCKET-SORT($A$)
 \end{algorithmic}
 
 Since insertion sort runs in quadratic time, the running time of bucket sort is
-
 \begin{equation*}
   T(n) = \Theta(n) + \sum_{i=0}^{n-1} O(n_i^2).
 \end{equation*}
 
 We now analyze the average-case running time of bucket sort, by computing the expected value of the running time, where we take the expectation over the input distribution. We have
-
 \begin{eqnarray*}
   E[T(n)]
   &=& E \left[ \Theta (n) + \sum_{i=0}^{n-1} O(n_i)^2 \right] \\
@@ -709,6 +697,214 @@ The SELECT algorithm determines the $i$th smallest of an input array of $n>1$ di
   \item Implementing pointers and objects
   \item Representing rooted trees
 \end{enumerate}
+
+\section{Hash Tables}
+
+\subsection{Direct-address tables}
+
+DIRECT-ADDRESS-SEARCH($T, k$)
+\begin{algorithmic}[1]
+\State \textbf {return} $T[k]$
+\end{algorithmic}
+
+DIRECT-ADDRESS-INSERT($T, x$)
+\begin{algorithmic}[1]
+\State $T[x.key] = x$
+\end{algorithmic}
+
+DIRECT-ADDRESS-DELETE($T, x$)
+\begin{algorithmic}[1]
+\State $T[x.key] = NIL$
+\end{algorithmic}
+
+Each of these operations takes only $O(1)$ time.
+
+\subsection{Hash tables}
+
+With hashing, an element with key $k$ is stored in slot $h(k)$; that is, we use a \textbf {hash function} $h$ to compute the slot from the key $k$. here, $h$ maps the universe $U$ of keys into the slots of a \textbf {hash table} $T[0..m-1]$:
+\begin{equation*}
+  h: U \rightarrow \{ 0,1, \dots, m-1 \},
+\end{equation*}
+
+where the size $m$ of the hash table is typically much less than $|U|$.
+
+\subsubsection*{Collision resolution by chaining}
+
+In chaining, we place all elements that hash to the same slot into the same linked list.
+
+CHAINED-HASH-INSERT($T, x$)
+\begin{algorithmic}[1]
+\State insert $x$ at the head of list $T[h(x.key)]$
+\end{algorithmic}
+
+CHAINED-HASH-SEARCH($T, k$)
+\begin{algorithmic}[1]
+\State search for an element with key $k$ in list $T[h(k)]$
+\end{algorithmic}
+
+CHAINED-HASH-DELETE($T, x$)
+\begin{algorithmic}[1]
+\State delete $x$ from the list $T[h(x.key)]$
+\end{algorithmic}
+
+\subsubsection*{Analysis of hashing with chaining}
+
+Given a hash table $T$ with $m$ slots that stores $n$ elements, we define the \textbf {load factor} $\alpha$ for $T$ as $n/m$, that is, the average number of elements stored in a chain. \\
+
+The average-case performance of hashing depends on how well the hash function $h$ distributes the set of keys to be stored among the $m$ slots, on the average. Now we shall assume that any given element is equally likely to hash into any of the $m$ slots, independently of where any other element has hashed to. We call this the assumption of \textbf {simple uniform hashing}.
+
+\begin{theorem}
+  In a hash table in which collisions are resolved by chaining, an unsuccessful search takes average-case time $\Theta (1 + \alpha)$, under the assumption of simple uniform hashing.
+\end{theorem}
+
+\begin{theorem}
+  In a hash table in which collisions are resolved by chaining, a successful search takes average-case time $\Theta (1 + \alpha)$, under the assumption of simple uniform hashing.
+\end{theorem}
+
+\subsection{Hash functions}
+
+A good hash function satisfies (approximately) the assumption of simple uniform hashing: each key is equally likely to hash to any of the $m$ slots, independently of where any other key has hashed to. Unfortunately, we typically have no way to check this condition, since we rarely know the probability distribution from which the keys are drawn. Moreover, the keys might not be drawn independently.
+
+\subsubsection*{Interpreting keys as natural numbers}
+
+Most hash functions assume that the universe of keys is the set $\mathbb {N} = \{0,1,2,\dots \}$ of natural numbers.
+
+\subsubsection{The division method}
+
+In the \textbf {division method} for creating hash functions, we map a key $k$ into one of $m$ slots by taking the remainder of $k$ divided by $m$. That is, the hash function is
+\begin{equation*}
+  h(k) = k \mod m.
+\end{equation*}
+
+A prime not too close to an exact power of $2$ is often a good choice for $m$.
+
+\subsubsection{The multiplication method}
+
+The \textbf {multiplication method} for creating hash functions operates in two steps. First, we multiply the key $k$ by a constant $A$ in the range $0 < A < 1$ and extract the fractional part of $kA$. Then, we multiply this value by $m$ and take the floor o the result. In short, the hash function is
+\begin{equation*}
+  h(k) = \lfloor m (kA \mod 1) \rfloor,
+\end{equation*}
+
+where ``$kA \mod 1$'' means the fractional part of $kA$, that is, $kA - \lfloor kA \rfloor$. \\
+
+An advantage of the multiplication method is that the value of m is not critical. We typically choose it to be a power of $2$ ($m = 2^p$ for some integer $p$), since we can then easily implement the function on most computers as follows. Suppose that the word size of the machine is $w$ bits and that $k$ fits into a single word. We restrict $A$ to be a fraction of the form $s/2^w$, where $s$ is an integer in the range $0 < s < 2^w$. We first multiply $k$ by the $w$-bit integer $s = A \cdot 2^w$. The result is a $2w$-bit value $r_12^w+r_0$, where $r_1$ is the high-order word of the product and $r_0$ is the low-order word of the product. The desired $p$-bit hash value consists of the $p$ most significant bits of $r_0$.
+
+\subsubsection{Universal hashing}
+
+If a malicious adversary chooses the keys to be hashed by some fixed hash function, then the adversary can choose $n$ keys that all hash to the same slot, yielding an average retrieval time of $\Theta(n)$. Any fixed hash function is vulnerable to such terrible worst-case behavior; the only effective way to improve the situation is to choose the hash function randomly in a way that is independent of the keys that are actually going to be stored. This approach, called \textbf {universal hashing}, can yield provably good performance on average, no matter which keys the adversary chooses. \\
+
+In universal hashing, at the beginning of execution we select the hash function at random from a carefully designed class of functions. Because we randomly select the hash function, the algorithm can behave differently on each execution, even for the same input, guaranteeing good average-case performance for any input. \\
+
+Let $\mathcal {H}$ be a finite collection of hash functions that map a given universe $U$ of keys into the range $\{ 0,1,\dots,m-1 \}$. Such a collection is said to be \textbf {universal} if for each pair of distinct keys $k, l \in U$, the number of hash functions $h \in \mathcal {H}$ for which $h(k) = h(l)$ is at most $|\mathcal {H}| / m$. In other words, with a hash function randomly chosen from $\mathcal {H}$, the chance of a collision between distinct keys $k$ and $l$ is no more than the chance $1/m$ of a collision if $h(k)$ and $h(l)$ were randomly and independently chosen from the set $\{ 0,1,\dots, m-1\}$. \\
+
+Recall that $n_i$ denotes the length of list $T[i]$.
+
+\begin{theorem}
+  Suppose that a hash function $h$ is chosen randomly from a universal collection of hash functions and has been used to hash $n$ keys into a table $T$ of size $m$, using chaining to resolve collisions. If key $k$ is not in the table, then the expected length $E[n_{h(k)}]$ of the list that key $k$ hashes to is at most the load factor $\alpha = m/m$. If key $k$ is in the table, then the expected length $E[n_{h(k)}]$ of the list containing key $k$ is at most $1 + \alpha$.
+\end{theorem}
+
+\begin{corollary}
+  Using universal hashing and collision resolution by chaining in an initially empty table with $m$ slots, it takes expected time $\Theta (n)$ to handle any sequence of $n$ INSERT, SEARCH, and DELETE operations containing $O(m)$ INSERT operations.
+\end{corollary}
+
+\subsection{Open addressing}
+
+In \textbf {open addressing}, all elements occupy the hash table itself. That is, each table entry contains either an element of the dynamic set or NIL. \\
+
+To perform insertion using open addressing, we successively examine, or \textbf {probe}, the hash table until we find an empty slot in which to put the key. To determine which slot to probe, we extend the hash function to include the probe number (starting from 0) as a second input. Thus, the hash function becomes
+\begin{equation*}
+  h: U \times \{ 0,1,\dots,m-1 \} \rightarrow \{ 0,1,\dots,m-1 \}.
+\end{equation*}
+
+With open addressing, we require that for every key $k$, the \textbf {probe sequence}
+
+\begin{equation*}
+  <h(k,0), h(k,1), \dots, h(k, m-1)>
+\end{equation*}
+be a permutation of $<0,1,\dots,m-1>$, so that every hash-table position is eventually considered as a slot for a new key as the table fills up. \\
+
+HASH-INSERT($T, k$)
+\begin{algorithmic}[1]
+\State i = 0
+\Repeat
+	\State $j = h(k,i)$
+        \If {$T[j] == \text {NIL}$}
+        	\State {$T[j] = k$}
+                \State \textbf {return} $j$
+        \Else
+        	\State $i = i + 1$
+        \EndIf
+\Until {$i == m$}
+\State \textbf {error} ``hash table overflow''
+\end{algorithmic}
+
+HASH-SEARCH($T, k$)
+\begin{algorithmic}[1]
+\State i = 0
+\Repeat
+	\State $j = h(k,i)$
+        \If {$T[j] == k$}
+                \State \textbf {return} $j$
+        \EndIf
+        \State $i = i + 1$
+\Until {$T[j] == \text {NIL or } i == m$}
+\State \textbf {return} NIL
+\end{algorithmic}
+
+\subsubsection*{Linear probing}
+
+Given an ordinary hash function $h': U \rightarrow \{ 0,1,\dots,m-1 \}$, which we refer to as an \textbf {auxiliary hash function}, the method of \textbf {linear probing} uses the hash function
+
+\begin{equation*}
+  h(k,i) = (h'(k) + i) \mod m
+\end{equation*}
+
+for $i = 0,1,\dots,m-1$. Linear probing is easy to implement, but it suffers from a problem known as \textbf {primary clustering}.
+
+\subsubsection*{Quadratic probing}
+
+\textbf {Quadratic probing} uses a hash function of the form
+
+\begin{equation*}
+  h(k,i) = (h'(k) + c_1 i + c_2 i^2) \mod m,
+\end{equation*}
+
+where $h'$ is an auxiliary hash function, $c_1$ and $c_2$ are positive auxiliary constants and $i = 0,1,\dots,m-1$. This methods works much better than linear probing, but to make full use of the hash table, the values of $c_1, c_2$ and $m$ are constrained. Also, if two keys have the same initial probe position, then their probe sequences are the same. This property leads to a milder from of clustering, called \textbf {secondary clustering}.
+
+\subsubsection*{Double hashing}
+
+Double hashing offers one of the best methods available for open addressing because the permutations produced have many of the characteristics of randomly chosen permutations. \textbf {Double hashing} uses a hash function of the form
+
+\begin{equation*}
+  h(k,i) = (h_1(k) + ih_2(k)) \mod m,
+\end{equation*}
+
+where both $h_1$ and $h_2$ are auxiliary hash functions.
+
+\subsubsection*{Analysis of open-address hashing}
+
+\begin{theorem}
+  Given an open-address hash table with load factor $\alpha =n/m < 1$, the expected number of probes in an unsuccessful search is at most $1/(1-\alpha)$, assuming uniform hashing.
+\end{theorem}
+
+\begin{corollary}
+  Inserting an element into an open-address hash table with load factor $\alpha$ requires at most $1/(1-\alpha)$ probes on average, assuming uniform hashing.
+\end{corollary}
+
+\begin{theorem}
+  Given an open-address hash table with load factor $\alpha < 1$, the expected number of probes in a successful search is at most
+  \begin{equation*}
+    \frac {1}{\alpha} \ln \frac {1}{1 - \alpha},
+  \end{equation*}
+  assuming uniform hashing and assuming that each key in the table is equally likely to be searched for.
+\end{theorem}
+
+\subsection{Perfect hashing}
+
+Hashing can provide excellent worst-case performance when the set of keys is \textbf {static}: once the keys are stored in the table, the set of keys never changes. We call a hashing technique \textbf {perfect hashing} if $O(1)$ memory accesses are required to perform a search in the worst case. \\
+
+To create a perfect hashing scheme, we use two levels of hashing, with universal hashing at each level.
+
 
 
 
