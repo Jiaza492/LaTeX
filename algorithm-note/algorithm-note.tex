@@ -666,6 +666,41 @@ We now analyze the average-case running time of bucket sort, by computing the ex
 
 \section{Medians and Order Statistics}
 
+The $i$th \textbf {order statistic} of a set of $n$ elements is the $i$th smallest element.
+
+\subsection{Selection in expected linear time}
+
+RANDOMIZED-SELECT($A, p, r, i$)
+\begin{algorithmic}[1]
+\If {$p == r$}
+	\State \textbf {return } $A[p]$
+\EndIf
+\State $q = \text{RANDOMIZED-PARTITION}(A, p, r)$
+\State $k = q - p + 1$
+\If {$i == k$}
+\Comment the pivot value is the answer
+	\State \textbf {return} $A[q]$
+\ElsIf {$i < k$}
+	\State \textbf {return} RANDOMIZED-SELECT($A, p, q-1, i$)
+\Else
+	\State \textbf {return} RANDOMIZED-SELECT($A, q+1, r, i-k$)
+\EndIf
+\end{algorithmic}
+
+\subsection{Selection in worst-case linear time}
+
+Like RANDOMIZED-SELECT, the algorithm SELECT finds the desired element by recursively partitioning the input array. Here, however, we guarantee a good split upon partitioning the array. SELECT uses the deterministic partitioning algorithm PARTITION from quicksort, but modified to take the element to partition around as an input parameter. \\
+
+The SELECT algorithm determines the $i$th smallest of an input array of $n>1$ distinct elements by executing the following steps. (If $n = 1$, then SELECT merely returns its only input value as the $i$th smallest.)
+
+\begin{enumerate}
+  \item Divide the $n$ elements of the input array into $\lfloor n/5 \rfloor$ groups of $5$ elements each and at most one group made up of remaining $n \mod 5$ elements.
+  \item Find the median of each of the $\lceil n/5 \rceil$ groups by first insertion-sorting the elements of each group (of which there are at most $5$) and then picking the median from the sorted list of group elements.
+  \item Use SELECT recursively to find the median $x$ of the $\lceil n/5 \rceil$ medians found in step $2$. (If there are an even number of medians, then by our convention, $x$ is the lower median.)
+  \item Partition the input array around the median-of-medians $x$ using the modified version of PARTITION. Let $k$ be one more than the number of elements on low side of the partition, so that $x$ is the $k$th smallest element and there are $n-k$ elements on the high side of the partition.
+  \item If $i = k$, then return $x$. Otherwise, use SELECT recursively to find the $i$th smallest element on the low side if $i < k$, or the $(i-k)$th smallest element on the high side if $i>k$.
+\end{enumerate}
+
 
 
 \end{document}
