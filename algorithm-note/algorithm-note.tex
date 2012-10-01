@@ -11,6 +11,10 @@
 \usepackage{algpseudocode}
 \usepackage{algorithm}
 
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+
 \DeclareMathOperator*{\argmax}{arg\,max}
 \DeclareMathOperator*{\argmin}{arg\,min}
 
@@ -108,21 +112,254 @@ MERGE-SORT($A, p, r$)
 
 \subsection{The master method}
 
-Let $a \ge 1$ and $b \ge 1$ be constants, let $f(n)$ be a function, and let $T(n)$ be defined on the nonnegative integers by recurrence
-\begin{equation*}
-  T(n) = aT(n/b) + f(n),
-\end{equation*}
-where we interpret $n/b$ to mean either $\lfloor n/b \rfloor$ or $\lceil n/b \rceil$. Then $T(n)$ can be bounded asymptotically as follows.
-\begin{enumerate}
+\begin{theorem}
+  Let $a \ge 1$ and $b \ge 1$ be constants, let $f(n)$ be a function, and let $T(n)$ be defined on the nonnegative integers by recurrence
+
+  \begin{equation*}
+    T(n) = aT(n/b) + f(n),
+  \end{equation*}
+
+  where we interpret $n/b$ to mean either $\lfloor n/b \rfloor$ or $\lceil n/b \rceil$. Then $T(n)$ can be bounded asymptotically as follows.
+
+  \begin{enumerate}
   \item If $f(n) = O(n^{\log_b^a - \epsilon})$ for some constant $\epsilon > 0$, then $T(n) = \Theta (n^{\log_b a})$.
   \item If $f(n) = O(n^{\log_b^a})$, then $T(n) = \Theta (n^{\log_b a} \lg n)$.
   \item If $f(n) = O(n^{\log_b^a + \epsilon})$ for some constant $\epsilon > 0$, and if $af(n/b) \le cf(n)$ for some constant $c < 1$ and all sufficiently large $n$, then $T(n) = \Theta \left( f(n) \right)$.
-\end{enumerate}
+  \end{enumerate}
+
+\end{theorem}
 
 \section{Probabilistic Analysis and Randomized Algorithms}
 
-left blank
+\subsection{Indicator random variables}
 
+Suppose we are given a sample space $S$ and an event $A$. Then the \textbf {indicator random variable} $I\{A\}$ associated with event A is defined as
+
+\begin{equation*}
+  I\{A\} =
+  \begin{cases}
+    1 & \text{if $A$ occurs,} \\
+    0 & \text{if $A$ does not occur.}
+  \end{cases}
+\end{equation*}
+
+\begin{lemma}
+  Given a sample space $S$ and an event $A$ in the sample space $S$, let $X_A = I\{ A \}$. Then $E[X_A] = Pr \{ A \}$.
+\end{lemma}
+
+\subsection{The hiring problem}
+
+HIRE-ASSISTANT($n$)
+\begin{algorithmic}[1]
+\State best = 0
+\Comment candidate $0$ is a least-qualified dummy candidate
+\For {$i = 1 \textbf { to } n$}
+	\State interview candidate $i$
+        \If {candidate $i$ is better than candidate $best$}
+        	\State $best = i$
+                \State hire candidate $i$
+        \EndIf
+\EndFor
+\end{algorithmic}
+
+\begin{lemma}
+  Assuming that the candidates are presented in a random order, algorithm HIRE-ASSISTANT has a total hiring cost of $O(c_h \ln n)$.
+\end{lemma}
+
+Let $X$ be the random variable whose value equals the number of times we hire a new office assistant. Now we can compute $E[X]$:
+\begin{eqnarray*}
+  E[X]
+  &=& E \left[ \sum_{i=1}^n X_i \right] \\
+  &=& \sum_{i=1}^n E[X_i] \\
+  &=& \sum_{i=1}^n 1/i \\
+  &=& \ln n + O(1)
+\end{eqnarray*}
+
+\subsection{Probabilistic analysis and further uses of indicator random variables}
+
+\subsubsection{The birthday paradox}
+
+How many people must be in a room before there is a $50 \%$ chance that two of them were born on the same day of the year? \\
+
+The event that $k$ people have distinct birthday is
+
+\begin{equation*}
+  B_k = \bigcap_{i=1}^k A_i,
+\end{equation*}
+
+where $A_i$ is the event that person $i$'s birthday is different from person $j$'s for all $j < i$. Since we can write $B_k = A_k \cap B_{k-1}$, we get
+\begin{eqnarray*}
+  Pr \{ B_k \} 
+  &=& Pr \{ B_{k-1} \} Pr \{ A_k | B_{k-1} \} \\
+  &=& Pr \{ B_{k-2} \} Pr \{ A_{k-1} | B_{k-2} \} Pr \{ A_{k} | B_{k-1} \} \\
+  &\vdots& \\
+  &=& Pr \{ B_{1} \} Pr \{ A_{2} | B_{1} \} Pr \{ A_{3} | B_{2} \} \cdots
+      Pr \{ A_{k} | B_{k-1} \} \\
+  &=& 1 \cdot \left( \frac {n-1}{n} \right) \left( \frac {n-2}{n} \right)
+      \cdots \left( \frac {n-k+1}{n} \right) \\
+  &=& 1 \cdot \left( 1 - \frac {1}{n} \right) \left( 1 - \frac {2}{n} \right)
+      \cdots \left( 1 - \frac {k-1}{n} \right)
+\end{eqnarray*}
+
+Inequality $1 + x \le e^x$ gives us
+\begin{eqnarray*}
+  Pr \{ B_k \} 
+  &\le& e^{-1/n} e^{-2/n} \cdots e^{-(k-1)/n} \\
+  &=& e^{- \sum_{i=1}^{k-1} i/n} \\
+  &=& e^{-k(k-1)/2n} \\
+  &\le& 1/2
+\end{eqnarray*}
+
+when $-k(k-1)/2n \le \ln(1/2)$. we get $k \ge (1 + \sqrt {1 + (8 \ln 2)n})/2$. For $n = 365$, we must have $k \ge 23$.
+
+\subsubsection{Balls and bins}
+
+Consider the process of randomly tossing identical balls into $b$ bins, numbered $1, 2, \dots, b$. The tosses are independent, and on each toss the ball is equally likely to end up in any bin. \\
+
+\emph{How many balls must one toss until every bin contains at least one ball?} Let us call a toss in which a ball falls into an empty bin a ``hit''. We want to know the expected number $n$ of tosses required to get $b$ hits. \\
+
+The hits can be used to partition the $n$ tosses into stages. The $i$th stage consists of the tosses after the $(i-1)$st hit until the $i$th hit. Let $n_i$ denote the number of tosses in the $i$th stage. We get
+
+\begin{equation*}
+  E[n_i] = \frac {b}{b - i + 1}
+\end{equation*}
+
+By linearity of expectation,
+\begin{eqnarray*}
+  E[n]
+  &=& E \left[ \sum_{i=1}^b n_i  \right] \\
+  &=& \sum_{i=1}^b [n_i] \\
+  &=& \sum_{i=1}^b \frac {b}{b-i+1} \\
+  &=& \sum_{i=1}^b \frac {1}{i} \\
+  &=& b( \ln b + O(1)).
+\end{eqnarray*}
+
+The problem is also known as the \textbf {coupon collector's problem}.
+
+\subsubsection{Streaks}
+
+Suppose you flip a fair coin $n$ times. What is the longest streak of consecutive heads that you expect to see? The answer is $\Theta (\lg n)$. \\
+
+Let $A_{i,k}$ be the event that a streak of heads of length at least $k$ begins with the $i$th coin flip or, more precisely, the event that the k consecutive coin flips $i, i + 1, \dots, i + k -1$ yield only heads, where $1 \le k \le n$ and $1 \le i \le n - k + 1$. Since coin flips are mutually independent, for any given event $A_{ik}$, the probability that all $k$ flips are heads is
+
+\begin{equation*}
+  Pr \{ A_{ik} \} = 1 / 2^k.
+\end{equation*}
+
+For $k = 2 \lceil \lg n \rceil$,
+\begin{eqnarray*}
+  Pr \{ A_{i, 2 \lceil \lg n \rceil} \}
+  &=& 1 / 2^{2 \lceil \lg n \rceil} \\
+  &\le& 1 / 2^{2 \lg n} \\
+  &=& 1 / n^2
+\end{eqnarray*}
+
+There are at most $n - 2 \lceil \lg n \rceil + 1$ positions where such a streak can begin. The probability that a streak of heads of length at least $2 \lceil \lg n \rceil$ begins anywhere is therefore
+\begin{eqnarray*}
+  Pr \left\{ \bigcup_{i=1}^{n - 2 \lceil \lg n \rceil + 1} A_{i,2 \lceil \lg n \rceil} \right\}
+  &\le&  \sum_{i=1}^{n - 2 \lceil \lg n \rceil + 1} 1 / n^2 \\
+  &<& \sum_{i=1}^n 1 / n^2 \\
+  &=& 1/n,
+\end{eqnarray*}
+
+since Boole's inequality,
+
+\begin{equation*}
+  Pr \{ A_1 \cup A_2 \cup \cdots \} \le Pr \{ A_1 \} + Pr \{ A_2 \} + \cdots,
+\end{equation*}
+
+the probability of a union of events is at most the sum of the probabilities of the individual events. \\
+
+By the definition of expected value,
+\begin{eqnarray*}
+  E[L]
+  &=& \sum_{j=0}^{n} j Pr \{ L_j \} \\
+  &=& \sum_{j=0}^{2 \lceil \lg n \rceil - 1} j Pr \{ L_j \}
+      + \sum_{j = 2 \lceil \lg n \rceil - 1}^{n} j Pr \{ L_j \} \\
+  &<& \sum_{j=0}^{2 \lceil \lg n \rceil - 1} (2 \lceil \lg n \rceil - 1)
+      Pr \{ L_j \} + \sum_{j = 2 \lceil \lg n \rceil - 1}^{n} n Pr \{ L_j \} \\
+  &=& 2 \lceil \lg n \rceil - 1 \sum_{j=0}^{2 \lceil \lg n \rceil - 1} 
+      Pr \{ L_j \} + n \sum_{j = 2 \lceil \lg n \rceil - 1}^{n} Pr \{ L_j \} \\
+  &<& 2 \lceil \lg n \rceil - 1 \cdot 1 + n \cdot (1/n) \\
+  &=& O(\lg n)
+\end{eqnarray*}
+
+The chances that a streak of heads exceeds $r \lceil \lg n \rceil$ flips diminish quickly with $r$. For $r \ge 1$, the probability that a streak of $r \lceil \lg n \rceil$ heads starts in position $i$ is
+\begin{eqnarray*}
+  Pr \{ A_{i, r \lceil \lg n \rceil} \}
+  &=& 1 / 2^{r \lceil \lg n \rceil} \\
+  &\le& 1 / n^r
+\end{eqnarray*}
+
+Thus, the probability is at most $n / n^r = 1 / n^{r-1}$ that the longest streak is at least $r \lceil \lg n \rceil$. \\
+
+We now prove a complementary lower bound: the expected length of the longest streak of heads in $n$ coin flips is $\Omega (\lg n)$. To prove this bound, we look for streaks of length $s$ by partitioning the $n$ flips into approximately $n/s$ groups of $s$ flips each. If we choose $s = \lfloor (\lg n)/2 \rfloor$, we can show that it is likely that at least one of these groups comes up all heads, and hence it is likely that the longest streak has length at least $s = \Omega (\lg n)$. We then show that the longest streak has expected length $\Omega (\lg n)$. \\
+\begin{eqnarray*}
+  Pr \{ A_{i, \lfloor (\lg n)/2 \rfloor} \}
+  &=& 1 / 2^{\lfloor (\lg n)/2 \rfloor} \\
+  &\ge& 1 / \sqrt n.
+\end{eqnarray*}
+
+The probability that a streak of heads of length at least $\lfloor (\lg n)/2 \rfloor$ does not begin in position $i$ is therefore at most $1 - 1 / \sqrt n$. Since the $\lfloor n / \lfloor (\lg n)/2 \rfloor \rfloor$ groups are formed from mutually exclusive, independent coin flips, the probability that every one of these groups fails to be a streak of length $\lfloor (\lg n)/2 \rfloor$ is at most
+\begin{eqnarray*}
+  (1 - 1 / \sqrt n)^{\lfloor n/ {\lfloor (\lg n)/2 \rfloor} \rfloor}
+  &\le& (1 - 1 / \sqrt n)^{n/ {\lfloor (\lg n)/2 \rfloor} - 1} \\
+  &\le& (1 - 1 / \sqrt n)^{2n/ {\lg n} - 1} \\
+  &\le& e^{-(2n/ {\lg n} -1)/{\sqrt n}} \\
+  &=& O(e^{- \lg n}) \\
+  &=& O(1/n)
+\end{eqnarray*}
+
+For this argument, we used $(2n / {\lg n} - 1) / {\sqrt n} \ge \lg n$ for sufficiently large $n$. \\
+
+Thus , the probability that the longest streak exceeds $\lfloor (\lg n)/2 \rfloor$ is
+
+\begin{equation*}
+  \sum_{j = \lfloor (\lg n)/2 \rfloor + 1}^{n} Pr \{ L_j \} \ge 1 - O(1/n)
+\end{equation*}
+
+We can now calculate a lower bound on the expected length of the longest streak:
+\begin{eqnarray*}
+  E[L]
+  &=& \sum_{j=0}^{n} j Pr \{ L_j \} \\
+  &=& \sum_{j=0}^{\lfloor (\lg n)/2 \rfloor} j Pr \{ L_j \}
+      + \sum_{j = \lfloor (\lg n)/2 \rfloor + 1}^{n} j Pr \{ L_j \} \\
+  &\ge& \sum_{j=0}^{\lfloor (\lg n)/2 \rfloor} 0 \cdot Pr \{ L_j \}
+      + \sum_{j = \lfloor (\lg n)/2 \rfloor + 1}^{n} 
+      \lfloor (\lg n)/2 \rfloor Pr \{ L_j \} \\
+  &=& 0 \cdot \sum_{j=0}^{\lfloor (\lg n)/2 \rfloor} \cdot Pr \{ L_j \}
+      + \lfloor (\lg n)/2 \rfloor \sum_{j = \lfloor (\lg n)/2 \rfloor + 1}^{n}
+      Pr \{ L_j \} \\
+  &\ge& 0 + \lfloor (\lg n)/2 \rfloor (1 - O(1/n)) \\
+  &=& \Omega (\lg n).
+\end{eqnarray*}
+
+As with the birthday paradox, we can obtain a simpler but approximate analysis using indicator random variables. We let $X_{ik} = I \{ A_{ik} \}$ be the indicator random variable associated with a streak of heads of length at least $k$ beginning with the $i$th coin flip. To count the total number of such streaks, we define
+
+\begin{equation*}
+  X = \sum_{i=1}^{n-k+1} X_{ik}.
+\end{equation*}
+
+Taking expectations and using linearity of expectation, we have
+
+\begin{eqnarray*}
+  E[X]
+  &=& E \left[ \sum_{i=1}^{n-k+1} X_{ik} \right] \\
+  &=& \sum_{i=1}^{n-k+1} E[X_{ik}] \\
+  &=& \sum_{i=1}^{n-k+1} Pr \{ X_{ik} \} \\
+  &=& \sum_{i=1}^{n-k+1} 1 / 2^k \\
+  &=& \frac {n-k+1}{2^k}
+\end{eqnarray*}
+
+By plugging in various values for $k$, we can calculate the expected number of streaks of length $k$. If $k = c \lg n$, for some positive constant $c$, we obtain
+
+\begin{eqnarray*}
+  E[X]
+  &=& \frac {n - c \lg n + 1}{2^{c \lg n}} \\
+  &=& \frac {n - c \lg n + 1}{n^c} \\
+  &=& \frac {1}{n^c - 1} - \frac {(c \lg n - 1)/n}{n^{c-1}} \\
+  &=& \Theta(1 / n^{c-1}).
+\end{eqnarray*}
 
 \section{Heapsort}
 
@@ -149,7 +386,7 @@ There are two kinds of binary heaps: max-heaps and min-heaps. In both kinds, the
 \begin{equation*}
   A[\text{PARENT}(i)] \ge A[i],
 \end{equation*}
-that is, the value of a node is at most the value of its parent.
+that is, the value of a node is at most the value of its parent. \\
 
 Viewing a heap as a tree, we define the {\bf height} of a node in a heap to be the number of edges on the longest simple downward path from the node to a leaf, and we define the height of the heap to be the height of its root.
 
@@ -174,9 +411,11 @@ Viewing a heap as a tree, we define the {\bf height} of a node in a heap to be t
 \end{algorithmic}
 
 We can describe the running time of MAX-HEAPIFY by recurrence
+
 \begin{equation*}
   T(n) \le T(2n/3) + \Theta(1).
 \end{equation*}
+
 The solution to this recurrence is $T(n) = O(\lg n)$. Alternatively, we can characterize the running time of MAX-HEAPIFY on a node of height $h$ as $O(h)$.
 
 \subsection{Building a heap}
@@ -335,7 +574,13 @@ The expected running time of RANDOMIZED-QUICKSORT is $O(n \lg n)$.
 
 \subsection{Lower bounds for sorting}
 
-Any comparison sort algorithm requires $\Omega (n \lg n)$ comparisons in the worst case.
+\begin{theorem}
+  Any comparison sort algorithm requires $\Omega (n \lg n)$ comparisons in the worst case.
+\end{theorem}
+
+\begin{corollary}
+  Heapsort and merge sort are asymptotically optimal comparison sorts.
+\end{corollary}
 
 \subsection{Counting sort}
 
@@ -368,9 +613,17 @@ RADIX-SORT($A, d$)
 \EndFor
 \end{algorithmic}
 
-Given $n$ $d-$digit numbers in which each digit can take on up to $k$ possible values, RADIX-SORT correctly sorts these numbers in $\Theta(d(n+k))$ time if the stable sort it uses takes $\Theta (n+k)$. \\
+\begin{lemma}
+  Given $n$ $d-$digit numbers in which each digit can take on up to $k$ possible values, RADIX-SORT correctly sorts these numbers in $\Theta(d(n+k))$ time if the stable sort it uses takes $\Theta (n+k)$.
+\end{lemma}
 
 When $d$ is constant and $k = O(n)$, we can make radix sort run in linear time. More generally, we have some flexibility in how to break each key into digits.
+
+\begin{lemma}
+  Given $n$ $b$-bit numbers and any positive integer $r \le b$, RADIX-SORT correctly sorts these numbers in $\Theta ((b/r)(n + 2^r))$ time.
+\end{lemma}
+
+For a value $r \le b$, we view each key as having $d = \lceil b/r \rceil$ digits of $r$ bits each. Each digit is an integer in the range $0$ to $2^r-1$, so that we can use counting sort with $k = 2^r -1$.
 
 \subsection{Bucket sort}
 
@@ -395,11 +648,13 @@ BUCKET-SORT($A$)
 \end{algorithmic}
 
 Since insertion sort runs in quadratic time, the running time of bucket sort is
+
 \begin{equation*}
   T(n) = \Theta(n) + \sum_{i=0}^{n-1} O(n_i^2).
 \end{equation*}
 
 We now analyze the average-case running time of bucket sort, by computing the expected value of the running time, where we take the expectation over the input distribution. We have
+
 \begin{eqnarray*}
   E[T(n)]
   &=& E \left[ \Theta (n) + \sum_{i=0}^{n-1} O(n_i)^2 \right] \\
@@ -408,6 +663,9 @@ We now analyze the average-case running time of bucket sort, by computing the ex
   &=& \Theta (n) + \sum_{i=0}^{n-1} (2 - 1/n) \\
   &=& \Theta (n)
 \end{eqnarray*}
+
+\section{Medians and Order Statistics}
+
 
 
 \end{document}
