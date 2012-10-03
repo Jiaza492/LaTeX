@@ -29,7 +29,7 @@
 
 \section{The Role of Algorithms in Computing}
 
-Informally, an \textbf {algorithm} is any well-defined computational procedure that takes some value, or set of values, as \textbf {input} and produces some value, or set of values, as \textbf {output}. An algorithm is thus a sequence of computational steps that transform the input into the output
+Informally, an \textbf {algorithm} is any well-defined computational procedure that takes some value, or set of values, as \textbf {input} and produces some value, or set of values, as \textbf {output}. An algorithm is thus a sequence of computational steps that transform the input into the output.
 
 \section{Getting Started}
 
@@ -118,19 +118,15 @@ MERGE-SORT($A, p, r$)
 
 \begin{theorem}
   Let $a \ge 1$ and $b \ge 1$ be constants, let $f(n)$ be a function, and let $T(n)$ be defined on the nonnegative integers by recurrence
-
   \begin{equation*}
     T(n) = aT(n/b) + f(n),
   \end{equation*}
-
   where we interpret $n/b$ to mean either $\lfloor n/b \rfloor$ or $\lceil n/b \rceil$. Then $T(n)$ can be bounded asymptotically as follows.
-
   \begin{enumerate}
   \item If $f(n) = O(n^{\log_b^a - \epsilon})$ for some constant $\epsilon > 0$, then $T(n) = \Theta (n^{\log_b a})$.
   \item If $f(n) = O(n^{\log_b^a})$, then $T(n) = \Theta (n^{\log_b a} \lg n)$.
   \item If $f(n) = O(n^{\log_b^a + \epsilon})$ for some constant $\epsilon > 0$, and if $af(n/b) \le cf(n)$ for some constant $c < 1$ and all sufficiently large $n$, then $T(n) = \Theta \left( f(n) \right)$.
   \end{enumerate}
-
 \end{theorem}
 
 \section{Probabilistic Analysis and Randomized Algorithms}
@@ -188,7 +184,6 @@ The event that $k$ people have distinct birthday is
 \begin{equation*}
   B_k = \bigcap_{i=1}^k A_i,
 \end{equation*}
-
 where $A_i$ is the event that person $i$'s birthday is different from person $j$'s for all $j < i$. Since we can write $B_k = A_k \cap B_{k-1}$, we get
 \begin{eqnarray*}
   Pr \{ B_k \} 
@@ -202,7 +197,6 @@ where $A_i$ is the event that person $i$'s birthday is different from person $j$
   &=& 1 \cdot \left( 1 - \frac {1}{n} \right) \left( 1 - \frac {2}{n} \right)
       \cdots \left( 1 - \frac {k-1}{n} \right)
 \end{eqnarray*}
-
 Inequality $1 + x \le e^x$ gives us
 \begin{eqnarray*}
   Pr \{ B_k \} 
@@ -211,7 +205,6 @@ Inequality $1 + x \le e^x$ gives us
   &=& e^{-k(k-1)/2n} \\
   &\le& 1/2
 \end{eqnarray*}
-
 when $-k(k-1)/2n \le \ln(1/2)$. we get $k \ge (1 + \sqrt {1 + (8 \ln 2)n})/2$. For $n = 365$, we must have $k \ge 23$.
 
 \subsubsection{Balls and bins}
@@ -224,7 +217,6 @@ The hits can be used to partition the $n$ tosses into stages. The $i$th stage co
 \begin{equation*}
   E[n_i] = \frac {b}{b - i + 1}
 \end{equation*}
-
 By linearity of expectation,
 \begin{eqnarray*}
   E[n]
@@ -234,7 +226,6 @@ By linearity of expectation,
   &=& \sum_{i=1}^b \frac {1}{i} \\
   &=& b( \ln b + O(1)).
 \end{eqnarray*}
-
 The problem is also known as the \textbf {coupon collector's problem}.
 
 \subsubsection{Streaks}
@@ -245,7 +236,6 @@ Let $A_{i,k}$ be the event that a streak of heads of length at least $k$ begins 
 \begin{equation*}
   Pr \{ A_{ik} \} = 1 / 2^k.
 \end{equation*}
-
 For $k = 2 \lceil \lg n \rceil$,
 \begin{eqnarray*}
   Pr \{ A_{i, 2 \lceil \lg n \rceil} \}
@@ -253,7 +243,6 @@ For $k = 2 \lceil \lg n \rceil$,
   &\le& 1 / 2^{2 \lg n} \\
   &=& 1 / n^2
 \end{eqnarray*}
-
 There are at most $n - 2 \lceil \lg n \rceil + 1$ positions where such a streak can begin. The probability that a streak of heads of length at least $2 \lceil \lg n \rceil$ begins anywhere is therefore
 \begin{eqnarray*}
   Pr \left\{ \bigcup_{i=1}^{n - 2 \lceil \lg n \rceil + 1} A_{i,2 \lceil \lg n \rceil} \right\}
@@ -261,12 +250,10 @@ There are at most $n - 2 \lceil \lg n \rceil + 1$ positions where such a streak 
   &<& \sum_{i=1}^n 1 / n^2 \\
   &=& 1/n,
 \end{eqnarray*}
-
 since Boole's inequality,
 \begin{equation*}
   Pr \{ A_1 \cup A_2 \cup \cdots \} \le Pr \{ A_1 \} + Pr \{ A_2 \} + \cdots,
 \end{equation*}
-
 the probability of a union of events is at most the sum of the probabilities of the individual events. \\
 
 By the definition of expected value,
@@ -282,14 +269,12 @@ By the definition of expected value,
   &<& 2 \lceil \lg n \rceil - 1 \cdot 1 + n \cdot (1/n) \\
   &=& O(\lg n)
 \end{eqnarray*}
-
 The chances that a streak of heads exceeds $r \lceil \lg n \rceil$ flips diminish quickly with $r$. For $r \ge 1$, the probability that a streak of $r \lceil \lg n \rceil$ heads starts in position $i$ is
 \begin{eqnarray*}
   Pr \{ A_{i, r \lceil \lg n \rceil} \}
   &=& 1 / 2^{r \lceil \lg n \rceil} \\
   &\le& 1 / n^r
 \end{eqnarray*}
-
 Thus, the probability is at most $n / n^r = 1 / n^{r-1}$ that the longest streak is at least $r \lceil \lg n \rceil$. \\
 
 We now prove a complementary lower bound: the expected length of the longest streak of heads in $n$ coin flips is $\Omega (\lg n)$. To prove this bound, we look for streaks of length $s$ by partitioning the $n$ flips into approximately $n/s$ groups of $s$ flips each. If we choose $s = \lfloor (\lg n)/2 \rfloor$, we can show that it is likely that at least one of these groups comes up all heads, and hence it is likely that the longest streak has length at least $s = \Omega (\lg n)$. We then show that the longest streak has expected length $\Omega (\lg n)$.
@@ -298,7 +283,6 @@ We now prove a complementary lower bound: the expected length of the longest str
   &=& 1 / 2^{\lfloor (\lg n)/2 \rfloor} \\
   &\ge& 1 / \sqrt n.
 \end{eqnarray*}
-
 The probability that a streak of heads of length at least $\lfloor (\lg n)/2 \rfloor$ does not begin in position $i$ is therefore at most $1 - 1 / \sqrt n$. Since the $\lfloor n / \lfloor (\lg n)/2 \rfloor \rfloor$ groups are formed from mutually exclusive, independent coin flips, the probability that every one of these groups fails to be a streak of length $\lfloor (\lg n)/2 \rfloor$ is at most
 \begin{eqnarray*}
   (1 - 1 / \sqrt n)^{\lfloor n/ {\lfloor (\lg n)/2 \rfloor} \rfloor}
@@ -308,14 +292,12 @@ The probability that a streak of heads of length at least $\lfloor (\lg n)/2 \rf
   &=& O(e^{- \lg n}) \\
   &=& O(1/n)
 \end{eqnarray*}
-
 For this argument, we used $(2n / {\lg n} - 1) / {\sqrt n} \ge \lg n$ for sufficiently large $n$. \\
 
 Thus , the probability that the longest streak exceeds $\lfloor (\lg n)/2 \rfloor$ is
 \begin{equation*}
   \sum_{j = \lfloor (\lg n)/2 \rfloor + 1}^{n} Pr \{ L_j \} \ge 1 - O(1/n)
 \end{equation*}
-
 We can now calculate a lower bound on the expected length of the longest streak:
 \begin{eqnarray*}
   E[L]
@@ -331,12 +313,10 @@ We can now calculate a lower bound on the expected length of the longest streak:
   &\ge& 0 + \lfloor (\lg n)/2 \rfloor (1 - O(1/n)) \\
   &=& \Omega (\lg n).
 \end{eqnarray*}
-
 As with the birthday paradox, we can obtain a simpler but approximate analysis using indicator random variables. We let $X_{ik} = I \{ A_{ik} \}$ be the indicator random variable associated with a streak of heads of length at least $k$ beginning with the $i$th coin flip. To count the total number of such streaks, we define
 \begin{equation*}
   X = \sum_{i=1}^{n-k+1} X_{ik}.
 \end{equation*}
-
 Taking expectations and using linearity of expectation, we have
 \begin{eqnarray*}
   E[X]
@@ -346,7 +326,6 @@ Taking expectations and using linearity of expectation, we have
   &=& \sum_{i=1}^{n-k+1} 1 / 2^k \\
   &=& \frac {n-k+1}{2^k}
 \end{eqnarray*}
-
 By plugging in various values for $k$, we can calculate the expected number of streaks of length $k$. If $k = c \lg n$, for some positive constant $c$, we obtain
 \begin{eqnarray*}
   E[X]
@@ -409,7 +388,6 @@ We can describe the running time of MAX-HEAPIFY by recurrence
 \begin{equation*}
   T(n) \le T(2n/3) + \Theta(1).
 \end{equation*}
-
 The solution to this recurrence is $T(n) = O(\lg n)$. Alternatively, we can characterize the running time of MAX-HEAPIFY on a node of height $h$ as $O(h)$.
 
 \subsection{Building a heap}
@@ -645,7 +623,6 @@ Since insertion sort runs in quadratic time, the running time of bucket sort is
 \begin{equation*}
   T(n) = \Theta(n) + \sum_{i=0}^{n-1} O(n_i^2).
 \end{equation*}
-
 We now analyze the average-case running time of bucket sort, by computing the expected value of the running time, where we take the expectation over the input distribution. We have
 \begin{eqnarray*}
   E[T(n)]
@@ -729,7 +706,6 @@ With hashing, an element with key $k$ is stored in slot $h(k)$; that is, we use 
 \begin{equation*}
   h: U \rightarrow \{ 0,1, \dots, m-1 \},
 \end{equation*}
-
 where the size $m$ of the hash table is typically much less than $|U|$.
 
 \subsubsection*{Collision resolution by chaining}
@@ -779,7 +755,6 @@ In the \textbf {division method} for creating hash functions, we map a key $k$ i
 \begin{equation*}
   h(k) = k \mod m.
 \end{equation*}
-
 A prime not too close to an exact power of $2$ is often a good choice for $m$.
 
 \subsubsection{The multiplication method}
@@ -788,7 +763,6 @@ The \textbf {multiplication method} for creating hash functions operates in two 
 \begin{equation*}
   h(k) = \lfloor m (kA \mod 1) \rfloor,
 \end{equation*}
-
 where ``$kA \mod 1$'' means the fractional part of $kA$, that is, $kA - \lfloor kA \rfloor$. \\
 
 An advantage of the multiplication method is that the value of m is not critical. We typically choose it to be a power of $2$ ($m = 2^p$ for some integer $p$), since we can then easily implement the function on most computers as follows. Suppose that the word size of the machine is $w$ bits and that $k$ fits into a single word. We restrict $A$ to be a fraction of the form $s/2^w$, where $s$ is an integer in the range $0 < s < 2^w$. We first multiply $k$ by the $w$-bit integer $s = A \cdot 2^w$. The result is a $2w$-bit value $r_12^w+r_0$, where $r_1$ is the high-order word of the product and $r_0$ is the low-order word of the product. The desired $p$-bit hash value consists of the $p$ most significant bits of $r_0$.
@@ -819,7 +793,6 @@ To perform insertion using open addressing, we successively examine, or \textbf 
 \begin{equation*}
   h: U \times \{ 0,1,\dots,m-1 \} \rightarrow \{ 0,1,\dots,m-1 \}.
 \end{equation*}
-
 With open addressing, we require that for every key $k$, the \textbf {probe sequence}
 
 \begin{equation*}
@@ -858,31 +831,25 @@ HASH-SEARCH($T, k$)
 \subsubsection*{Linear probing}
 
 Given an ordinary hash function $h': U \rightarrow \{ 0,1,\dots,m-1 \}$, which we refer to as an \textbf {auxiliary hash function}, the method of \textbf {linear probing} uses the hash function
-
 \begin{equation*}
   h(k,i) = (h'(k) + i) \mod m
 \end{equation*}
-
 for $i = 0,1,\dots,m-1$. Linear probing is easy to implement, but it suffers from a problem known as \textbf {primary clustering}.
 
 \subsubsection*{Quadratic probing}
 
 \textbf {Quadratic probing} uses a hash function of the form
-
 \begin{equation*}
   h(k,i) = (h'(k) + c_1 i + c_2 i^2) \mod m,
 \end{equation*}
-
 where $h'$ is an auxiliary hash function, $c_1$ and $c_2$ are positive auxiliary constants and $i = 0,1,\dots,m-1$. This methods works much better than linear probing, but to make full use of the hash table, the values of $c_1, c_2$ and $m$ are constrained. Also, if two keys have the same initial probe position, then their probe sequences are the same. This property leads to a milder from of clustering, called \textbf {secondary clustering}.
 
 \subsubsection*{Double hashing}
 
 Double hashing offers one of the best methods available for open addressing because the permutations produced have many of the characteristics of randomly chosen permutations. \textbf {Double hashing} uses a hash function of the form
-
 \begin{equation*}
   h(k,i) = (h_1(k) + ih_2(k)) \mod m,
 \end{equation*}
-
 where both $h_1$ and $h_2$ are auxiliary hash functions.
 
 \subsubsection*{Analysis of open-address hashing}
@@ -909,6 +876,26 @@ Hashing can provide excellent worst-case performance when the set of keys is \te
 
 To create a perfect hashing scheme, we use two levels of hashing, with universal hashing at each level.
 
+\section{Binary Search Trees}
+
+\subsection{What is a binary search tree}
+
+The keys in a binary search tree are always stored in such a way as to satisfy the \textbf {binary-search-tree property}:
+\begin{quote}
+  Let $x$ be a node in a binary search tree. If $y$ is a node in the left subtree of $x$, then $y.key \le x.key$. If $y$ is a node in the right subtree of $x$, then $y.key \ge x.key$.
+\end{quote}
+\textbf {Inorder tree walk} prints the key of the root of a subtree between printing the values in its left subtree and printing those in its right subtree. Similarly, a \textbf {preorder tree walk} prints the root before the values in either subtree, and a \textbf {postorder tree walk} prints the root after the values in its substrees. \\
+
+INORDER-TREE-WALK($x$)
+\begin{algorithmic}[1]
+\If {$x \neq \text {NIL}$}
+\State INORDER-TREE-WALK($x.left$)
+\State print $x.key$
+\State INORDER-TREE-WALK($x.right$)
+\EndIf
+\end{algorithmic}
+
+\section{Querying a binary search tree}
 
 
 
