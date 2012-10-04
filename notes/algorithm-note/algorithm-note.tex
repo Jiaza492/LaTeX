@@ -895,7 +895,143 @@ INORDER-TREE-WALK($x$)
 \EndIf
 \end{algorithmic}
 
-\section{Querying a binary search tree}
+\subsection{Querying a binary search tree}
+
+\subsubsection*{Searching}
+
+TREE-SEARCH($x, k$)
+\begin{algorithmic}[1]
+\If {$x == \text {NIL}$ or $k == x.key$}
+	\State \textbf {return} $x$
+\EndIf
+\If {$k < x.key$}
+	\State \textbf {return} TREE-SEARCH($x.left, k$)
+\Else
+	\State \textbf {return} TREE-SEARCH($x.right, k$)
+\EndIf
+\end{algorithmic}
+
+ITERATIVE-TREE-SEARCH($x, k$)
+\begin{algorithmic}[1]
+\While {$x \neq \text {NIL}$ and $x \neq x.key$}
+	\If {$k < x.key$}
+		\State $x = x.left$
+        \Else
+		\State $x = x.right$
+	\EndIf
+\EndWhile
+\State \textbf {return} $x$
+\end{algorithmic}
+
+TREE-MINIMUM($x$)
+\begin{algorithmic}[1]
+\While {$x.left \neq \text {NIL}$}
+	\State $x = x.left$
+\EndWhile
+\State \textbf {return} $x$
+\end{algorithmic}
+
+TREE-MAXIMUM($x$)
+\begin{algorithmic}[1]
+\While {$x.right \neq \text {NIL}$}
+	\State $x = x.right$
+\EndWhile
+\State \textbf {return} $x$
+\end{algorithmic}
+
+TREE-SUCCESSOR($x$)
+\begin{algorithmic}[1]
+\If {$x.right \neq \text {NIL}$}
+	\State \textbf {return} TREE-MINIMUM($x.right$)
+\EndIf
+\State $y = x.p$
+\While {$y \neq \text {NIL}$ and $x == y.right$}
+	\State $x = y$
+        \State $y = y.p$
+\EndWhile
+\State \textbf {return} $y$
+\end{algorithmic}
+
+\begin{theorem}
+  We can implement the dynamic-set operations SEARCH, MINIMUM, MAXIMUM, SUCCESSOR, and PREDECESSOR so that each one runs in $O(h)$ time on a binary search tree of height $h$.
+\end{theorem}
+
+\subsection{Insertion and deletion}
+
+\subsubsection*{Insertion}
+
+TREE-INSERT($T,z$)
+\begin{algorithmic}[1]
+\State $y = \text {NIL}$
+\State $x = T.root$
+\While {$x \neq NIL$}
+	\State $y = x$
+        \If {$z.key < x.key$}
+        	\State $x = x.left$
+        \Else
+        	\State $x = x.right$
+        \EndIf
+\EndWhile
+\State $z.p = y$
+\If {$y == NIL$}
+	\State $T.root = z$
+        \Comment tree $T$ was empty
+\ElsIf {$z.key < y.key$}
+	\State $y.left = z$
+\Else
+	\State $y.right = z$
+\EndIf
+\end{algorithmic}
+
+\subsubsection{Deletion}
+
+TRANSPLANT replaces one subtree ($u$) as a child of its parent ($u.p$) with another subtree ($v$). \\
+
+TRANSPLANT($T,u,v$)
+\begin{algorithmic}[1]
+\If {$u.p == \text {NIL}$}
+	\State $T.root = v$
+\ElsIf {$u == u.p.left$}
+	\State $u.p.left = v$
+\Else
+	\State $u.p.right = v$
+\EndIf
+\If {$v \neq \text {NIL}$}
+	\State $v.p = u.p$
+\EndIf
+\end{algorithmic}
+
+Deletion: Replace $z$ with its successor $y$. And $y$ does not have a left subtree. \\
+
+TREE-DELETE($T,z$)
+\begin{algorithmic}[1]
+\If {$z.left == \text {NIL}$}
+	\State TRANSPLANT($T,z,z.right$)
+\ElsIf {$z.right == \text {NIL}$}
+	\State TRANSPLANT($T,z,z.left$)
+\Else
+	\State $y = \text {TREE-MINIMUM}(z.right)$
+        \If {$y.p \neq z$}
+		\State TRANSPLANT($T,y,y.right$)
+                \State $y.right = z.right$
+                \State $y.right.p = y$
+        \EndIf
+        \State $y.left = z.left$
+        \State $y.left.p = y$
+\EndIf
+\end{algorithmic}
+
+\begin{theorem}
+  We can implement the dynamic-set operations INSERT and DELETE so that each one runs in $O(h)$ time on a binary search tree of height $h$.
+\end{theorem}
+
+\subsection{Randomly built binary search tree}
+
+A \textbf {randomly built binary search tree} on $n$ keys as one that arises from inserting the keys in random order into an initially empty tree, where each of the $n!$ permutations of the input keys is equally likely. 
+
+\begin{theorem}
+  The expected height of a randomly built binary search tree on $n$ distinct keys is $O(\lg n)$.
+\end{theorem}
 
 
 
