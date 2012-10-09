@@ -1,0 +1,146 @@
+\documentclass[12pt]{article}
+\parindent=.25in
+
+\setlength{\oddsidemargin}{0pt}
+\setlength{\textwidth}{440pt}
+\setlength{\topmargin}{0in}
+
+\usepackage[dvips]{graphicx}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+
+\title{Machine Learning Homework 2}
+\author{Mengqi Zong $<mz2326@columbia.edu>$}
+
+\begin{document}
+
+\maketitle
+
+\setlength{\parindent}{0in}
+
+\section{Problem 1}
+
+
+\section{Problem 2}
+
+
+
+\section{Problem 3}
+
+Let
+\begin{equation*}
+  \textbf{X} =
+  \begin{bmatrix}
+    - \phi^T(x_1)- \\
+    - \phi^T(x_2)- \\
+    \vdots \\
+    -\phi^T(x_n)- 
+  \end{bmatrix}
+\end{equation*}
+
+Rewrite $L(\textbf{w})$
+\begin{eqnarray*}
+  L(\textbf{w})
+  &=& \sum_{i=1}^n (\textbf{w}^T \phi(\textbf{x}_i) - y_i)^2
+  + \lambda \textbf{w}^T \textbf{w} \\
+  &=& \sum_{i=1}^n (y_i - \textbf{w}^T \phi(\textbf{x}_i))^2
+  + \lambda \textbf{w}^T \textbf{w} \\
+  &=& \left\lVert 
+  \begin{matrix}
+    \begin{bmatrix}
+      y_1 \\
+      y_2 \\
+      \vdots \\
+      y_n
+    \end{bmatrix}
+    -
+    \begin{bmatrix}
+    - \phi^T(\textbf{x}_1)- \\
+    - \phi^T(\textbf{x}_2)- \\
+    \vdots \\
+    -\phi^T(\textbf{x}_n)- 
+    \end{bmatrix}
+    \textbf{w}
+  \end{matrix}
+  \right\rVert^2 \\
+  &=& \left\lVert \textbf{y} - \textbf{Xw} \right\rVert^2
+\end{eqnarray*}
+Solving gradient $=0$
+\begin{eqnarray*}
+  \nabla_{\textbf{w}} {L} &=& 0 \\
+  \nabla_{\textbf{w}} {\left( 
+      \left\lVert \textbf{y} - \textbf{Xw} \right\rVert^2 
+      + \lambda \textbf{w}^T \textbf{w} \right)} &=& 0 \\
+  \nabla_{\textbf{w}} {\left( \left(\textbf{y} - \textbf{Xw} \right)^T
+      \left(\textbf{y} - \textbf{Xw} \right) 
+      + \lambda \textbf{w}^T \textbf{w} \right)} &=& 0 \\
+  \nabla_{\textbf{w}} {\left( 
+      \left(\textbf{y}^T - \textbf{w}^T \textbf{X}^T \right)
+      \left(\textbf{y} - \textbf{Xw} \right) 
+      + \lambda \textbf{w}^T \textbf{w} \right)} &=& 0 \\
+  \nabla_{\textbf{w}} {\left( 
+      \textbf{y}^T \textbf{y} - 2 \textbf{y}^T \textbf{X} \textbf{w}
+      + \textbf{w}^T \textbf{X}^T \textbf{Xw} 
+      + \lambda \textbf{w}^T \textbf{w} \right)} &=& 0 \\
+  - 2 \textbf{X}^T \textbf{y} + 2 \textbf{X}^T \textbf{Xw} 
+  + 2 \lambda \textbf{w} &=& 0 \\
+  \textbf{X}^T \textbf{Xw} + \lambda \textbf{w}
+  &=& \textbf{X}^T \textbf{y} \\
+  \left( \textbf{X}^T \textbf{X} + \lambda \textbf{I} \right) \textbf{w}
+  &=& \textbf{X}^T \textbf{y} \\
+  \textbf{w} &=&
+  \left( \textbf{X}^T \textbf{X} + \lambda \textbf{I} \right)^{-1}
+  \textbf{X}^T \textbf{y}
+\end{eqnarray*}
+Since
+\begin{eqnarray*}
+  \textbf{X}^T \textbf{y} &=&
+  \begin{bmatrix}
+    | & | & \dots  & | \\
+    \phi(\textbf{x}_1) & \phi(\textbf{x}_2) & \dots & \phi(\textbf{x}_n) \\
+    | & | & \dots  & |
+  \end{bmatrix}
+  \begin{bmatrix}
+    y_1 \\
+    y_2 \\
+    \vdots \\
+    y_n
+  \end{bmatrix} \\
+  &=& \sum_{i=1}^n \phi(x_i) y_i
+\end{eqnarray*}
+We have
+\begin{eqnarray*}
+  \textbf{w}
+  &=& \left( \textbf{X}^T \textbf{X} + \lambda \textbf{I} \right)^{-1}
+  \textbf{X}^T \textbf{y} \\
+  &=& \sum_{i=1}^n
+  \left( \textbf{X}^T \textbf{X} + \lambda \textbf{I} \right)^{-1}
+  \phi(\textbf{x}_i) y_i \\
+  &=& \sum_{i=1}^n
+  \left( \textbf{X}^T \textbf{X} + \lambda \textbf{I} \right)^{-1}
+  y_i \phi(\textbf{x}_i) 
+\end{eqnarray*}
+
+Intuitively, this shows that \textbf{w} lives in the span of feature maps: $\textbf{w} = \sum_{i=1}^n \alpha_i \phi(\textbf{x}_i)$. \\
+
+\begin{eqnarray*}
+  L(\textbf{w})
+  &=& \sum_{i=1}^n \left(\textbf{w}^T \phi(\textbf{x}_i) - y_i \right)^2
+  + \lambda \textbf{w}^T \textbf{w} \\
+  &=& \sum_{i=1}^n \left(
+    \left( \sum_{j=1}^n \alpha_j \phi(\textbf{x}_j) \right)^T 
+    \phi(\textbf{x}_i) - y_i \right)^2
+  + \lambda \left( \sum_{j=1}^n \alpha_j \phi(\textbf{x}_j) \right)^T
+  \left( \sum_{i=1}^n \alpha_i \phi(\textbf{x}_i) \right) \\
+  &=& \sum_{i=1}^n \left( \sum_{j=1}^n \alpha_j \phi^T(\textbf{x}_j)
+    \phi(\textbf{x}_i) - y_i \right)^2
+  + \lambda \sum_{j=1}^n \sum_{i=1}^n \alpha_i \alpha_j 
+  \phi^T(\textbf{x}_j) \phi(\textbf{x}_i) \\
+\end{eqnarray*}
+
+
+\end{document}
