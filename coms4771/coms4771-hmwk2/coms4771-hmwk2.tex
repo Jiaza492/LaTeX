@@ -22,14 +22,117 @@
 
 \setlength{\parindent}{0in}
 
-\section{Problem 1}
+\section*{Problem 1}
 
+The VC dimension is 4. \\
 
-\section{Problem 2}
+In Fig-\ref{fig:p1}, we draw an axis-aligned rectangle such that for each edge, there is one and only one point is in that edge. For each point, if the output for this point is 1, we move the corresponding edge outwards to make the point inside the rectangle; if the output is 0, then we move the corresponding edge inwards to make the point outside the rectangle. Note that this does not affect the rest of the points. As a result, using this method, we can always find one rectangle that satisfy the output of the four points. Fig-\ref{fig:p1_2} shows the rectangle to satisfy situation with only $p_2$ is 1. \\
 
+However, axis aligned rectangle can not shatter 5 points. Because one rectangle only has 4 edges. Though we can satisfy any output of 4 points, there is no way we can satisfy the last 1 point.
 
+\begin{figure}[ht!]
+  \centering
+  \includegraphics[width=0.7 \textwidth]{p1}
+  \caption{P1 original rectangle \label{fig:p1}}
+\end{figure}
 
-\section{Problem 3}
+\begin{figure}[ht!]
+  \centering
+  \includegraphics[width=0.7 \textwidth]{p1_2}
+  \caption{P1 Example \label{fig:p1_2}}
+\end{figure}
+
+\section*{Problem 2}
+
+We first prove Mercer's theorem in one direction. Assume $\phi(x) \in R^d$, we have
+\begin{eqnarray*}
+  \textbf{c}^T \textbf{Kc}
+  &=& \sum_{i=1}^n \sum_{j=1}^n c_i c_j k(x_i,x_j) \\
+  &=& \sum_{i=1}^n \sum_{j=1}^n c_i c_j \phi^T(x_i) \phi(x_j) \\
+  &=& \sum_{i=1}^n \sum_{j=1}^n c_i c_j
+  \sum_{a=1}^d \sum_{b=1}^d (\phi(x_i))_a (\phi(x_j))_b \\
+  &=& \sum_{i=1}^n \sum_{a=1}^d c_i (\phi(x_i))_a
+  \sum_{j=1}^n \sum_{b=1}^d c_j (\phi(x_j))_b \\
+  &=& \left( \sum_{i=1}^n \sum_{a=1}^d c_i (\phi(x_i))_a \right)^2 \ge 0
+\end{eqnarray*}
+
+So the kernel matrix \textbf{K} is semi-definite. \\
+
+a) $k(x, \tilde{x}) = \alpha k_1(x, \tilde{x}) + \beta k_2(x, \tilde{x})$
+\begin{eqnarray*}
+  \textbf{c}^T \textbf{Kc}
+  &=& \sum_{i=1}^n \sum_{j=1}^n c_i c_j k(x_i,x_j) \\
+  &=& \sum_{i=1}^n \sum_{j=1}^n c_i c_j 
+  \left( \alpha k_1(x_i,x_j) + \beta k_2(x_i,x_j) \right) \\
+  &=& \sum_{i=1}^n \sum_{j=1}^n c_i c_j \alpha k_1(x_i,x_j)
+  + \sum_{i=1}^n \sum_{j=1}^n c_i c_j \beta k_2(x_i,x_j) \\
+  &=& \alpha \textbf{c}^T \textbf{K}_1 \textbf{c}
+  + \beta \textbf{c}^T \textbf{K}_2 \textbf{c} \ge 0
+\end{eqnarray*}
+
+b) $k(x, \tilde{x}) = \alpha k_1(x, \tilde{x}) \times \beta k_2(x, \tilde{x})$
+\begin{eqnarray*}
+  \textbf{c}^T \textbf{Kc}
+  &=& \sum_{i=1}^n \sum_{j=1}^n c_i c_j k(x_i,x_j) \\
+  &=& \sum_{i=1}^n \sum_{j=1}^n c_i c_j 
+  \left( k_1(x_i,x_j) \times k_2(x_i,x_j) \right) \\
+  &=& \sum_{i=1}^n \sum_{j=1}^n c_i c_j 
+  \left( \phi_1^T(x_i) \phi_1(x_j) \times \phi_2^T(x_i) \phi_2(x_j) \right) \\
+  &=& \sum_{i=1}^n \sum_{j=1}^n c_i c_j 
+  \left( \sum_{a=1}^{d_1} \sum_{b=1}^{d_1} (\phi_1(x_i))_a (\phi_1(x_j))_b 
+  \times \sum_{p=1}^{d_2} \sum_{q=1}^{d_2} (\phi(x_i))_p (\phi(x_j))_q \right) \\
+  &=& \sum_{i=1}^n c_i \sum_{a=1}^{d_1} (\phi_1(x_i))_a \sum_{p=1}^{d_2}
+  (\phi(x_i))_p \times \sum_{j=1}^n c_j \sum_{b=1}^{d_1}
+  (\phi_1(x_j))_b \sum_{q=1}^{d_2} (\phi(x_j))_q \\
+  &=& \left( \sum_{i=1}^n c_i \sum_{a=1}^{d_1} (\phi_1(x_i))_a \sum_{p=1}^{d_2}
+  (\phi(x_i))_p \right)^2 \ge 0
+\end{eqnarray*}
+
+c) $k(x, \tilde{x}) = f(k_1(x, \tilde{x}))$ \\
+
+Assume $f(x) = a_0 + a_1 + a_2 x^2 + \dots + a_d x^d$, where $a_i > 1 \; i = 0,1,2,\dots, d$.
+\begin{eqnarray*}
+  \textbf{c}^T \textbf{Kc}
+  &=& \sum_{i=1}^n \sum_{j=1}^n c_i c_j k(x_i,x_j) \\
+  &=& \sum_{i=1}^n \sum_{j=1}^n c_i c_j f(k_1(x_i,x_j)) \\
+  &=& \sum_{i=1}^n \sum_{j=1}^n \sum_{m = 1}^d c_i c_j a_m
+  \left( k_1(x_i,x_j) \right)^m \\
+  &=& \sum_{i=1}^n \sum_{j=1}^n \sum_{m = 1}^d c_i c_j a_m
+  \left( \phi_1^T(x_i) \phi_1(x_j) \right)^m \\
+  &=& \sum_{i=1}^n \sum_{j=1}^n \sum_{m = 1}^d c_i c_j a_m
+  \left( \sum_{a=1}^d \sum_{b=1}^d (\phi(x_i))_a (\phi(x_j))_b \right)^m \\
+  &=& \sum_{i=1}^n \sum_{j=1}^n \sum_{m = 1}^d c_i c_j a_m
+  \left( \sum_{a=1}^d (\phi(x_i))_a \right)^m
+  \left(\sum_{b=1}^d (\phi(x_j))_b \right)^m \\
+  &=& 
+  \sum_{m = 1}^d \sum_{i=1}^n a_m c_i \left( \sum_{a=1}^d (\phi(x_i))_a \right)^m
+  \sum_{m = 1}^d \sum_{j=1}^n a_m c_j \left( \sum_{b=1}^d (\phi(x_j))_b \right)^m
+  \\
+  &=& \sum_{m = 1}^d \sum_{i=1}^n a_m c_i
+  \left( \sum_{a=1}^d (\phi(x_i))_a \right)^{2m} \ge 0
+\end{eqnarray*}
+
+d) $k(x, \tilde{x}) = \exp (k_1(x, \tilde{x}))$ \\
+
+\begin{eqnarray*}
+  \textbf{c}^T \textbf{Kc}
+  &=& \sum_{i=1}^n \sum_{j=1}^n c_i c_j k(x_i,x_j) \\
+  &=& \sum_{i=1}^n \sum_{j=1}^n c_i c_j \exp (k_1(x_i,x_j)) \\
+  &=& \sum_{i=1}^n \sum_{j=1}^n c_i c_j \exp (\phi_1^T(x_i) \phi_1(x_j)) \\
+  &=& \sum_{i=1}^n \sum_{j=1}^n c_i c_j
+  \exp \left( \sum_{a=1}^d \sum_{b=1}^d (\phi(x_i))_a (\phi(x_j))_b \right) \\
+  &=& \sum_{i=1}^n \sum_{j=1}^n c_i c_j
+  \exp \left( \sum_{a=1}^d (\phi(x_i))_a \sum_{b=1}^d (\phi(x_j))_b \right) \\
+  &=& \sum_{i=1}^n \sum_{j=1}^n c_i c_j
+  \exp \left( \sum_{a=1}^d (\phi(x_i))_a \right)
+  \exp \left( \sum_{b=1}^d (\phi(x_j))_b \right) \\
+  &=& \sum_{i=1}^n c_i \exp \left( \sum_{a=1}^d (\phi(x_i))_a \right)
+  \sum_{j=1}^n c_j \exp \left( \sum_{b=1}^d (\phi(x_j))_b \right) \\
+  &=& \left( \sum_{i=1}^n c_i 
+    \exp \left( \sum_{a=1}^d (\phi(x_i))_a \right) \right)^2 \ge 0
+\end{eqnarray*}
+
+\section*{Problem 3}
 
 Let
 \begin{equation*}
@@ -141,6 +244,10 @@ Intuitively, this shows that \textbf{w} lives in the span of feature maps: $\tex
   + \lambda \sum_{j=1}^n \sum_{i=1}^n \alpha_i \alpha_j 
   \phi^T(\textbf{x}_j) \phi(\textbf{x}_i) \\
 \end{eqnarray*}
+
+\section*{Problem 4}
+
+
 
 
 \end{document}
