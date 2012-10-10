@@ -9,6 +9,7 @@
 \usepackage{amssymb}
 \usepackage{amsfonts}
 \usepackage{amsmath}
+\usepackage{verbatim}
 
 \title{IEOR 4150 Homework 4}
 \author{Mengqi Zong $<mz2326@columbia.edu>$}
@@ -21,6 +22,249 @@
 
 \section*{Chapter 5}
 
+19. \\
+a)
+\begin{eqnarray*}
+  \frac {P(X=i)}{P(X=i-1)}
+  &=& \frac
+  { \frac {\binom {n}{i} \binom {m}{k-i}} {\binom {n+m}{k}}}
+  { \frac {\binom {n}{i-1} \binom {m}{k-i+1}} {\binom {n+m}{k}}} \\
+  &=& \frac
+  { \binom {n}{i} \binom {m}{k-i}}
+  { \binom {n}{i-1} \binom {m}{k-i+1}} \\
+  &=& \frac
+  { \frac {n!}{i!(n-i)!} \frac {m!}{(k-i)!(m-k+i)!}}
+  { \frac {n!}{(i-1)!(n-i+1)!} \frac {m!}{(k-i+1)!(m-k+i-1)!}} \\
+  &=& \frac
+  {(i-1)!(n-i+1)!(k-i+1)!(m-k+i-1)!}
+  {i!(n-i)!(k-i)!(m-k+i)!} \\
+  &=& \frac {(n-i+1)(k-i+1)}{i(m-k+i)} \\
+  \Rightarrow P(X=i)
+  &=& \frac {(n-i+1)(k-i+1)}{i(m-k+i)} P(X=i-1)
+\end{eqnarray*}
 
+b)
+\begin{eqnarray*}
+  P(X = 0)
+  &=& \frac {\binom {n}{i} \binom {m}{k-i}}{\binom {n+m}{k}} \\
+  &=& \frac {\binom {10}{0} \binom {10}{5-0}}{\binom {10+10}{5}} \\
+  &=& \frac {21}{1292} \\
+  P(X = 1)
+  &=& \frac {(10-1+1)(5-1+1)}{1(10-5+1)} P(X=0) \\
+  &=& \frac {175}{1292} \\
+  P(X = 2)
+  &=& \frac {(10-2+1)(5-2+1)}{2(10-5+2)} P(X=1) \\
+  &=& \frac {225}{646} \\
+  P(X = 3)
+  &=& \frac {(10-3+1)(5-3+1)}{3(10-5+3)} P(X=2) \\
+  &=& \frac {225}{646} \\
+  P(X = 4)
+  &=& \frac {(10-4+1)(5-4+1)}{4(10-5+4)} P(X=3) \\
+  &=& \frac {175}{1292} \\
+  P(X = 5)
+  &=& \frac {(10-5+1)(5-5+1)}{5(10-5+5)} P(X=4) \\
+  &=& \frac {21}{1292}
+\end{eqnarray*}
+
+c) \\
+
+The MATLAB function to calculate the hyper-geometric distribution is shown as follows:
+\verbatiminput{hyper_geometric.m}
+
+d) The MATLAB code is shown as follow:
+\verbatiminput{p19_d.m}
+
+20. \\
+a)
+\begin{eqnarray*}
+  P(X = k)
+  &=& (1-p)^{k-1}p
+\end{eqnarray*}
+
+b)
+\begin{eqnarray*}
+  E[X]
+  &=& \sum_{k=1}^{+\infty} kP(X = k) \\
+  &=& \sum_{k=1}^{+\infty} k(1-p)^{k-1}p \\
+  &=& \frac{p}{1-p} \sum_{k=1}^{+\infty} k(1-p)^k \\
+  &=& \frac{p}{1-p} \sum_{k=0}^{+\infty} k(1-p)^k \\
+  &=& \frac{p}{1-p} \frac {1-p}{\left( 1 - (1-p) \right)^2} \\
+  &=& \frac {1}{p}
+\end{eqnarray*}
+
+c)
+\begin{eqnarray*}
+  P(Y=k)
+  &=& \binom {k-1}{r-1} (1-p)^{k-r} p^r
+\end{eqnarray*}
+
+d)
+\begin{eqnarray*}
+  E[Y]
+  &=& E[Y_1 + Y_2 + \dots + Y_r] \\
+  &=& \sum_{i=1}^r E[Y_i] \\
+  &=& \sum_{i=1}^r E[X] \\
+  &=& r E[X] \\
+  &=& \frac {r}{p}
+\end{eqnarray*}
+
+21.
+\begin{eqnarray*}
+  P(Y \le y)
+  &=& P(a + (b-a)U \le y) \\
+  &=& P(U \le \frac {y-a}{b-a}) \\
+  \Rightarrow F(y) &=& \frac {y-a}{b-a} \\
+  \Rightarrow f(y) &=& \frac {1}{b-a}
+\end{eqnarray*}
+
+So $a + (b-a)U$ is uniform on $(a,b)$. \\
+
+22. Based on the description, we can get $p = \frac {1}{30}$. Let $A$ denote the event that you will have to wait longer than 10 minutes. Then we have
+\begin{eqnarray*}
+  P(A)
+  &=& P(X > 10) \\
+  &=& 1 - P(X \le 10) \\
+  &=& 1 - 10 \times \frac {1}{30} \\
+  &=& \frac {2}{3}
+\end{eqnarray*}
+
+Let $B$ denote the event that at 10:15 the bus has not yet arrived.
+\begin{eqnarray*}
+  P(B)
+  &=& P(X > 15) \\
+  &=& 1 - P(X \le 15) \\
+  &=& 1 - 15 \times \frac {1}{30} \\
+  &=& \frac {1}{2}
+\end{eqnarray*}
+
+Then 
+\begin{eqnarray*}
+  P(AB)
+  &=& P(X > 25) \\
+  &=& 1 - P(X \le 25) \\
+  &=& 1 - 25 \times \frac {1}{30} \\
+  &=& \frac {1}{6}
+\end{eqnarray*}
+
+At last, we have
+\begin{eqnarray*}
+  P(A|B)
+  &=& \frac {AB}{P(B)} \\
+  &=& \frac {\frac {1}{6}}{\frac {1}{2}} \\
+  &=& \frac {1}{3}
+\end{eqnarray*}
+
+23. \\
+a)
+\begin{eqnarray*}
+  P(X>5)
+  &=& 1 - P(X \le 5) \\
+  &=& 1 - P(\frac {X-\mu}{\sigma} \le \frac {5-\mu}{\sigma}) \\
+  &=& 1- \Phi(\frac {5-10}{6}) \\
+  &=& \Phi(\frac {5}{6}) \\
+  &=& 0.7977
+\end{eqnarray*}
+
+b) 
+\begin{eqnarray*}
+  P(4 < X < 16)
+  &=& P(X < 16) - P(X < 4) \\
+  &=& 0.6827
+\end{eqnarray*}
+
+c)
+\begin{eqnarray*}
+  P(X < 8)
+  &=& 0.3694
+\end{eqnarray*}
+
+d) 
+\begin{eqnarray*}
+  P(X < 20)
+  &=& 0.9522
+\end{eqnarray*}
+
+e)
+\begin{eqnarray*}
+  P(X > 16)
+  &=& 1 - P(X < 16) \\
+  &=& 0.1587
+\end{eqnarray*}
+
+25. \\
+Let X denote the event that the number of inches of rainfall this year.
+\begin{eqnarray*}
+  p
+  &=& P(X>50) \\
+  &=& 1 - P(X<50) \\
+  &=& 0.0062
+\end{eqnarray*}
+
+Then we have
+\begin{eqnarray*}
+  P(Y)
+  &=& \binom {4}{2} (1-p)^2 p^2 \\
+  &=& \frac {4!}{2!2!} (1-0.0062)^2 0.0062^2 \\
+  &=& 2.2779 \times 10^{-4}
+\end{eqnarray*}
+
+27.
+\begin{eqnarray*}
+  P(X \ge L)
+  &=& 1 - P(X < L) \\
+  &=& 1 - P(\frac {X - 2000}{85} < \frac {L-2000}{85}) \\
+  &=& 1 - \Phi(\frac {L-2000}{85}) = 0.95 \\
+  \Rightarrow \Phi(\frac {L-2000}{85}) &=& 0.05 \\
+  \Rightarrow L &=& 1860.2
+\end{eqnarray*}
+
+30.
+\begin{eqnarray*}
+  P(X \le x)
+  &=& P(\frac {\log X - \mu}{\sigma} \le \frac {\log x - \mu}{\sigma}) \\
+  &=& \Phi (\frac {\log x - \mu}{\sigma})
+\end{eqnarray*}
+
+38.
+\begin{eqnarray*}
+  P(X > 10)
+  &=& 1 - P(X \le 10) \\
+  &=& 1 - (1 - \lambda e^{-\lambda \times 10}) \\
+  &=& \frac {1}{8} e^{-\frac {1}{8} \times 10} \\
+  &=& \frac {1}{8} e^{-\frac {5}{4}}
+\end{eqnarray*}
+
+40. \\
+a) $S_n$ is the time till the $n$th event to happen. \\
+
+b) Based on the description of Poisson process, the distribution of the numbers of events that occurs in a given interval depends only on the length of the interval and not its location. So for event {$S_n \le t$}, it means that $n$ events happen within $t$ time. That is, there are extra time more possible events to occur. So it is identical to {$N(t) \ge n$}. \\
+
+c)
+\begin{eqnarray*}
+  P \{ S_n \le t \}
+  &=& P \{ N(t) \ge n \} \\
+  &=& 1 - P \{ N(t) < n \} \\
+  &=& 1 - \sum_{j=1}^{n-1} P \{ N(t) = i \} \\
+  &=& 1 - \sum_{j=1}^{n-1} e^{- \lambda t} (\lambda t)^j / j!
+\end{eqnarray*}
+
+d)
+\begin{eqnarray*}
+  \frac {d}{d t} \left( P \{ S_n \le t \} \right)
+  &=& \frac {d}{d t} \left( 
+    1 - \sum_{j=1}^{n-1} e^{- \lambda t} \frac {(\lambda t)^j}{j!} \right) \\
+  &=& - \sum_{j=1}^{n-1} \left(
+    (- \lambda) e^{- \lambda t} \frac {(\lambda t)^j}{j!}
+    + \lambda e^{- \lambda t} \frac {(\lambda t)^{j-1}}{(j-1)!} \right) \\
+  &=& \lambda e^{- \lambda t} \sum_{j=1}^{n-1} \left(
+    \frac {(\lambda t)^j}{j!} - \frac {(\lambda t)^{j-1}}{(j-1)!}
+  \right) \\
+  &=& \lambda e^{- \lambda t} \left(
+    \frac {(\lambda t)^{n-1}}{(n-1)!} - 0 \right) \\
+  &=& \frac {\lambda e^{- \lambda t} (\lambda t)^{n-1}}{(n-1)!} \\
+  &=& \frac {\lambda e^{- \lambda t} (\lambda t)^{n-1}}{\Gamma (n)}
+\end{eqnarray*}
+
+Compared with the standard form of the Gamma distribution, we can conclude that $S_n$ is a gamma random variable with parameters $n$ and $\lambda$.
 
 \end{document}
