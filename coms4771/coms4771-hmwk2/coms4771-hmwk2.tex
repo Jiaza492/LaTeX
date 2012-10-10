@@ -44,19 +44,20 @@ However, axis aligned rectangle can not shatter 5 points. Because one rectangle 
 
 \section*{Problem 2}
 
-We first prove Mercer's theorem in one direction. Assume $\phi(x) \in R^d$, we have
+We first prove Mercer's theorem in one direction. Assume $\phi(x) \in R^d$, and let $(\phi(x))_k$ denote the $k$th element of vector $\phi(x)$. We have
 \begin{eqnarray*}
   \textbf{c}^T \textbf{Kc}
   &=& \sum_{i=1}^n \sum_{j=1}^n c_i c_j k(x_i,x_j) \\
   &=& \sum_{i=1}^n \sum_{j=1}^n c_i c_j \phi^T(x_i) \phi(x_j) \\
-  &=& \sum_{i=1}^n \sum_{j=1}^n c_i c_j
-  \sum_{a=1}^d \sum_{b=1}^d (\phi(x_i))_a (\phi(x_j))_b \\
-  &=& \sum_{i=1}^n \sum_{a=1}^d c_i (\phi(x_i))_a
-  \sum_{j=1}^n \sum_{b=1}^d c_j (\phi(x_j))_b \\
-  &=& \left( \sum_{i=1}^n \sum_{a=1}^d c_i (\phi(x_i))_a \right)^2 \ge 0
+  &=& \sum_{i=1}^n \sum_{j=1}^n \left(
+  c_i c_j \sum_{k=1}^d (\phi(x_i))_k (\phi(x_j))_k 
+  \right) \\
+  &=& \sum_{k=1}^d \left( \sum_{i=1}^n c_i (\phi(x_i))_k
+  \sum_{j=1}^n c_j (\phi(x_j))_k \right) \\
+  &=& \sum_{k=1}^d \left( \sum_{i=1}^n c_i (\phi(x_i))_k \right)^2 \ge 0
 \end{eqnarray*}
 
-So the kernel matrix \textbf{K} is semi-definite. \\
+So the kernel matrix \textbf{K} is positive semi-definite. \\
 
 a) $k(x, \tilde{x}) = \alpha k_1(x, \tilde{x}) + \beta k_2(x, \tilde{x})$
 \begin{eqnarray*}
@@ -70,7 +71,9 @@ a) $k(x, \tilde{x}) = \alpha k_1(x, \tilde{x}) + \beta k_2(x, \tilde{x})$
   + \beta \textbf{c}^T \textbf{K}_2 \textbf{c} \ge 0
 \end{eqnarray*}
 
-b) $k(x, \tilde{x}) = \alpha k_1(x, \tilde{x}) \times \beta k_2(x, \tilde{x})$
+So \textbf{K} is positive semi-definite. By Mercer's theorem, $k(x, \tilde{x})$ is a Mercer kernel. \\
+
+b) $k(x, \tilde{x}) = k_1(x, \tilde{x}) \times k_2(x, \tilde{x})$
 \begin{eqnarray*}
   \textbf{c}^T \textbf{Kc}
   &=& \sum_{i=1}^n \sum_{j=1}^n c_i c_j k(x_i,x_j) \\
@@ -79,38 +82,48 @@ b) $k(x, \tilde{x}) = \alpha k_1(x, \tilde{x}) \times \beta k_2(x, \tilde{x})$
   &=& \sum_{i=1}^n \sum_{j=1}^n c_i c_j 
   \left( \phi_1^T(x_i) \phi_1(x_j) \times \phi_2^T(x_i) \phi_2(x_j) \right) \\
   &=& \sum_{i=1}^n \sum_{j=1}^n c_i c_j 
-  \left( \sum_{a=1}^{d_1} \sum_{b=1}^{d_1} (\phi_1(x_i))_a (\phi_1(x_j))_b 
-  \times \sum_{p=1}^{d_2} \sum_{q=1}^{d_2} (\phi(x_i))_p (\phi(x_j))_q \right) \\
-  &=& \sum_{i=1}^n c_i \sum_{a=1}^{d_1} (\phi_1(x_i))_a \sum_{p=1}^{d_2}
-  (\phi(x_i))_p \times \sum_{j=1}^n c_j \sum_{b=1}^{d_1}
-  (\phi_1(x_j))_b \sum_{q=1}^{d_2} (\phi(x_j))_q \\
-  &=& \left( \sum_{i=1}^n c_i \sum_{a=1}^{d_1} (\phi_1(x_i))_a \sum_{p=1}^{d_2}
-  (\phi(x_i))_p \right)^2 \ge 0
+  \left( \sum_{p=1}^{d_1} (\phi_1(x_i))_p (\phi_1(x_j))_p 
+  \times \sum_{q=1}^{d_2} (\phi_2(x_i))_q (\phi_2(x_j))_q \right) \\
+  &=& \sum_{p=1}^{d_1} \sum_{q=1}^{d_2} \left(
+  \sum_{i=1}^n c_i (\phi_1(x_i))_p (\phi_2(x_i))_q
+  \times \sum_{j=1}^n c_j (\phi_1(x_j))_p (\phi_2(x_j))_q
+  \right) \\
+  &=& \sum_{p=1}^{d_1} \sum_{q=1}^{d_2}
+  \left( \sum_{i=1}^n c_i (\phi_1(x_i))_p (\phi_2(x_i))_q \right)^2 \ge 0
 \end{eqnarray*}
+
+So \textbf{K} is positive semi-definite. By Mercer's theorem, $k(x, \tilde{x})$ is a Mercer kernel. \\
 
 c) $k(x, \tilde{x}) = f(k_1(x, \tilde{x}))$ \\
 
-Assume $f(x) = a_0 + a_1 + a_2 x^2 + \dots + a_d x^d$, where $a_i > 1 \; i = 0,1,2,\dots, d$.
+Assume $f(x) = a_0 + a_1 + a_2 x^2 + \dots + a_d x^d$, where $a_i > 0, \; i = 0,1,2,\dots, d$.
 \begin{eqnarray*}
   \textbf{c}^T \textbf{Kc}
   &=& \sum_{i=1}^n \sum_{j=1}^n c_i c_j k(x_i,x_j) \\
   &=& \sum_{i=1}^n \sum_{j=1}^n c_i c_j f(k_1(x_i,x_j)) \\
-  &=& \sum_{i=1}^n \sum_{j=1}^n \sum_{m = 1}^d c_i c_j a_m
-  \left( k_1(x_i,x_j) \right)^m \\
+  &=& \sum_{i=1}^n \sum_{j=1}^n \left( c_i c_j \sum_{m = 1}^d a_m
+  \left( k_1(x_i,x_j) \right)^m \right) \\
   &=& \sum_{i=1}^n \sum_{j=1}^n \sum_{m = 1}^d c_i c_j a_m
   \left( \phi_1^T(x_i) \phi_1(x_j) \right)^m \\
   &=& \sum_{i=1}^n \sum_{j=1}^n \sum_{m = 1}^d c_i c_j a_m
-  \left( \sum_{a=1}^d \sum_{b=1}^d (\phi(x_i))_a (\phi(x_j))_b \right)^m \\
+  \left( \sum_{k=1}^d (\phi(x_i))_k (\phi(x_j))_k \right)^m \\
   &=& \sum_{i=1}^n \sum_{j=1}^n \sum_{m = 1}^d c_i c_j a_m
-  \left( \sum_{a=1}^d (\phi(x_i))_a \right)^m
-  \left(\sum_{b=1}^d (\phi(x_j))_b \right)^m \\
-  &=& 
-  \sum_{m = 1}^d \sum_{i=1}^n a_m c_i \left( \sum_{a=1}^d (\phi(x_i))_a \right)^m
-  \sum_{m = 1}^d \sum_{j=1}^n a_m c_j \left( \sum_{b=1}^d (\phi(x_j))_b \right)^m
-  \\
-  &=& \sum_{m = 1}^d \sum_{i=1}^n a_m c_i
-  \left( \sum_{a=1}^d (\phi(x_i))_a \right)^{2m} \ge 0
+  \left( \sum_{k_1=1}^d (\phi(x_i))_{k_1} (\phi(x_j))_{k_1} \right) \dots
+  \left( \sum_{k_m=1}^d (\phi(x_i))_{k_m} (\phi(x_j))_{k_m} \right) \\
+  &=& \sum_{i=1}^n \sum_{j=1}^n \sum_{m = 1}^d
+  \left( \sum_{k_1=1}^d \dots \sum_{k_m=1}^d
+  \left( c_i c_j a_m (\phi(x_i))_{k_1} (\phi(x_j))_{k_1} 
+  \dots (\phi(x_i))_{k_m} (\phi(x_j))_{k_m} \right) \right) \\
+  &=& \sum_{m = 1}^d a_m \left( \sum_{k_1=1}^d \dots \sum_{k_m=1}^d 
+  \left( \sum_{i=1}^n c_i (\phi(x_i))_{k_1} \dots (\phi(x_i))_{k_m} \right)
+  \left( \sum_{j=1}^n c_j (\phi(x_j))_{k_1} \dots (\phi(x_j))_{k_m} \right)
+  \right) \\
+  &=& \sum_{m = 1}^d a_m \left( \sum_{k_1=1}^d \dots \sum_{k_m=1}^d 
+  \left( \sum_{i=1}^n c_i (\phi(x_i))_{k_1} \dots (\phi(x_i))_{k_m} \right)^2
+  \right) \ge 0
 \end{eqnarray*}
+
+So \textbf{K} is positive semi-definite. By Mercer's theorem, $k(x, \tilde{x})$ is a Mercer kernel. \\
 
 d) $k(x, \tilde{x}) = \exp (k_1(x, \tilde{x}))$ \\
 
@@ -120,17 +133,20 @@ d) $k(x, \tilde{x}) = \exp (k_1(x, \tilde{x}))$ \\
   &=& \sum_{i=1}^n \sum_{j=1}^n c_i c_j \exp (k_1(x_i,x_j)) \\
   &=& \sum_{i=1}^n \sum_{j=1}^n c_i c_j \exp (\phi_1^T(x_i) \phi_1(x_j)) \\
   &=& \sum_{i=1}^n \sum_{j=1}^n c_i c_j
-  \exp \left( \sum_{a=1}^d \sum_{b=1}^d (\phi(x_i))_a (\phi(x_j))_b \right) \\
-  &=& \sum_{i=1}^n \sum_{j=1}^n c_i c_j
-  \exp \left( \sum_{a=1}^d (\phi(x_i))_a \sum_{b=1}^d (\phi(x_j))_b \right) \\
-  &=& \sum_{i=1}^n \sum_{j=1}^n c_i c_j
-  \exp \left( \sum_{a=1}^d (\phi(x_i))_a \right)
-  \exp \left( \sum_{b=1}^d (\phi(x_j))_b \right) \\
-  &=& \sum_{i=1}^n c_i \exp \left( \sum_{a=1}^d (\phi(x_i))_a \right)
-  \sum_{j=1}^n c_j \exp \left( \sum_{b=1}^d (\phi(x_j))_b \right) \\
-  &=& \left( \sum_{i=1}^n c_i 
-    \exp \left( \sum_{a=1}^d (\phi(x_i))_a \right) \right)^2 \ge 0
+  \exp \left( \sum_{k=1}^d (\phi(x_i))_k (\phi(x_j))_k \right) \\
+  &=& \sum_{i=1}^n \sum_{j=1}^n c_i c_j \sum_{m=0}^{+\infty}
+  \frac {\left( \sum_{k=1}^d (\phi(x_i))_k (\phi(x_j))_k \right)^m}{m!} \\
+  &=& \sum_{m=0}^{+\infty} \frac {1}{m!} \sum_{i=1}^n \sum_{j=1}^n c_i c_j
+  \left( \sum_{k=1}^d (\phi(x_i))_k (\phi(x_j))_k \right)^m \\
+  &=& \sum_{m=0}^{+\infty} \frac {1}{m!} \left(
+  \sum_{k_1=1}^d \dots \sum_{k_m=1}^d \left(
+  \sum_{i=1}^n c_i (\phi(x_i))_{k_1} \dots (\phi(x_i))_{k_m}
+  \right)^2 \right) \ge 0 \\
 \end{eqnarray*}
+
+Note that the last equation uses the result from part $(c)$. \\
+
+So \textbf{K} is positive semi-definite. By Mercer's theorem, $k(x, \tilde{x})$ is a Mercer kernel.
 
 \section*{Problem 3}
 
@@ -169,8 +185,9 @@ Rewrite $L(\textbf{w})$
     \end{bmatrix}
     \textbf{w}
   \end{matrix}
-  \right\rVert^2 \\
+  \right\rVert^2 + \lambda \textbf{w}^T \textbf{w} \\
   &=& \left\lVert \textbf{y} - \textbf{Xw} \right\rVert^2
+  + \lambda \textbf{w}^T \textbf{w}
 \end{eqnarray*}
 Solving gradient $=0$
 \begin{eqnarray*}
@@ -223,26 +240,100 @@ We have
   &=& \sum_{i=1}^n
   \left( \textbf{X}^T \textbf{X} + \lambda \textbf{I} \right)^{-1}
   \phi(\textbf{x}_i) y_i \\
-  &=& \sum_{i=1}^n
-  \left( \textbf{X}^T \textbf{X} + \lambda \textbf{I} \right)^{-1}
-  y_i \phi(\textbf{x}_i) 
+  &=& \sum_{i=1}^n y_i
+  \left( \left( \textbf{X} \textbf{X}^T \right)^T 
+  + \lambda \textbf{I} \right)^{-1} \phi(\textbf{x}_i) \\
+  &=& \sum_{i=1}^n y_i 
+  \left( \textbf{K}^T + \lambda \textbf{I} \right)^{-1} \phi(\textbf{x}_i) \\ 
+  &=& \sum_{i=1}^n y_i 
+  \left( \textbf{K} + \lambda \textbf{I} \right)^{-1} \phi(\textbf{x}_i)
 \end{eqnarray*}
 
 Intuitively, this shows that \textbf{w} lives in the span of feature maps: $\textbf{w} = \sum_{i=1}^n \alpha_i \phi(\textbf{x}_i)$. \\
 
+Let
+\begin{eqnarray*}
+  \alpha &=&
+  \begin{bmatrix}
+    \alpha_1 \\
+    \alpha_2 \\
+    \vdots \\
+    \alpha_n
+  \end{bmatrix}
+\end{eqnarray*}
+Then
+\begin{eqnarray*}
+  \textbf{w}
+  &=& \sum_{i=1}^n \alpha_i \phi(\textbf{x}_i) \\
+  &=& \textbf{X}^T \alpha
+\end{eqnarray*}
+We have
 \begin{eqnarray*}
   L(\textbf{w})
   &=& \sum_{i=1}^n \left(\textbf{w}^T \phi(\textbf{x}_i) - y_i \right)^2
   + \lambda \textbf{w}^T \textbf{w} \\
-  &=& \sum_{i=1}^n \left(
-    \left( \sum_{j=1}^n \alpha_j \phi(\textbf{x}_j) \right)^T 
-    \phi(\textbf{x}_i) - y_i \right)^2
-  + \lambda \left( \sum_{j=1}^n \alpha_j \phi(\textbf{x}_j) \right)^T
-  \left( \sum_{i=1}^n \alpha_i \phi(\textbf{x}_i) \right) \\
-  &=& \sum_{i=1}^n \left( \sum_{j=1}^n \alpha_j \phi^T(\textbf{x}_j)
-    \phi(\textbf{x}_i) - y_i \right)^2
-  + \lambda \sum_{j=1}^n \sum_{i=1}^n \alpha_i \alpha_j 
-  \phi^T(\textbf{x}_j) \phi(\textbf{x}_i) \\
+  &=& \sum_{i=1}^n (y_i - \textbf{w}^T \phi(\textbf{x}_i))^2
+  + \lambda \textbf{w}^T \textbf{w} \\
+  &=& \left\lVert 
+  \begin{matrix}
+    \begin{bmatrix}
+      y_1 \\
+      y_2 \\
+      \vdots \\
+      y_n
+    \end{bmatrix}
+    -
+    \begin{bmatrix}
+    - \phi^T(\textbf{x}_1)- \\
+    - \phi^T(\textbf{x}_2)- \\
+    \vdots \\
+    -\phi^T(\textbf{x}_n)- 
+    \end{bmatrix}
+    \textbf{w}
+  \end{matrix}
+  \right\rVert^2 + \lambda \textbf{w}^T \textbf{w} \\
+  &=& \left\lVert \textbf{y} - \textbf{Xw} \right\rVert^2
+  + \lambda \textbf{w}^T \textbf{w} \\
+  &=& \left\lVert \textbf{y} - \textbf{X} \textbf{X}^T \alpha \right\rVert^2
+  + \lambda \alpha^T \textbf{X}^T \textbf{X} \alpha \\
+  &=& \left\lVert \textbf{y} - \textbf{K} \alpha \right\rVert^2
+  + \lambda \alpha^T \textbf{K}^T \alpha
+\end{eqnarray*}
+Solving gradient $=0$
+\begin{eqnarray*}
+  \nabla_{\textbf{w}} {L}
+  &=& 0 \\
+  \nabla_{\textbf{w}} {\left( 
+      \left\lVert \textbf{y} - \textbf{K} \alpha \right\rVert^2 
+      + \lambda \alpha^T \textbf{K}^T \alpha \right)}
+  &=& 0 \\
+  \nabla_{\textbf{w}} {\left( \left(\textbf{y} - \textbf{K} \alpha \right)^T
+      \left(\textbf{y} - \textbf{K} \alpha \right)
+      + \lambda \alpha^T \textbf{K}^T \alpha \right)}
+  &=& 0 \\
+  \nabla_{\textbf{w}} {\left( 
+      \left(\textbf{y}^T - \alpha^T \textbf{K}^T \right)
+      \left(\textbf{y} - \textbf{K} \alpha \right) 
+      + \lambda \alpha^T \textbf{K}^T \alpha \right)}
+  &=& 0 \\
+  \nabla_{\textbf{w}} {\left( 
+      \textbf{y}^T \textbf{y} - 2 \textbf{y}^T \textbf{K} \alpha
+      + \alpha^T \textbf{K}^T \textbf{K} \alpha 
+      + \lambda \alpha^T \textbf{K}^T \alpha \right)}
+  &=& 0 \\
+  - 2 \textbf{K}^T \textbf{y} + 2 \textbf{K}^T \textbf{K} \alpha 
+  + 2 \lambda \textbf{K}^T \alpha
+  &=& 0 \\
+  \textbf{K}^T \textbf{K} \alpha + \lambda \textbf{K} \alpha
+  &=& \textbf{K}^T \textbf{y} \\
+  \textbf{K}^{-T} \textbf{K}^T \textbf{K} \alpha
+  + \lambda \textbf{K}^{-T} \textbf{K} \alpha
+  &=& \textbf{K}^{-T} \textbf{K}^T \textbf{y} \\
+  \textbf{K} \alpha + \lambda \alpha
+  &=& \textbf{y} \\
+  \left( \textbf{K} + \lambda \textbf{I} \right) \alpha
+  &=& \textbf{y} \\
+  \alpha &=& \left( \textbf{K} + \lambda \textbf{I} \right)^{-1} \textbf{y}
 \end{eqnarray*}
 
 \section*{Problem 4}
