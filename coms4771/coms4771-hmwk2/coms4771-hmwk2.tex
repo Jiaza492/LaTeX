@@ -22,13 +22,17 @@
 
 \setlength{\parindent}{0in}
 
+\section*{Introduction}
+
+For how to run the MATLAB code, please refer to file ``Shell''.
+
 \section*{Problem 1}
 
 The VC dimension is 4. \\
 
 In Fig-\ref{fig:p1}, we draw an axis-aligned rectangle such that for each edge, there is one and only one point is in that edge. For each point, if the output for this point is 1, we move the corresponding edge outwards to make the point inside the rectangle; if the output is 0, then we move the corresponding edge inwards to make the point outside the rectangle. Note that this does not affect the rest of the points. As a result, using this method, we can always find one rectangle that satisfy the output of the four points. Fig-\ref{fig:p1_2} shows the rectangle to satisfy situation with only $p_2$ is 1. \\
 
-However, axis aligned rectangle can not shatter 5 points. Because one rectangle only has 4 edges. Though we can satisfy any output of 4 points, there is no way we can satisfy the last 1 point.
+However, axis aligned rectangle can not shatter 5 points. Because one rectangle only has 4 edges. Though we can satisfy any output of 4 points, there is no way we can satisfy the last point, which is in the middle of the previous 4 points. But if we are able to choose whether the inside and outside can be positive or negative, then it means that we can satisfy the last point in the middle. That is, when the last point is +1, we declare the inside is positive, and then adjust the four edges to satisfy the other 4 points. When the last point is -1, we declare the inside is negative, and then adjust the four edges to satisfy the other 4 points. In this way, we can satisfy at least 5 points.
 
 \begin{figure}[ht!]
   \centering
@@ -338,7 +342,58 @@ Solving gradient $=0$
 
 \section*{Problem 4}
 
+I use the first half of the data to train the SVM and the other half of the data to test performance. Since the training set and the test set for every run is the same, this guarantees the results are comparable with each other. \\
 
+Having run several experiments, I found that linear, polynomial and RBF kernels can all achieve 0 classification error given specific parameters. But other performance indicators, like margins, number of support vectors, varies. \\
 
+For linear kernel, I tried several runs with different C parameters. The results in shown in Table-\ref{tab:linear}. Based on Table-\ref{tab:linear}, I find that as parameter $C$ decreases, the margin and the number of support vectors increase, but the error tends to increase. When $C$ is set to $0.005$, there are 2 examples being mis-classified. This indicates that a  higher upper bound $C$, which means more freedom to solve the optimization problem, yields a better result. Also, a large number of support vectors indicates a bad fit. \\
+
+\begin{table}[ht!]
+  \begin{center}
+    \begin{tabular}{|c|c|c|c|c|c|}
+      \hline
+      $C$	  &  0.005 &  0.05  &   0.5  &    1   &  10    \\ \hline
+      Error       &    2   &   0    &    0   &    0   &   0    \\ \hline
+      Margins     & 5.4551 & 3.0136 & 2.7453 & 2.7453 & 2.7453 \\ \hline
+      Support Vectors & 45 &  18    &   13   &   13   &   13   \\ \hline
+    \end{tabular}
+  \end{center}
+  \caption{Results of Linear Kernels with different $C$ value 
+    \label{tab:linear}}
+\end{table}
+
+For polynomial kernel, I tried several runs with different degrees. The results in shown in Table-\ref{tab:poly}. As we can see, when the degree is greater or equal to 3, the number of support vectors is 0. This is because all the Lagrange multipliers are less than the tolerance $\epsilon$. This may indicate overfitting. \\
+
+\begin{table}[ht!]
+  \begin{center}
+    \begin{tabular}{|c|c|c|c|c|c|}
+      \hline
+      max. degree &    1   &   2    &    3   &    4   &   5    \\ \hline
+      Error       &    0   &   0    &    0   &    0   &   0    \\ \hline
+      Margins     & 2.7031 & 49.549 & 1079.3 & 19114  & 250679 \\ \hline
+      Support Vectors & 14 &  16    &    0   &    0   &   0    \\ \hline
+    \end{tabular}
+  \end{center}
+  \caption{Results of polynomial kernels with different degree 
+    \label{tab:poly}}
+\end{table}
+
+For RBF kernel, I tried several runs with different C parameters. The results in shown in Table-\ref{tab:rbf}. When $C=6$, we achieve the minimum number of support vectors. This indicate $C=6$ is a better model for models with other $C$ values shown in Table-\ref{tab:rbf}. \\
+
+\begin{table}[ht!]
+  \begin{center}
+    \begin{tabular}{|c|c|c|c|c|c|}
+      \hline
+      $C$	  &    1   &   5    &    6   &   10   &  100   \\ \hline
+      Error       &    0   &   0    &    0   &    0   &   43   \\ \hline
+      Margins     & 0.3326 & 0.5313 & 0.4849 & 0.3780 & 1.2687 \\ \hline
+      Support Vectors & 72 &  36    &   29   &   38   &   72   \\ \hline
+    \end{tabular}
+  \end{center}
+  \caption{Results of RBF kernels with different $C$ value 
+    \label{tab:rbf}}
+\end{table}
+
+To sum up, the number of support vectors is a good indicator for the goodness of fitness. When the number of support vectors is too large, it indicates the model suffers from under-fitting. When the number of support vectors is too small, the model may be overfitting.
 
 \end{document}
