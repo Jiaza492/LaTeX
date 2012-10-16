@@ -368,7 +368,8 @@ For polynomial kernel, I tried several runs with different degrees. The results 
   \begin{center}
     \begin{tabular}{|c|c|c|c|c|c|}
       \hline
-      max. degree &    1   &   2    &    3   &    4   &   5    \\ \hline
+      degree $P$  &    1   &   2    &    3   &    4   &   5    \\ \hline
+      $C$         &    1   &   1    &    1   &    1   &   1    \\ \hline
       Error       &    0   &   0    &    0   &    0   &   0    \\ \hline
       Margins     & 2.7031 & 49.549 & 1079.3 & 19114  & 250679 \\ \hline
       Support Vectors & 14 &  16    &    0   &    0   &   0    \\ \hline
@@ -378,13 +379,14 @@ For polynomial kernel, I tried several runs with different degrees. The results 
     \label{tab:poly}}
 \end{table}
 
-For RBF kernel, I tried several runs with different C parameters. The results in shown in Table-\ref{tab:rbf}. When $C=6$, we achieve the minimum number of support vectors. This indicate $C=6$ is a better model for models with other $C$ values shown in Table-\ref{tab:rbf}. \\
+For RBF kernel, I tried several runs with width of RBFs ($\sigma$). The results in shown in Table-\ref{tab:rbf}. When $\sigma=6$, we achieve the minimum number of support vectors. This indicate $\sigma=6$ is a better model for models with other $\sigma$ values shown in Table-\ref{tab:rbf}. \\
 
 \begin{table}[ht!]
   \begin{center}
     \begin{tabular}{|c|c|c|c|c|c|}
       \hline
-      $C$	  &    1   &   5    &    6   &   10   &  100   \\ \hline
+      $\sigma$	  &    1   &   5    &    6   &   10   &  100   \\ \hline
+      $C$         &    1   &   1    &    1   &    1   &    1   \\ \hline
       Error       &    0   &   0    &    0   &    0   &   43   \\ \hline
       Margins     & 0.3326 & 0.5313 & 0.4849 & 0.3780 & 1.2687 \\ \hline
       Support Vectors & 72 &  36    &   29   &   38   &   72   \\ \hline
