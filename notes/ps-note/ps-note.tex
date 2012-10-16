@@ -1,0 +1,307 @@
+\documentclass[12pt]{article}
+\parindent=.25in
+
+\setlength{\oddsidemargin}{0pt}
+\setlength{\textwidth}{440pt}
+\setlength{\topmargin}{0in}
+
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{algpseudocode}
+\usepackage{algorithm}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{law}[theorem]{Law}
+\newtheorem{axiom}[theorem]{Axiom}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{remark}[theorem]{Remark}
+
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+
+\title{Introduction to Probability and Statistics}
+\author{Mengqi Zong $<mz2326@columbia.edu>$}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+
+\setlength{\parindent}{0in}
+
+\section{Introduction to Statistics}
+
+A systematic collection of data on the population and the economy was begun in the Italian city-state of Venice and Florence during the Renaissance. The term \emph{statistics}, derived from the word \emph{state}, was used to refer to a collection of facts of interest to the state.
+
+\section{Descriptive Statistics}
+
+\subsection{Describing Data Sets}
+\begin{enumerate}
+  \item Frequency tables and graphs
+  \item Relative frequency tables and graphs
+  \item Histograms
+  \item Stem and leaf plots
+\end{enumerate}
+
+\subsection{Summarizing Data Sets}
+
+\begin{definition}
+  The \textbf{sample mean}, designated by $\hat{x}$, is defined by
+  \begin{equation*}
+    \hat{x} = \sum_{i=1}^n x_i / n
+  \end{equation*}
+\end{definition}
+
+\begin{definition}
+  Order the values of a data set of size $n$ from smallest to largest. If $n$ is odd, the \textbf{sample median} is the value in position $(n+1)/2$; if $n$ is even, it is the average of the values in positions $n/2$ and $n/2+1$.
+\end{definition}
+
+\begin{definition}
+  The \textbf{sample variance}, call it $s^2$, of the data set $x_1, \dots, x_n$ is defined by
+  \begin{equation*}
+    s^2 = \sum_{i=1}^n (x_i - \bar{x})^2/(n-1)
+  \end{equation*}
+\end{definition}
+
+\begin{theorem}
+  \begin{equation*}
+    \sum_{i=1}^n (x_i - \bar{x})^2 = \sum_{i=1}^n x_i^2 - n \bar{x}^2
+  \end{equation*}
+\end{theorem}
+
+\begin{definition}
+  The quantity $s$, defined by
+  \begin{equation*}
+    s = \sqrt{\sum_{i=1}^n (x_i - \bar{x})^2 / (n-1)}
+  \end{equation*}
+  is called the \textbf{sample standard deviation}.
+\end{definition}
+
+\begin{definition}
+  The \textbf{sample 100p percentile} is that data value such that $100p$ percent of the data are less than or equal to it and $100(1-p)$ percent are greater than or equal to it. if two data values satisfy this condition, then the sample $100p$ percentile is the arithmetic average of these two values.
+\end{definition}
+
+\begin{definition}
+  The sample $25$ percentile is called the \textbf{first quartile}; the sample 50 percentile is called the sample median or the \textbf{second quartile}; the sample 75 percentile is called the \textbf{third quartile}.
+\end{definition}
+
+\subsection{Chebyshev's Inequality}
+
+\begin{theorem}[Chebyshev's Inequality]
+  Let $\bar{x}$ and $s$ be the sample mean and sample standard deviation of the data set consisting of the data $x_1, \dots, x_n$, where $s > 0$. Let
+  \begin{equation*}
+    S_k = \{ i, 1 \le i \le n: |x_i - \bar{x}| < ks \}
+  \end{equation*}
+  and let $N(S_k)$ be the number of elements in the set $S_k$. Then, for any $k \ge 1$,
+  \begin{equation*}
+    \frac {N(S_k)}{n} \ge 1 - \frac{n-1}{nk^2} > 1 - \frac {1}{k^2}
+  \end{equation*}
+\end{theorem}
+
+\begin{theorem}[The One-Sided Chebyshev Inequality]
+  For $k>0$, let
+  \begin{equation*}
+    N(k) = \text{number of } i: x_i - \bar{x} \ge ks
+  \end{equation*}
+  Then we have
+  \begin{equation*}
+    \frac{N(k)}{n} \le \frac{1}{1+k^2}
+  \end{equation*}
+\end{theorem}
+
+\subsection{Normal Data Sets}
+
+\begin{remark} [The Empirical Rule]
+  If a data set is approximately normal with sample mean $\bar{x}$ and sample standard deviation $s$, then the following statements are true.
+  \begin{enumerate}
+    \item Approximately 68 percent of the observations lie within
+      \begin{equation*}
+        \bar{x} \pm s
+      \end{equation*}
+    \item Approximately 95 percent of the observations lie within
+      \begin{equation*}
+        \bar{x} \pm 2s
+      \end{equation*}
+    \item Approximately 99.7 percent of the observations lie within
+      \begin{equation*}
+        \bar{x} \pm 3s
+      \end{equation*}
+  \end{enumerate}
+\end{remark}
+
+\subsection{Paired Data Sets and the Sample Correlation Coefficient}
+
+\begin{definition}
+  Let $s_x$ and $s_y$ denote, respectively, the sample standard deviations of the $x$ values and the $y$ values. The \textbf{sample correlation coefficient}, call it $r$, of the data pairs $(x_i,y_i),i=1,\dots,n$ is defined by
+  \begin{eqnarray*}
+    r
+    &=& \frac {\sum_{i=1}^n (x_i - \bar{x})(y_i - \bar{y})}{(n-1) s_x s_y} \\
+    &=& \frac {\sum_{i=1}^n (x_i - \bar{x})(y_i - \bar{y})}
+    { \sqrt{\sum_{i=1}^n (x_i - \bar{x}) \sum_{i=1}^n (y_i - \bar{y})} } \\
+  \end{eqnarray*}
+  When $r > 0$ we say that the sample data pairs are \textbf{positively correlated}, when $r<0$ we say that they are \textbf{negatively correlated}.
+\end{definition}
+
+Properties of $r$:
+\begin{enumerate}
+  \item $-1 \le r \le 1$
+  \item If for constants $a$ and $b$, with $b>0$,
+    \begin{equation*}
+      y_i = a + b x_i, \;\; i = 1,\dots,n
+    \end{equation*}
+    then $r = 1$.
+  \item If for constants $a$ and $b$, with $b<0$,
+    \begin{equation*}
+      y_i = a + b x_i, \;\; i = 1,\dots,n
+    \end{equation*}
+    then $r = -1$.
+  \item If $r$ is the sample correlation coefficient for the data pairs $x_i, y_i,i=1,\dots,n$ then it is also the sample correlation coefficient for the data pairs
+    \begin{equation*}
+      a + b x_i, \;\; c + d y_i, \;\; i = 1,\dots,n
+    \end{equation*}
+    provided that $b$ and $d$ are both positive or both negative.
+\end{enumerate}
+
+\section{Elements of Probability}
+
+\subsection{Sample Space and Events}
+
+\begin{definition}
+  The set of all possible outcomes of an experiment is known as the \textbf{sample space} of the experiment and is denoted by $S$.
+\end{definition}
+
+\subsection{Venn Diagrams and the Algebra of Events}
+
+\begin{law}
+  \begin{enumerate}
+    \item Commutative law
+      \begin{eqnarray*}
+        E \cup F &=& F \cup E \\
+        EF &=& FE
+      \end{eqnarray*}
+    \item Associative law
+      \begin{eqnarray*}
+        (E \cup F) \cup G &=& E \cup (F \cup G) \\
+        (EF)G &=& E(FG)
+      \end{eqnarray*}
+    \item Distributive law
+      \begin{eqnarray*}
+        (E \cup F)G &=& EG \cup FG \\
+        EF \cup G &=& (E \cup G)(F \cup G
+      \end{eqnarray*}
+    \item DeMorgan's law
+      \begin{eqnarray*}
+        (E \cup F)^C &=& E^CF^C \\
+        (EF)^C &=& E^C \cup F^C
+      \end{eqnarray*}
+  \end{enumerate}
+\end{law}
+
+\subsection{Axioms of Probability}
+
+\begin{axiom}
+  $0 \le P(E) \le 1$
+\end{axiom}
+
+\begin{axiom}
+  $P(S) = 1$
+\end{axiom}
+
+\begin{axiom}
+  For any sequence of mutually exclusive events $E_1, E_2,\dots$(that is, events for which $E_iE_j = \emptyset$ when $i \neq j$),
+  \begin{equation*}
+    P \left( \bigcup_{i=1}^n E_i \right)
+    = \sum_{i=1}^n P(E_i), \;\;\;\; n=1,2,\dots,\infty
+  \end{equation*}
+  We call $P(E)$ the probability of the event $E$.
+\end{axiom}
+
+\begin{proposition}
+  \begin{equation*}
+    P(E^C) = 1 - P(E)
+  \end{equation*}
+\end{proposition}
+
+\begin{proposition}
+  \begin{equation*}
+    P(E \cup F) = P(E) + P(F) - P(EF)
+  \end{equation*}
+\end{proposition}
+
+\subsection{Sample Spaces Having Equally Likely Outcomes}
+
+\begin{theorem} [Basic Principle of Counting]
+  Suppose that two experiments are to be performed. Then if experiment 1 can result in any one of $m$ possible outcomes and if, for each outcome of experiment 1, there are $n$ possible outcomes of experiment 2, then together there are $mn$ possible outcomes of the two experiments.
+\end{theorem}
+
+\begin{theorem} [Generalized Basic Principle of Counting]
+  If $r$ experiments that are to be performed are such that the first one may result in any of $n_1$ possible outcomes, and if for each of these $n_1$ possible outcomes there are $n_2$ possible outcomes of the second experiment, and if for each of the possible outcomes of the third experiment, and if,..., then there are a total of $n_1 \cdot n_2 \cdots n_r$ possible outcomes of the $r$ experiments.
+\end{theorem}
+
+\begin{definition}
+  We define $\binom {n}{r}$, for $r \le n$, by
+  \begin{equation*}
+    \binom {n}{r} = \frac {n!}{(n-r)!r!}
+  \end{equation*}
+  and call $\binom {n}{r}$ the number of \textbf{combinations} of $n$ objects taken $r$ at a time.
+\end{definition}
+
+\subsection{Conditional Probability}
+
+\begin{definition}
+  The probability of $E$ given that $F$ has occurred is denoted by
+  \begin{equation*}
+    P(E|F) = \frac {P(EF)}{P(F)}
+  \end{equation*}
+\end{definition}
+
+\subsection{Bayes' Formula}
+
+\begin{theorem} [Bayes' Theorem]
+  \begin{equation*}
+    P(A|B) = \frac {P(B|A)P(A)}{P(B)}
+  \end{equation*}
+\end{theorem}
+
+\subsection{Independent Events}
+
+\begin{definition}
+  Two events $E$ and $F$ are said to be \textbf{independent} if
+  \begin{equation*}
+    P(EF) = P(E)P(F)
+  \end{equation*}
+  holds. Two events $E$ and $F$ that are not independent are said to be \textbf{dependent}.
+\end{definition}
+
+\begin{proposition}
+  If $E$ and $F$ are independent, then so are $E$ and $F^C$.
+\end{proposition}
+
+\begin{definition}
+  The three events $E,F$ and $G$ are said to be \textbf{independent} if
+  \begin{eqnarray*}
+    P(EFG) &=& P(E)P(F)P(G) \\
+    P(EF) &=& P(E)P(F) \\
+    P(EG) &=& P(E)P(G) \\
+    P(FG) &=& P(F)P(G)
+  \end{eqnarray*}
+  holds. Two events $E$ and $F$ that are not independent are said to be \textbf{dependent}.
+\end{definition}
+
+It should be noted that if the events $E,F,G$ are independent, then $E$ will be independent of any event formed from $F$ and $G$.
+
+\section{Random Variables and Expectation}
+
+\subsection{Random Variables}
+
+
+
+
+
+\end{document}
+
