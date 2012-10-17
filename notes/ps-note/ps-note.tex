@@ -23,7 +23,7 @@
 \DeclareMathOperator*{\argmax}{arg\,max}
 \DeclareMathOperator*{\argmin}{arg\,min}
 
-\title{Introduction to Probability and Statistics}
+\title{Introduction to Probability and Statistics Note}
 \author{Mengqi Zong $<mz2326@columbia.edu>$}
 
 \begin{document}
@@ -299,9 +299,447 @@ It should be noted that if the events $E,F,G$ are independent, then $E$ will be 
 
 \subsection{Random Variables}
 
+\begin{definition}
+  A \textbf{random variable} is a mapping
+  \begin{equation*}
+    X: \; \Omega \rightarrow \mathbb{R}
+  \end{equation*}
+  that assigns a real number $X(\omega)$ to each outcome $\omega$.
+\end{definition}
+
+\subsection{Types of Random Variables}
+
+A random variable whose set of possible values is a sequence is said to be \textbf{discrete}. For a discrete random variable $X$, we define the \textbf{probability mass function} $p(a)$ of $X$ by
+\begin{equation*}
+  p(a) = P\{X = a\}
+\end{equation*}
+Since $X$ must take on one of the values $x_i$, we have
+\begin{equation*}
+  \sum_{i=1}^{\infty} p(x_i) = 1
+\end{equation*}
+The cumulative distribution function $F$ can be expressed in terms of $p(x)$ by
+\begin{equation*}
+  F(a) = \sum_{\text{all } x \le a} p(x)
+\end{equation*}
+We say that $X$ is a \textbf{continuous} random variable if there exists a nonnegative function $f(x)$, defined for all real $x \in (-\infty, \infty)$, having the property that for any set $B$ of real numbers
+\begin{equation*}
+  P\{X \in B\} = \int_B f(x) dx
+\end{equation*}
+The function $f(x)$ is called the \textbf{probability density function} of the random variable $X$. \\
+
+The relationship between the cumulative distribution $F(\cdot)$ and the probability density $f(\cdot)$ is expressed by
+\begin{equation*}
+  F(a) = P\{X \in (-\infty,a ]\} = \int_{-\infty}^a f(x) dx
+\end{equation*}
+Differentiating both sides yields
+\begin{equation*}
+  \frac {d}{da}F(a) = f(a)
+\end{equation*}
+
+\subsection{Jointly Distributed Random Variables}
+
+\begin{definition}
+  The joint cumulative probability distribution function of $X$ and $Y$ is
+  \begin{equation*}
+    F(x,y) = P\{ X \le x, Y \le y \}
+  \end{equation*}
+\end{definition}
+
+The distribution function of $X$, $F_X$, can be obtained from the joint distribution function $F$ of $X$ and $Y$:
+\begin{eqnarray*}
+  F_X(x) = F(x, \infty)
+\end{eqnarray*}
+
+\subsection{Independent Random Variables}
+
+\begin{definition}
+  The random variables $X$ and $Y$ are said to be independent if for any two sets of real numbers $A$ and $B$
+  \begin{equation*}
+    P \{ X \in A, Y \in B \} = P\{ X \in A \} P\{ Y \in B \}
+  \end{equation*}
+\end{definition}
+
+In terms of joint distribution function $F$ of $X$ and $Y$, we have that $X$ and $Y$ are independent if
+\begin{equation*}
+  F(a,b) = F_X(a)F_X(b) \;\;\;\; \text{for all } a,b
+\end{equation*}
+
+\subsection{Conditional Distributions}
+
+If $X$ and $Y$ are discrete random variables, it is natural to define the conditional probability mass function of $X$ given that $Y=y$, by
+\begin{eqnarray*}
+  p_{X|Y}(x|y)
+  &=& P\{ X = x | Y = y \} \\
+  &=& \frac {P\{ X = x, Y = y \}}{P\{ Y = y \}} \\
+  &=& \frac {p(x,y)}{p_Y(y)}
+\end{eqnarray*}
+for all values of $y$ such that $p_Y(y) > 0$.
+
+\subsection{Expectation}
+
+\begin{definition}
+  If $X$ is a discrete random variable, then the expectation or expected value of $X$, denoted by $E[X]$, is defined by
+  \begin{equation*}
+    E[X] = \sum_i x_i P\{ X = x_i \}
+  \end{equation*}
+  If $X$ is a continuous random variable, then the expectation is defined by
+  \begin{equation*}
+    E[X] = \int_{-\infty}^{\infty} x f(x) dx
+  \end{equation*}
+\end{definition}
+
+\subsection{Properties of the Expected Value}
+
+\begin{proposition}
+  \begin{itemize}
+    \item If $X$ is a discrete random variable with probability mass function $p(x)$, then for any real-valued function $g$,
+      \begin{equation*}
+        E[g(x)] = \sum_x g(x)p(x)
+      \end{equation*}
+    \item If $X$ is a continuous random variable with probability density function $f(x)$, then for any real-valued function $g$,
+      \begin{equation*}
+        E[g(x)] = \inf_{-\infty}^{\infty} g(x)f(x) dx
+      \end{equation*}
+  \end{itemize}
+\end{proposition}
+
+\begin{corollary}
+  If $a$ and $b$ are constants, then
+  \begin{equation*}
+    E[aX + b] = a E[X] + b
+  \end{equation*}
+\end{corollary}
+
+\subsection{Expected Value of Sums of Random Variables}
+
+If $X$ and $Y$ are random variables and $g$ is a function of two variables, then
+\begin{eqnarray*}
+  E[g(X,Y)]
+  &=& \sum_y \sum_x g(x,y) p(x,y) \\
+  &=& \int_{-\infty}^{\infty} \int_{-\infty}^{\infty} g(x,y) f(x,y) dx dy
+\end{eqnarray*}
+
+\begin{remark}
+  For any $n$,
+  \begin{equation*}
+    E[X_1+X_2+\dots+X_n] = E[X_1] + E[X_2] + \dots + E[X_n]
+  \end{equation*}
+\end{remark}
+
+\subsection{Variance}
+
+\begin{definition}
+  If $X$ is a random variable with mean $\mu$, then the \textbf{variance} of $X$, denoted by $Var(X)$, is defined by
+  \begin{equation*}
+    Var(X) = E[(X-\mu)^2]
+  \end{equation*}
+\end{definition}
+
+\begin{remark}
+  \begin{equation*}
+    Var(X) = E[X^2] - (E[X])^2
+  \end{equation*}
+\end{remark}
+
+The quantity $\sqrt{Var(X)}$ is called the \textbf{standard deviation} of $X$. The standard deviation has the same units as does the mean.
+
+\subsection{Covariance and Variance of Sums of Random Variables}
+
+\begin{definition}
+  The \textbf{covariance} of two random variables $X$ and $Y$, written $Cov(X,Y)$, is defined by
+  \begin{equation*}
+    Cov(X,Y) = E[(X-\mu_x)(Y-\mu_y)]
+  \end{equation*}
+  where $\mu_x$ and $\mu_y$ are the means of $X$ and $Y$, respectively.
+\end{definition}
+
+\begin{remark}
+  \begin{equation*}
+    Cov(X,Y) = E[XY] - E[X]E[Y]
+  \end{equation*}
+\end{remark}
+
+\begin{remark}
+  \begin{eqnarray*}
+    Cov(X,Y) &=& Cov(Y,X) \\
+    Cov(X,X) &=& Var(X) \\
+    Cov(aX,Y) &=& a \: Cov(X,Y)
+  \end{eqnarray*}
+\end{remark}
+
+\begin{lemma}
+  \begin{equation*}
+    Cov(X+Y,Z) = Cov(X,Z) + Cov(Y,Z)
+  \end{equation*}
+\end{lemma}
+
+\begin{proposition}
+  \begin{equation*}
+    Cov \left( \sum_{i=1}^n X_i, \sum_{j=1}^m Y_j \right)
+    = \sum_{i=1}^n \sum_{j=1}^m {Cov(X_i, Y_j)}
+  \end{equation*}
+\end{proposition}
+
+\begin{corollary}
+  \begin{equation*}
+    Var(\sum_{i=1}^n X_i)
+    = \sum_{i=1}^n {Var(X_i)} 
+    + \sum_{i=1}^n \sum_{j = 1, j \neq i}^n {Cov(X_i, X_j)}
+  \end{equation*}
+\end{corollary}
+
+\begin{theorem}
+  If $X$ and $Y$ are independent random variables, then
+  \begin{equation*}
+    Cov(X,Y) = 0
+  \end{equation*}
+  and so for independent events $X_1,\dots,X_n$,
+  \begin{equation*}
+    Var(\sum_{i=1}^n X_i) = \sum_{i=1}^n {Var(X_i)}
+  \end{equation*}
+\end{theorem}
+
+\subsection{Moment Generating Function}
+
+The moment generating function $\phi(t)$ of the random variable $X$ is defined for all values $t$ by
+\begin{equation*}
+  \phi(t) = E[e^{tX}] =
+  \begin{cases}
+    \sum_x e^{tx} p(x) & \text{if $X$ is discrete} \\
+    \int_{-\infty}^{\infty} e^{tx} f(x) dx & \text{if $X$ is continuous}
+  \end{cases}
+\end{equation*}
+
+We call $\phi(t)$ the moment generating function because all of the moments of $X$ can be obtained by successively differentiating $\phi(t)$:
+\begin{equation*}
+  \phi^n(0) = E[X^n], \;\;\;\; n \ge 1
+\end{equation*}
+
+\subsection{Chebyshev's Inequality and the Weak Law of Large Numbers}
+
+\begin{proposition} [Markov's Inequality]
+  If $X$ is a random variable that takes only nonnegative values, then for any value $a>0$
+  \begin{equation*}
+    P\{ X \ge a \} \ge \frac {E[X]}{a}
+  \end{equation*}
+\end{proposition}
+
+\begin{proposition} [Chebshev's Inequality]
+  If $X$ is a random variable with mean $\mu$ and variance $\sigma^2$, then for any value $k>0$
+  \begin{equation*}
+    P\{ |X-\mu| \ge k \} \le \frac {\sigma^2}{k^2}
+  \end{equation*}
+\end{proposition}
+
+\subsection{The Weak Law of Large Numbers}
+
+\begin{law}
+  Let $X_1, X-2,\dots,$be a sequence of independent and identically distributed random variables, each having mean $E[X_i] = \mu$. Then, for any $\epsilon > 0$,
+  \begin{equation*}
+    P \left\{ \left|\frac{X_1 + \dots + X_n}{n} - \mu \right| 
+        > \epsilon \right\} \rightarrow 0 \text{  as } n \rightarrow \infty
+  \end{equation*}
+\end{law}
+
+\section{Special Random Variables}
+
+\subsection{The Bernoulli and Binomial Random Variables}
+
+Suppose that a trial, or an experiment, whose outcome can be classified as either a ``success'' or as a ``failure'' is performed. If we let $X=1$ when the outcome is a success and $X=0$ when it is a failure, then the probability mass function of $X$ is given by
+\begin{eqnarray*}
+  P\{X=0\} &=& 1-p \\
+  P\{X=1\} &=& p \\
+\end{eqnarray*}
+where $p, 0 \le p \le 1$, is the probability that the trial is a ``success''.This random variable $X$ is a Bernoulli random variable. Then we have
+\begin{eqnarray*}
+  E[X] &=& 1 \cdot P\{X=1\} + 0 \cdot P\{X=0\} = p \\
+  Var(X) &=& (1-p)^2 \cdot P\{X=1\} + (0-p)^2 \cdot P\{X=0\} = p(1-p)
+\end{eqnarray*}
+
+Suppose now that $n$ independent trials, each of which results in a ``success'' with probability $p$ and in a ``failure'' with probability $1-p$, are to be performed. If $X$ represents the number of successes that occur in the $n$ trials, then $X$ is said to be a \textbf{binomial} random variable with parameters $(n,p)$. \\
+
+The probability mass function of a binomial random variable with parameters $n$ and $p$ is given by
+\begin{equation*}
+  P\{ X=i \} = \binom{n}{i} p^i (1-p)^{n-i}, \;\;\;\; i =0,1,\dots,n
+\end{equation*}
+
+Since a binomial random variable, with parameters $n$ and $p$, represents the number of successes in $n$ independent trials, each having success probability $p$, we can represent $X$ as follows:
+\begin{equation*}
+  X = \sum_{i=1}^n X_i
+\end{equation*}
+where
+\begin{equation*}
+  X_i =
+  \begin{cases}
+    1 & \text{if the $i$th trial is a success} \\
+    0 & \text{otherwise}
+  \end{cases}
+\end{equation*}
+Using this representation, we get
+\begin{eqnarray*}
+  E[X]
+  &=& \sum_{i=1}^n E[X_i] \\
+  &=& np \\
+  Var(X)
+  &=& \sum_{i=1}^n Var(X_i) \\
+  &=& np(1-p)
+\end{eqnarray*}
+The distribution function is
+\begin{equation*}
+  P\{ X \le i \}
+  = \sum_{k=0}^i \binom{n}{k} p^k (1-p)^{n-k} \;\;\;\; i = 0,1,\dots,n
+\end{equation*}
+The relationship between $P\{ X = k+1 \}$ and P\{ X = k \}:
+\begin{equation*}
+  P\{ X = k+1 \}
+  = \frac{p}{1-p} \frac{n-k}{k+1} P\{ X = k \}
+\end{equation*}
+
+\subsection{The Poisson Random Variables}
+
+A random variable $X$, taking on one of one of the values 0, 1, 2, ..., is said to be a Poisson random variable with parameter $\lambda$, $\lambda>0$, if its probability mass function is given by
+\begin{equation*}
+  P\{ X=i \} = e^{-\lambda} \frac{\lambda^i}{i!} \;\;\;\; i = 0,1,\dots
+\end{equation*}
+Then we get
+\begin{eqnarray*}
+  E[X] &=& \lambda \\
+  Var(X) &=& \lambda
+\end{eqnarray*}
+If $X$ is Poisson with mean $\lambda$, then
+\begin{equation*}
+  \frac {P\{X=i+1\}}{P\{X=i\}}
+  = \frac {\lambda}{i+1}
+\end{equation*}
+
+\subsection{The Hypergeometric Random Variable}
+
+A random variable $X$ is a \textbf{hypergeometric} random variable if its mass function is
+\begin{equation*}
+  P\{ X = i \} = \frac
+  {\binom{N}{i} \binom{M}{n-i}}
+  {\binom{N+M}{n}} \;\;\;\; i = 0,1,\dots,\min(N,n)^*
+\end{equation*}
+Let
+\begin{equation*}
+  p = \frac {N}{N+M}
+\end{equation*}
+We get
+\begin{eqnarray*}
+  E[X] &=& \sum_{i=1}^n E[X_i] = \sum_{i=1}^n P[X_i=1] = \frac{nM}{N+M} = np \\
+  Var(X) &=& \sum_{i=1}^n Var(X_i) + 
+  2 \sum_{i=1}^n \sum_{j \ge i}^n Cov(X_i, X_j) \\
+  &=& \frac{2NM}{(N+M)^2} - \frac{n(n-1)NM}{(N+M)^2(N+M-1)} \\
+  &=& \frac{nNM}{(N+M)^2} \left( 1 - \frac{n-1}{N+M-1} \right) \\
+  &=& np(1-p) \left[ 1 - \frac{n-1}{N+M-1} \right]
+\end{eqnarray*}
+
+\subsection{The Uniform Random Variable}
+
+A random variable $X$ is said to be uniformly distributed over the interval $[\lambda, \beta]$ if its probability density function is given by
+\begin{equation*}
+  f(x) = 
+  \begin{cases}
+    \frac{1}{\beta - \lambda} & \text{if } \alpha \le x \le \beta \\
+    0 & \text{otherwise}
+  \end{cases}
+\end{equation*}
+Then we get
+\begin{eqnarray*}
+  E[X] &=& \frac{\lambda + \beta}{2} \\
+  Var(X) = \frac{(\beta - \lambda)^2}{12}
+\end{eqnarray*}
+
+\subsection{Normal Random Variable}
+
+A random variable is said to be normally distributed with parameters $\mu$ and $\sigma^2$, and we write $X ~ \mathcal{N}(\mu, \sigma^2)$, if its density is
+\begin{equation*}
+  f(x) = \frac{1}{sqrt{2 \pi \sigma}} e^{-(x-\mu)^2/2\sigma^2}
+\end{equation*}
+Let
+\begin{equation*}
+  Z = \frac{X-\mu}{\sigma}
+\end{equation*}
+Then $Z$ is a normal random variable with mean 0 and variance 1. $Z$ is said to have a \textbf{standard normal distribution} $\Phi(\cdot)$:
+\begin{equation*}
+  \Phi(x) = \frac{1}{sqrt{2 \pi}} \int_{-\infty}^x e^{-y^2/2} dy
+  \;\;\;\; -\infty < x < \infty
+\end{equation*}
+
+\subsection{Exponential Random Variables}
+
+A continuous random variable whose probability density function is given, for some $\lambda > 0$, by
+\begin{equation*}
+  f(x) =
+  \begin{cases}
+    \lambda e^{-\lambda x} & \text{if } x \ge 0 \\
+    0 & \text{if } x < 0
+  \end{cases}
+\end{equation*}
+is said to be an \textbf{exponential random variable} with parameter $\lambda$. The cumulative distribution function $F(x)$ is given by
+\begin{equation*}
+  F(X) = 1 - e^{-\lambda x}, \;\;\;\; x \ge 0
+\end{equation*}
+We get
+\begin{eqnarray*}
+  \phi(t) &=& \frac{\lambda}{\lambda - t} \;\;\;\; t < \lambda \\
+  E[X] = \frac{1}{\lambda} \\
+  Var(X) = \frac{1}{\lambda^2}
+\end{eqnarray*}
+
+\begin{remark}
+  The key property of an exponential random variable is that it is memoryless, where we say that a nonnegative random variable $X$ is \textbf{memoryless} if
+  \begin{equation*}
+    P\{ X > s+t | X>t \} = P\{ X >s \} \;\;\;\; \text{for all } s,t \ge 0
+  \end{equation*}
+\end{remark}
+
+\begin{proposition}
+  If $X_1,X_2,\dots,X_n$ are independent exponential random variables having respective parameter $\lambda_1, \lambda_2, \dots, \lambda_n$, then $\min(X_1, X_2,\dots,X_n)$ is exponential with parameter $\sum_{i=1}^n \lambda_i$.
+\end{proposition}
 
 
+\section{Distribution of Sampling Statistics}
+
+\subsection{Introduction}
+
+\begin{definition}
+  If $X_1,\dots,X_n$ are independent random variables having common distribution $F$, then we say they constitute a \textbf{sample} (sometimes called a \emph{random sample}) from the distribution $F$.
+\end{definition}
+
+\subsection{The Sample Mean}
+
+We often suppose that the value associated with any member of the population can be regarded as being the value of a random variable having expectation $\mu$ and variance $\sigma^2$. The quantities $\mu$ and $\sigma^2$ are called the \textbf{population mean} and the \textbf{population variance} respectively. Let $X_1, X_2, \dots, X_n$ be a sample of values from this population. The sample mean is defined by
+\begin{equation*}
+  \bar{X} = \frac{X_1 + \cdots + X_n}{n}
+\end{equation*}
+Then its expected value and variance are obtained as follows:
+\begin{equation*}
+  E[\bar{X}] = E \left[ \frac{X_1 + \cdots + X_n}{n} \right] = \mu
+\end{equation*}
+and
+\begin{equation*}
+  Var(\bar{X}) = Var \left( \frac{X_1 + \cdots + X_n}{n} \right)
+= \frac{\sigma^2}{n}
+\end{equation*}
+
+\subsection{The Central Limit Theorem}
+
+\begin{theorem} [The Central Limit Theorem]
+  Let $X_1, X_2,\dots,X_n$ be a sequence of independent and identically distributed random variables each having mean $\mu$ and variance $\sigma^2$. Then for $n$ large, the distribution of
+  \begin{equation*}
+    X_1 + \cdots + X_n
+  \end{equation*}
+  is approximately normal with mean $n\mu$ and variance $n\sigma^2$.
+\end{theorem}
+
+It follows from the central limit theorem that
+\begin{equation*}
+  \frac {X_1 + \cdots + X_n - n\mu}{\sigma \sqrt{n} < x} \approx P(Z < x)
+\end{equation*}
 
 
 \end{document}
+
+
 
