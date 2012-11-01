@@ -22,10 +22,199 @@
 
 \setlength{\parindent}{0in}
 
-\section*{Introduction}
-
-For how to run the MATLAB code, please refer to file ``Shell''.
-
 \section*{Problem 1}
+
+\begin{eqnarray*}
+comp(P, \mu)
+&=& \sum_{i=1}^T \left( (x_t - \mu) - P(x_t - \mu) \right)^T
+  \left( (x_t - \mu) - P(x_t - \mu) \right) \\
+&=& \sum_{i=1}^T \left( (I-P)(x_t - \mu) \right)^T
+  \left( (I-P) (x_t - \mu) \right) \\
+&=& \sum_{i=1}^T (x_t - \mu)^T (I-P)^T (I-P) (x_t - \mu) \\
+&=& \sum_{i=1}^T \textbf{tr} \left( (x_t - \mu)^T (I-P)^T (I-P)
+  (x_t - \mu) \right) \\
+&=& \sum_{i=1}^T \textbf{tr} \left( (I-P)^T (I-P) (x_t - \mu)^T
+  (x_t - \mu) \right) \\
+&=& \textbf{tr} \left( (I-P)^T (I-P) \sum_{i=1}^T (x_t - \mu)^T
+  (x_t - \mu) \right) \\
+&=& \textbf{tr} \left( (I-P)^T (I-P) C \right) \\
+&=& \textbf{tr} \left( (I^T I - P^T I - P I^T + P^TP) C \right) \\
+&=& \textbf{tr} \left( (I - P) C \right) \\
+&=& \textbf{tr} (C) - \textbf{tr} (PC) \\
+\end{eqnarray*}
+
+Since $C$ is a symmetric matrix, then $C = U \Lambda U^T$, Where $U$ is the matrix of eigenvectors. Then we can rewrite $C$ in terms of its eigendecomposition, that is,  $C = \sum_{i=1}^n \lambda_i c_i c_i^T$. Then, we have
+\begin{eqnarray*}
+  \textbf{tr}(PC)
+  &=& \sum_{i=1}^n \lambda_i \textbf{tr}(P c_i c_i^T) \\
+  &=& \sum_{i=1}^n \lambda_i c_i^T P c_i  \\
+  &\le& \max_{0 \le \delta_i \le 1, \sum_i \delta_i = k} \lambda_i \delta_i.
+\end{eqnarray*}
+
+The last inequality is due the following fact:
+\begin{equation*}
+  c_i^T P c_i \le 1, \text{ for } 1 \le i \le n, \text{ and }
+  \sum_{i=1}^{n} c_i^T P c_i = \textbf{tr} \left( P \sum_{i=1}^{n}
+    c_i c_i^T \right) = \textbf{tr}(P) = k.
+\end{equation*}
+
+since the eigenvectors $c_i$ of $C$ are an orthogonal set of $n$ directions. A linear function is maximized at one of the vertices of its polytope of feasible solutions. The vertices of this polytope defined by the constraints $0 \le \delta_i \le 1$ and $\sum_i \delta_i = k$ are those $\delta$ vectors with exactly $k$ ones and $n-k$ zeros. Thus, the vertices of the polytope correspond to sets of size $k$ and
+\begin{equation*}
+  \textbf{tr}(PC) \le \max_{1 \le i_1 < i_2 < \dots < i_k \le n}
+  \sum_{j=1}^k \lambda_{i_j}
+\end{equation*}
+
+So the set that gives the maximum upper bound corresponds to the largest $k$ eigenvalues of $C$.
+
+\section*{Problem 2}
+
+a) The MLE estimator
+\begin{eqnarray*}
+  P(x_1, \dots, x_N | \mu)
+  &=& \prod_{i=1}^N P(x_i | \mu) \\
+  &=& \prod_{i=1}^N \frac {1}{\sqrt {2 \pi \sigma^2}}
+      e^{-\frac {(x_i - \mu)^2}{2 \sigma^2}}
+\end{eqnarray*}
+
+Then we get
+\begin{eqnarray*}
+  \log (P(x_1, \dots, x_N | \mu))
+  &=& \sum_{i=1}^N \log \left( \frac {1}{\sqrt {2 \pi \sigma^2}} \right)
+      - \frac {(x_i - \mu)^2}{2 \sigma^2}
+\end{eqnarray*}
+
+Take the derivative with respect to $\mu$:
+\begin{eqnarray*}
+  \frac {d \; \log (P(x_1, \dots, x_N | \mu))}{d \mu}
+  &=& \sum_{i=1}^N \frac {(x_i - \mu)}{\sigma^2}
+\end{eqnarray*}
+
+Setting it to 0, we get:
+\begin{eqnarray*}
+  \sum_{i=1}^N \frac {(x_i - \mu)}{\sigma^2} &=& 0 \\
+  \sum_{i=1}^N (x_i - \mu) &=& 0 \\
+  \sum_{i=1}^N \mu &=& \sum_{i=1}^N x_i \\
+  \hat {\mu} &=& \frac {\sum_{i=1}^N x_i}{N}
+\end{eqnarray*}
+
+b) The MAP estimator
+\begin{eqnarray*}
+  P(\mu | x_1, \dots, x_N )
+  &=& \frac {P(x_1, \dots, x_N | \mu) P(\mu)}{P(x_1, \dots, x_N)} \\
+  &=& \frac {\left( \prod_{i=1}^N \frac {1}{\sqrt{2 \pi \sigma^2}}
+      e^{-\frac {(x_i - \mu)^2}{2 \sigma^2}} \right) \frac{1}{\sqrt{2 \pi \beta^2}}
+      e^{-\frac {(x_i - \nu)^2}{2 \beta^2}}}  {P(x_1, \dots, x_N)} \\
+\end{eqnarray*}
+
+We get
+\begin{eqnarray*}
+  \log(P(\mu | x_1, \dots, x_N ))
+  &=& \left( \sum_{i=1}^N -\log {\sqrt{2 \pi \sigma^2}}
+    -\frac {(x_i - \mu)^2}{2 \sigma^2} \right) - \log {\sqrt{2 \pi \beta^2}}
+    -\frac {(\mu - \nu)^2}{2 \beta^2} \\
+\end{eqnarray*}
+
+Taking the derivative with respect to $\mu$, we get
+\begin{eqnarray*}
+  \frac {\partial \log(P(\mu | x_1, \dots, x_N ))} {\partial \mu}
+  &=& \left( \sum_{i=1}^N \frac {(x_i - \mu)}{\sigma^2} \right)
+      -\frac {(\mu - \nu)}{\beta^2}
+\end{eqnarray*}
+
+Setting it to 0, we have
+\begin{eqnarray*}
+  \left( \sum_{i=1}^N \frac {(x_i - \mu)}{\sigma^2} \right)
+  -\frac {(\mu - \nu)}{\beta^2} &=& 0 \\
+  \frac {(\mu - \nu)}{\beta^2}
+  &=& \sum_{i=1}^N \frac {(x_i - \mu)}{\sigma^2} \\
+  \frac {(\mu - \nu)}{\beta^2}
+  &=& - \sum_{i=1}^N \frac {x_i}{\sigma^2} - \frac {N \mu}{\sigma^2} \\
+  \frac {\mu}{\beta^2} + \frac {N \mu}{\sigma^2}
+  &=& - \sum_{i=1}^N \frac {x_i}{\sigma^2} + \frac {\nu}{\beta^2}\\
+  \frac{(\sigma^2 + N \beta^2) \mu}{\sigma^2 \beta^2}
+  &=& \frac{\sigma^2 \nu + \beta^2 \sum_{i=1}^N x_i}{\sigma^2 \beta^2} \\
+  \hat {\mu} &=& \frac {\sigma^2 \nu + \beta^2 \sum_{i=1}^N x_i}
+  {\sigma^2 + N \beta^2} \\
+\end{eqnarray*}
+
+Then we get
+\begin{eqnarray*}
+  P(\mu | x_1,\dots,x_n)
+  &\varpropto& \left( \prod_{i=1}^N \frac {1}{\sqrt{2 \pi \sigma^2}} 
+    e^{-\frac {(x_i-\mu)^2}{2\mu^2}} \right) \frac{1}{\sqrt{2 \pi \beta^2}}
+  e^{-\frac{(\mu -\nu)^2}{2\beta^2}} \\
+  &\varpropto& \left( \prod_{i=1}^N e^{-\frac {(x_i-\mu)^2}{2\mu^2}} \right)
+  e^{-\frac{(\mu -\nu)^2}{2\beta^2}} \\
+  &=& e^{-\frac{1}{2\sigma^2} \left( \sum_{i=1}^N (x_i - \mu)^2 \right)}
+  e^{-\frac{(\mu-\nu)^2}{2\beta^2}} \\
+  &=& e^{-\frac{1}{2\sigma^2} \left( \sum_{i=1}^N (x_i - \mu)^2 \right)
+    -\frac{(\mu-\nu)^2}{2\beta^2}} \\
+  &=& e^{-\frac{\beta^2 \left( \sum_{i=1}^N (x_i - \mu)^2 \right)
+      + \sigma^2 (\mu-\nu)^2}{2\sigma^2 \beta^2}} \\
+  &=& e^{-\frac{1}{2\sigma^2 \beta^2} \left( \left[\mu \sqrt{N \beta^2
+          + \sigma^2} - \frac{\sigma^2 \nu + \beta^2 \sum_{i=1}^N x_i}
+        {\sqrt {N \beta^2 + \sigma^2}} \right]^2 - \frac{(\sigma^2 \nu
+        + \beta^2 \sum_{i=1}^N x_i)^2} {N\beta^2 + \sigma^2}
+      + \beta^2 \left( \sum_{i=1}^N x_i^2 \right) + \sigma^2 \nu^2 \right) } \\
+  &=& e^{-\frac{1}{2\sigma^2 \beta^2} \left( \left[\mu \sqrt{N \beta^2
+          + \sigma^2} - \frac{\sigma^2 \nu + \beta^2 \sum_{i=1}^N x_i}
+        {\sqrt {N \beta^2 + \sigma^2}} \right]^2 \right)}
+      e^{\frac{1}{2\sigma^2 \beta^2} \left( \frac{(\sigma^2 \nu + \beta^2 
+          \sum_{i=1}^N x_i)^2}{N\beta^2 + \sigma^2} - \beta^2 \left(
+          \sum_{i=1}^N x_i^2 \right) - \sigma^2 \nu^2 \right)} \\
+  &\varpropto& e^{-\frac{1}{2\sigma^2 \beta^2} \left( \left[\mu
+       \sqrt{N \beta^2 + \sigma^2} - \frac{\sigma^2 \nu + \beta^2 \sum_{i=1}^N
+         x_i} {\sqrt {N \beta^2 + \sigma^2}} \right]^2 \right)} \\
+  &=& e^{-\frac{N \beta^2 + \sigma^2}{2\sigma^2 \beta^2} \left( \left[\mu
+        - \frac{\sigma^2 \nu + \beta^2 \sum_{i=1}^N
+         x_i} {N \beta^2 + \sigma^2} \right]^2 \right)}
+\end{eqnarray*}
+
+Note that this is a normal distribution with mean $\frac{\sigma^2 \nu + \beta^2 \sum_{i=1}^N x_i} {N \beta^2 + \sigma^2}$ and variance $\frac {\sigma^2 \beta^2}{N \beta^2 + \sigma^2}$. So $P(\mu | x_1,\dots,x_n)$ achieves its maximum at the mean. As a result,
+\begin{equation*}
+  \hat{\mu}_{MAP} = \frac{\sigma^2 \nu + \beta^2 \sum_{i=1}^N x_i}
+  {N \beta^2 + \sigma^2}
+\end{equation*}
+
+c) $N \rightarrow \infty$ \\
+\begin{eqnarray*}
+  \hat{\mu}_{MAP}
+  &=& \frac{\sigma^2 \nu + \beta^2 \sum_{i=1}^N x_i} {N \beta^2 + \sigma^2} \\
+  &=& \frac{\sigma^2 \nu} {N \beta^2 + \sigma^2}
+  + \frac{\beta^2 \sum_{i=1}^N x_i} {N \beta^2 + \sigma^2} \\
+  &=& \frac{\sigma^2 \nu} {N \beta^2 + \sigma^2}
+  + \frac{\frac{1}{N} \sum_{i=1}^N x_i} {1 + \frac {\sigma^2}{N \beta^2} }
+\end{eqnarray*}
+
+And
+\begin{eqnarray*}
+  \hat {\mu}_{MLE} &=& \frac {\sum_{i=1}^N x_i}{N}
+\end{eqnarray*}
+
+When $N \rightarrow \infty$, $\hat{\mu}_{MAP} = \hat {\mu}_{MLE}$.
+
+\section*{Problem 3}
+
+\begin{eqnarray*}
+  J(w)
+  &=& - \sum_{i=1}^N \log(\sigma (y_i w^T k_i)) + \lambda w^T w \\
+  &=& - \sum_{i=1}^N \log(\frac {1}{1 + e^{-y_i w^T k_i}}) + \lambda w^T w
+\end{eqnarray*}
+
+Taking the derivative with respect to $w$, we get
+\begin{eqnarray*}
+  \frac {d \; J(w)} {d \; w}
+  &=& \sum_{i=1}^N \frac {e^{-y_i w^T k_i}}{1 + e^{-y_i w^T k_i}}
+  \cdot y_i k_i + \lambda w
+\end{eqnarray*}
+
+For gradient descent, we have
+\begin{eqnarray*}
+  w_{n+1}
+  &=& w_{n} - \gamma \frac {d \; J(w)} {d \; w}
+\end{eqnarray*}
+
+Not finished.
+
 
 \end{document}
