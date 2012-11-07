@@ -10,6 +10,7 @@
 \usepackage{amsmath}
 \usepackage{algpseudocode}
 \usepackage{algorithm}
+\usepackage{enumerate}
 
 \newtheorem{theorem}{Theorem}
 \newtheorem{lemma}[theorem]{Lemma}
@@ -27,6 +28,9 @@
 \author{Mengqi Zong $<mz2326@columbia.edu>$}
 
 \begin{document}
+
+\setcounter{tocdepth}{5} %to make it appears in TOC
+\setcounter{secnumdepth}{5} %to make it numbered
 
 \maketitle
 
@@ -548,7 +552,7 @@ We call $\phi(t)$ the moment generating function because all of the moments of $
 Suppose that a trial, or an experiment, whose outcome can be classified as either a ``success'' or as a ``failure'' is performed. If we let $X=1$ when the outcome is a success and $X=0$ when it is a failure, then the probability mass function of $X$ is given by
 \begin{eqnarray*}
   P\{X=0\} &=& 1-p \\
-  P\{X=1\} &=& p \\
+  P\{X=1\} &=& p
 \end{eqnarray*}
 where $p, 0 \le p \le 1$, is the probability that the trial is a ``success''.This random variable $X$ is a Bernoulli random variable. Then we have
 \begin{eqnarray*}
@@ -597,7 +601,7 @@ The relationship between $P\{ X = k+1 \}$ and P\{ X = k \}:
 
 \subsection{The Poisson Random Variables}
 
-A random variable $X$, taking on one of one of the values 0, 1, 2, ..., is said to be a Poisson random variable with parameter $\lambda$, $\lambda>0$, if its probability mass function is given by
+A random variable $X$, taking on one of the values 0, 1, 2, ..., is said to be a Poisson random variable with parameter $\lambda$, $\lambda>0$, if its probability mass function is given by
 \begin{equation*}
   P\{ X=i \} = e^{-\lambda} \frac{\lambda^i}{i!} \;\;\;\; i = 0,1,\dots
 \end{equation*}
@@ -640,21 +644,21 @@ A random variable $X$ is said to be uniformly distributed over the interval $[\l
 \begin{equation*}
   f(x) = 
   \begin{cases}
-    \frac{1}{\beta - \lambda} & \text{if } \alpha \le x \le \beta \\
+    \frac{1}{\beta - \alpha} & \text{if } \alpha \le x \le \beta \\
     0 & \text{otherwise}
   \end{cases}
 \end{equation*}
 Then we get
 \begin{eqnarray*}
-  E[X] &=& \frac{\lambda + \beta}{2} \\
-  Var(X) = \frac{(\beta - \lambda)^2}{12}
+  E[X] &=& \frac{\alpha + \beta}{2} \\
+  Var(X) &=& \frac{(\beta - \alpha)^2}{12}
 \end{eqnarray*}
 
 \subsection{Normal Random Variable}
 
-A random variable is said to be normally distributed with parameters $\mu$ and $\sigma^2$, and we write $X ~ \mathcal{N}(\mu, \sigma^2)$, if its density is
+A random variable is said to be normally distributed with parameters $\mu$ and $\sigma^2$, and we write $X \sim \mathcal{N}(\mu, \sigma^2)$, if its density is
 \begin{equation*}
-  f(x) = \frac{1}{sqrt{2 \pi \sigma}} e^{-(x-\mu)^2/2\sigma^2}
+  f(x) = \frac{1}{\sqrt{2 \pi \sigma}} e^{-(x-\mu)^2/2\sigma^2}
 \end{equation*}
 Let
 \begin{equation*}
@@ -662,7 +666,7 @@ Let
 \end{equation*}
 Then $Z$ is a normal random variable with mean 0 and variance 1. $Z$ is said to have a \textbf{standard normal distribution} $\Phi(\cdot)$:
 \begin{equation*}
-  \Phi(x) = \frac{1}{sqrt{2 \pi}} \int_{-\infty}^x e^{-y^2/2} dy
+  \Phi(x) = \frac{1}{\sqrt{2 \pi}} \int_{-\infty}^x e^{-y^2/2} dy
   \;\;\;\; -\infty < x < \infty
 \end{equation*}
 
@@ -683,8 +687,8 @@ is said to be an \textbf{exponential random variable} with parameter $\lambda$. 
 We get
 \begin{eqnarray*}
   \phi(t) &=& \frac{\lambda}{\lambda - t} \;\;\;\; t < \lambda \\
-  E[X] = \frac{1}{\lambda} \\
-  Var(X) = \frac{1}{\lambda^2}
+  E[X] &=& \frac{1}{\lambda} \\
+  Var(X) &=& \frac{1}{\lambda^2}
 \end{eqnarray*}
 
 \begin{remark}
@@ -698,6 +702,279 @@ We get
   If $X_1,X_2,\dots,X_n$ are independent exponential random variables having respective parameter $\lambda_1, \lambda_2, \dots, \lambda_n$, then $\min(X_1, X_2,\dots,X_n)$ is exponential with parameter $\sum_{i=1}^n \lambda_i$.
 \end{proposition}
 
+\subsubsection{The Poisson Process}
+
+\begin{definition}
+  Suppose that ``events'' are occurring at random time points, and let $N(t)$ denote the number of events that occurs in the time interval $[0,t]$. These events are said to constitute a \textbf{Poisson process} having rate $\lambda$, $\lambda > 0$, if
+  \begin{enumerate} [(a)]
+    \item $N(0) = 0$
+    \item The number of events that occur in disjoint time intervals are independent.
+    \item The distribution of the number of events that occur in a given interval depends only on the length of the interval and not on its location.
+    \item $\lim_{h \rightarrow 0} \frac {P\{ N(h) = 1 \} }{h} = \lambda$
+    \item $\lim_{h \rightarrow 0} \frac {P\{ N(h) \ge 2 \} }{h} = 0$
+  \end{enumerate}
+\end{definition}
+
+Condition $(a)$ states that the process begins at time 0. Condition $(b)$, the \emph{independent increment} assumption, states for instance that the number of events by time $t$ [that is, $N(t)$] is independent of the number of events that occurs between $t$ and $t+s$ [that is, $N(t+s) - N(t)$]. Condition $(c)$,  the \emph{stationary increment} assumption, states that probability distribution of $N(t+s) - N(t)$ is the sample for all values of $t$. Condition $(d)$ and $(e)$ state that in a small interval of length $h$, the probability of one event occurring is approximately $\lambda h$, whereas the probability of 2 or more is approximately 0. \\
+
+\begin{proposition}
+  For a Poisson process having rate $\lambda$
+  \begin{equation*}
+    P\{ N(t)=k \} = e^{-\lambda t} \frac{(\lambda t)^k}{k!}, \;\;\; k=0,1,\dots
+  \end{equation*}
+  That is, the number of events in any interval of length $t$ has a Poisson distribution with mean $\lambda t$.
+\end{proposition}
+
+Suppose we split the interval with length $t$ into $n$ pieces. Let $p = \lambda t/n$. As $n \rightarrow +\infty$, we have
+\begin{eqnarray*}
+  Pr(X = k)
+  &=& \binom {n}{k} p^k (1-p)^{n-k} \\
+  &=& \frac{n!}{k! (n-k)!} \left( \frac{\lambda t}{n} \right)^k
+  \left( 1 - \frac{\lambda t}{n} \right)^n
+  \left( 1 - \frac{\lambda t}{n} \right)^{-k} \\
+  &\approx& \frac {n^k}{k!} \left( \frac{\lambda t}{n} \right)^k
+  \left( 1 - \frac{\lambda t}{n} \right)^n
+  \left( 1 - \frac{\lambda t}{n} \right)^{-k} \\
+  &\approx& \frac{(\lambda  t)^k}{k!} \left( 1 + \frac{- \lambda t}{n}
+  \right)^n \\
+  &=& e^{-\lambda t} \frac{(\lambda t)^k}{k!} 
+\end{eqnarray*}
+
+For a Poisson process, let $X_1$ denote the time of the first event. Further, for $n>1$, let $X_n$ denote the elapsed time between $(n-1)$st and the $n$th events. The sequence $\{ X_n, n = 1,2,\dots \}$ is called the \textbf{sequence of interarrival times}. \\
+
+We note that the event $\{ X_1 > t\}$ takes place if and only if no events of the Poisson process occur in the interval $[0,t]$ and thus,
+\begin{equation*}
+  P\{ X_1 > t \} = P\{ N(t)=0 \} = e^{-\lambda t}
+\end{equation*}
+
+Hence, $X_1$ is an exponential distribution with mean $1 / \lambda$.
+
+\begin{proposition}
+  $X_1, X_2, \dots$ are independent exponential random variables each with mean $1 / \lambda$.
+\end{proposition}
+
+\subsection{The Gamma Distribution}
+
+A random variable is said to have a gamma distribution with parameters $(\lambda, \alpha)$, $\lambda > 0$, $\alpha > 0$, if its density function is given by
+\begin{eqnarray*}
+  f(x) =
+  \begin{cases}
+    \frac{\lambda e^{-\lambda x} (\lambda x)^{\alpha - 1}}{\Gamma(\alpha)}
+    & x \ge 0 \\
+    0 & x < 0
+  \end{cases}
+\end{eqnarray*}
+
+where
+\begin{eqnarray*}
+  \Gamma (\alpha)
+  &=& \int_0^{\infty} \lambda e^{-\lambda x} (\lambda x)^{\alpha-1} dx \\
+  &=& \int_0^{\infty} e^{-y} y^{\alpha - 1} dy \;\;\;\;\;
+  \text{(by letting $y = \lambda x$)} \\
+  &=& -e^{-y} y^{\alpha - 1} \Big |_{y=0}^{y=\infty}
+  + \int_0^{\infty} e^{-y} (\alpha - 1) y^{\alpha - 2} dy \\
+  &=& (\alpha - 1) \int_0^{\infty} e^{-y} y^{\alpha-2} dy \\
+  &=& (\alpha - 1) \Gamma (\alpha -1)
+\end{eqnarray*}
+
+When $\alpha$ is an integer--say, $\alpha = n$--we can iterate the foregoing to obtain that
+\begin{eqnarray*}
+  \Gamma(n)
+  &=& (n-1) \Gamma (n-1) \\
+  &=& (n-1) (n-2) \Gamma (n-2) \\
+  &&  \vdots \\
+  &=& (n-1)!\Gamma (1)
+\end{eqnarray*}
+
+Because
+\begin{equation*}
+  \Gamma (1) = \int_0^{\infty} e^{-y} dy = 1
+\end{equation*}
+
+We see that
+\begin{equation*}
+  \Gamma (n) = (n-1)!
+\end{equation*}
+
+The function $\Gamma (n)$ is called the \emph{gamma} function. \\
+
+We can also get
+\begin{eqnarray*}
+  \phi (t)
+  &=& E[e^{tX}] = \left( \frac{\lambda}{\lambda - t} \right)^{\alpha} \\
+  E[X]
+  &=& \phi '(0) = \frac {\alpha}{\lambda} \\
+  Var(X)
+  &=& E[X^2] - (E[X])^2 = \phi ''(0) - \left( \phi '(0) \right)^2
+  = \frac{\alpha}{\lambda^2}
+\end{eqnarray*}
+
+\begin{proposition}
+  If $X_i$, $i=1,\dots,n$ are independent gamma random variables with respective parameters $(\alpha_i, \lambda)$, then $\sum_{i=1}^n X_i$ is gamma with parameters $\sum_{i=1}^n \alpha_i, \lambda$.
+\end{proposition}
+
+This result easily follows since
+\begin{eqnarray*}
+  \phi_{X_1+X_2} (t)
+  &=& E[e^{t(X_1 + X_2)}] \\
+  &=& \phi_{X_1} (t) \phi_{X_2} (t) \\
+  &=& \left( \frac{\lambda}{\lambda - t} \right)^{\alpha_1 + \alpha_2}
+\end{eqnarray*}
+
+\begin{corollary}
+  If $X_1,\dots,X_n$ are independent exponential random variables, each having rate $\lambda$, then $\sum_{i=1}^n X_i$ is a gamma random variable with parameters $(n, \lambda)$.
+\end{corollary}
+
+It should be noted that as $\alpha$ becomes large, the density starts to resemble the normal density. This is theoretically explained by the central limit theorem.
+
+\subsection{Distribution Arising From the Normal}
+
+\subsubsection{The Chi-Square Distribution}
+
+\begin{definition}
+  If $Z_1, Z_2, \dots, Z_n$ are independent standard normal random variables, then $X$, defined by
+  \begin{equation*}
+    X = Z_1^2 + Z_2^2 + \cdots + Z_n^2
+  \end{equation*}
+  is said to have a \textbf{chi-square distribution} with $n$ degrees of freedom. We will use the notation
+  \begin{equation*}
+    X \sim \chi_n^2
+  \end{equation*}
+  to signify that $X$ has a chi-square distribution with $n$ degrees of freedom.
+\end{definition}
+
+The chi-square distribution has the additive property that if $X_1$ and $X_2$ are independent chi-square random variables with $n_1$ and $n_2$ degrees of freedom, respectively, then $X_1 + X_2$ is chi-square with $n_1+n_2$ degrees of freedom. \\
+
+If $X$ is a chi-square random variable with $n$ degrees of freedom, then for any $\alpha \in (0,1)$, the quantity $\chi_{\alpha,n}^2$ is defined to be such that
+\begin{equation*}
+  P \{ X \ge \chi_{\alpha,n}^2 \} = \alpha
+\end{equation*}
+
+\paragraph{The Relation between Chi-Square and Gamma Random variable}
+
+Let us compute the moment generating function of a chi-square random variable with $n$ degrees of freedom. To begin, we have, when $n=1$, that
+\begin{eqnarray*}
+  E[e^{tX}]
+  &=& E[e^{tZ^2}] \;\;\;\; \text{where} \;\; Z \sim \mathcal{N}(0,1) \\
+  &=& \int_{-\infty}^{\infty} e^{tx^2} f_Z(x) dx \\
+  &=& \frac{1}{\sqrt{2 \pi}} \int_{-\infty}^{\infty} e^{tx^2} e^{-x^2/2} dx \\
+  &=& \frac{1}{\sqrt{2 \pi}} \int_{-\infty}^{\infty} e^{x^2(1-2t)/2} dx \\
+  &=& \frac{1}{\sqrt{2 \pi}} \int_{-\infty}^{\infty} e^{-x^2/2\hat{\sigma}^2} dx
+  \;\;\;\; \text{where} \;\; \hat{\sigma}^2 = (1-2t)^{-1} \\
+  &=& (1-2t)^{-1/2} \frac{1}{\sqrt{2\pi} \hat{\sigma}}
+  \int_{-\infty}^{\infty} e^{-x^2/2\hat{\sigma}^2} dx \\
+  &=& (1-2t)^{-1/2}
+\end{eqnarray*}
+
+Hence, in the general case of $n$ degrees of freedom
+\begin{eqnarray*}
+  E[e^{tX}]
+  &=& E \left[ e^{t \sum_{i=1}^n Z_i^2}  \right] \\
+  &=& E \left[ \prod_{i=1}^n e^{tZ_i^2} \right] \\
+  &=& \prod_{i=1}^n E \left[ e^{tZ_i^2} \right] \\
+  &=& (1-2t)^{-n/2}
+\end{eqnarray*}
+
+However, we recognize $[1/(1-2t)]^{n/2}$ as being the moment generating function of a gamma random variable with parameters $(n/2, 1/2)$. Hence, by the uniqueness of moment generating functions, it follows that these two distributions--chi-square with $n$ degrees of freedom and gamma with parameters $n/2$ and $1/2$--are identical, and thus we can conclude that the density of $X$ is given by
+\begin{equation*}
+  f(x) = \frac{\frac{1}{2} e^{-x/2} \left( \frac{x}{2} \right)^{(n/2)-1} }
+  {\Gamma \left( n/2 \right)}, \;\;\;\; x > 0
+\end{equation*}
+
+\subsubsection{The t-Distribution}
+
+If $Z$ and $\chi_n^2$ are independent random variables, with $Z$ having a standard normal distribution and $\chi_n^2$ having a chi-square distribution with $n$ degrees of freedom, then the random variable $T_n$ defined by
+\begin{equation*}
+  T_n = \frac{Z}{\sqrt{\chi_n^2/n}}
+\end{equation*}
+
+is said to have a \textbf{t-distribution} with $n$ degrees of freedom. \\
+
+Like the standard normal density, the t-density is symmetric about zero. In addition, as $n$ becomes larger, it becomes more and more like a standard normal density. To understand why, recall that $\chi_n^2$ can be expressed as the sum of the squares of $n$ standard normals, and so
+\begin{equation*}
+  \frac{\chi_n^2}{n} = \frac{Z_1^2 + \cdots + Z_n^2}{n}
+\end{equation*}
+
+where $Z_1, \dots, Z_n$ are independent standard normal random variables. t now follows the weak law of large numbers that, for large $n$, $T_n = Z / \sqrt{\chi_n^2 / n}$ will have approximately the same distribution as $Z$. \\
+
+The mean and variance of $T_n$ can be shown to equal
+\begin{eqnarray*}
+  E[T_n] &=& 0, \;\;\;\; n > 1 \\
+  Var[T_n] &=& \frac{n}{n-2}, \;\;\;\; n > 2
+\end{eqnarray*}
+
+Let $t_{\alpha, n}$ be such that
+\begin{equation*}
+  P\{ T_n \ge t_{\alpha, n} \} = \alpha
+\end{equation*}
+
+It follows from the symmetry about zero of the t-density function that $-T_n$ has the same distribution as $T_n$, and so
+\begin{eqnarray*}
+  \alpha
+  &=& P \{ -T_n \ge t_{\alpha, n} \} \\
+  &=& P \{ T_n \le -t_{\alpha, n} \} \\
+  &=& 1 - P \{ T_n > -t_{\alpha, n} \} \\
+  &\Rightarrow& P\{ T_n \ge -t_{\alpha, n} \} = 1 - \alpha \\
+  &\Rightarrow& -t_{\alpha, n} = t_{1-\alpha, n}
+\end{eqnarray*}
+
+\subsection{The F-Distribution}
+
+If $\chi_n^2$ and $\chi_m^2$ are independent chi-square random variables with $n$ and $m$ degrees of freedom, respectively, then the random variable $F_{n,m}$ defined by
+\begin{equation*}
+  F_{n,m} = \frac{\chi_n^2/n}{\chi_m^2/m}
+\end{equation*}
+
+is said to have an \textbf{F-distribution} with $n$ and $m$ degrees of freedom. \\
+
+For any $\alpha \in (0,1)$, let $F_{\alpha, n, m}$ be such that
+\begin{equation*}
+  P \{ F_{n,m} > F_{\alpha, n, m} \} = \alpha
+\end{equation*}
+
+We can also have
+\begin{eqnarray*}
+  \alpha
+  &=& P \left\{ \frac{\chi_n^2/n}{\chi_m^2/m} > F_{\alpha, n, m} \right\} \\
+  &=& P \left\{ \frac{\chi_m^2/m}{\chi_n^2/n}
+      < \frac{1}{F_{\alpha, n, m}} \right\} \\
+  &=& 1 - P \left\{ \frac{\chi_m^2/m}{\chi_n^2/n}
+      \ge \frac{1}{F_{\alpha, n, m}} \right\} \\
+  &\Rightarrow& P \left\{ \frac{\chi_m^2/m}{\chi_n^2/n}
+      \ge \frac{1}{F_{\alpha, n, m}} \right\} = 1 - \alpha
+\end{eqnarray*}
+
+Since
+\begin{equation*}
+  P \left\{ \frac{\chi_m^2/m}{\chi_n^2/n} 
+    \ge F_{1 - \alpha, m, n} \right \} = 1 - \alpha  
+\end{equation*}
+
+We get
+\begin{equation*}
+  \frac{1}{F_{\alpha, n, m}} = F_{1 - \alpha, m, n}
+\end{equation*}
+
+\subsection{The Logistic Distribution}
+
+A random variable $X$ is aid to have a \textbf{logistic} distribution with parameters $\mu$ and $\nu > 0$ if its distribution function is
+\begin{equation*}
+  F(x) = \frac {e^{(x - \mu)/ \ nu}}{1 + e^{(x - \mu)/ \nu}},
+  \;\;\;\; -\infty < x < \infty
+\end{equation*}
+
+Differentiating $F(x)$ yields the density function
+\begin{equation*}
+  f(x) = \frac {e^{(x - \mu)/ \nu}}{v(1 + e^{(x - \mu)/ \ nu})^2},
+  \;\;\;\; -\infty < x < \infty
+\end{equation*}
+
+We also can get
+\begin{equation*}
+  E[X] = \mu
+\end{equation*}
+
+$\mu$ is the mean of the logistic; $\nu$ is called the dispersion parameter.
 
 \section{Distribution of Sampling Statistics}
 
@@ -735,11 +1012,129 @@ and
 
 It follows from the central limit theorem that
 \begin{equation*}
-  \frac {X_1 + \cdots + X_n - n\mu}{\sigma \sqrt{n} < x} \approx P(Z < x)
+  P \left\{ \frac {X_1 + \cdots + X_n - n\mu}{\sigma \sqrt{n}} < x \right\}
+  \approx P(Z < x)
 \end{equation*}
 
+where $Z$ is a standard random variable.
+
+\subsubsection{Approximately Distribution of the Sample Mean}
+
+Let $X_1, \dots, X_n$ be a sample from a population having mean $\mu$ and variance $\sigma^2$. The central limit theorem can be used to approximate the distribution of the sample mean
+\begin{equation*}
+  \bar {X} = \sum_{i=1}^n X_i / n
+\end{equation*}
+
+Since a constant multiple of a normal random variable is also normal, it follows from the central limit theorem that $\bar{X}$ will be approximately normal when the sample size $n$ is large. Since the sample mean has expected value $\mu$ and standard deviation $\sigma / \sqrt{n}$, it then follows that
+\begin{equation*}
+  \frac {\bar{X} - \mu}{\sigma / \sqrt{n}}
+\end{equation*}
+
+has approximately a standard normal distribution.
+
+\subsubsection{How Large A Sample Is Needed}
+
+A general rule of thumb is that one can be confident of the normal approximation whenever the sample size $n$ is at least 30.
+
+\subsection{The Sample Variance}
+
+\begin{definition}
+  The statistic $S^2$, defined by
+  \begin{equation*}
+    S^2 = \frac {\sum_{i=1}^n (X_i - \bar{X})^2}{n-1}
+  \end{equation*}
+  is called the \textbf{sample variance}. $S = \sqrt{S^2}$ is called the \textbf{sample standard deviation}.
+\end{definition}
+
+Using $E[W^2] = Var(W) + (E[W])^2$, we have
+\begin{eqnarray*}
+  (n-1)E[S^2]
+  &=& E \left[ \sum_{i=1}^n X_i^2 - n \bar{X}^2 \right] \\
+  &=& E \left[ \sum_{i=1}^n X_i^2 \right] - n E[\bar{X}^2] \\
+  &=& n E[X_1^2] - n E[\bar{X}^2] \\
+  &=& n Var(X_1) + n (E[X_1])^2 - n Var(\bar{X}) - n (E[\bar{X}])^2 \\
+  &=& n \sigma^2 + n \mu^2 - n (\sigma^2 / n) - n \mu^2 \\
+  &=& (n-1) \sigma^2 \\
+  &\Rightarrow& E[S^2] = \sigma^2
+\end{eqnarray*}
+
+\subsection{Sampling Distributions from a Normal Population}
+
+Let $X_1, X_2, \dots, X_n$ be a sample from a normal population having mean $\mu$ and variance $\sigma^2$. That is, they are independent and $X_i \sim \mathcal{N}(\mu, \sigma^2), i=1,\dots,n$. Also let
+\begin{equation*}
+  \bar{X} = \sum_{i=1}^n X_i / n
+\end{equation*}
+
+and
+\begin{equation*}
+  S^2 = \frac {\sum_{i=1}^n (X_i - \bar{X})^2}{n-1}
+\end{equation*}
+
+denote the sample mean and sample variance, respectively.
+
+\subsubsection{Distribution of the Sample Mean}
+
+Since the sum of independent normal random variable is normally distributed, it follows that $\bar{X}$ with mean
+\begin{equation*}
+  E[\bar{X}] = \sum_{i=1}^n \frac {E[X_i]}{n} = \mu
+\end{equation*}
+
+and variance
+\begin{equation*}
+  Var(\bar{X}) = \frac{1}{n^2} \sum_{i=1}^n Var(X_i) = \sigma^2 / n
+\end{equation*}
+
+\subsubsection{Joint Distribution of $\bar{X}$ and $S^2$}
+
+\begin{theorem}
+  If $X_1, \dots, X_n$ is a sample from a normal population having mean $\mu$ and variance $\sigma^2$, then $bar{X}$ and $S^2$ are independent with $\bar{X}$ being normal with mean $\mu$ and variance $\sigma^2/n$ and $(n-1)S^2 / \sigma^2$ having a chi-square distribution with $n-1$ degrees of freedom.
+\end{theorem}
+
+For numbers $x_1, \dots, x_n$, let $y_i = x_i - \mu, i = 1, \dots, n$. Then $\bar{y} = \bar{x} - \mu$, it follows from the identity
+\begin{equation*}
+  \sum_{i=1}^n (y_i - \bar{y})^2 = \sum_{i=1}^n y_i^2 - n \bar{y}^2
+\end{equation*}
+that
+\begin{equation*}
+  \sum_{i=1}^n (x_i - \bar{x})^2
+  = \sum_{i=1}^n (x_i - \bar{x})^2 - n (\bar{x} - \mu)^2
+\end{equation*}
+
+If $X_1, \dots, X_n$ is a sample from a normal population having mean $\mu$ and variance $\sigma^2$, then we obtain from the preceding identity that
+\begin{eqnarray*}
+  \frac{\sum_{i=1}^n (X_i - \mu)^2}{\sigma^2}
+  &=& \frac{\sum_{i=1}^n (X_i - \bar{X})^2}{\sigma^2}
+  + \frac{n (\bar{X} - \mu)^2}{\sigma^2} \\
+  \sum_{i=1}^n \left( \frac{ (X_i - \mu}{\sigma} \right)^2
+  &=& \frac{\sum_{i=1}^n (X_i - \bar{X})^2}{\sigma^2}
+  + \left[ \frac{\sqrt{n} (\bar{X} - \mu)}{\sigma} \right]^2
+\end{eqnarray*}
+
+The equation above equates a chi-square random variable having $n$ degrees of freedom to the sum of two random variables, one of which is chi-square with 1 degree of freedom. Since it has been established that the sum of two independent chi-square random variables is also chi-square with a degree of freedom equal to the sum of the two degrees of freedom. Thus, it would seem that there is a reasonable possibility that two terms on the right side of the equation are independent, with $(n-1)S^2 / \sigma^2$ having a chi-square distribution with $n-1$ degrees of freedom.
+
+\begin{corollary}
+  Let $X_1, \dots, X_n$ be a sample from a normal population with mean $\mu$. If $\bar{X}$ denotes the sample mean and $S$ the sample standard deviation, then
+  \begin{equation*}
+    \sqrt{n} \frac{(\bar{X} - \mu)}{S} \sim t_{n-1}
+  \end{equation*}
+\end{corollary}
+
+Recall that a t-random variable with $n$ degrees of freedom is defined as the distribution of
+\begin{equation*}
+  \frac{Z}{\sqrt{\chi_n^2 / n}}
+\end{equation*}
+
+where $Z$ is a standard normal random variable that is independent of $\chi_n^2$, a chi-square random variable with $n$ degrees of freedom. It then follows from the previous theorem that
+\begin{equation*}
+  \frac{\sqrt{n} (\bar{X} - \mu) / \sigma}{\sqrt{S^2 / \sigma^2}}
+  = \sqrt{n} \frac{(\bar{X} - \mu)}{S} \sim t_{n-1}
+\end{equation*}
+
+is a t-random variable with $n-1$ degrees of freedom.
+
+\subsection{Sampling from a Finite Population}
+
+A sample of size $n$ from this population is said to be a \textbf{random sample} if it is chosen in such a manner that each of the $\binom {N}{n}$ population subsets of size $n$ is equally likely to be the sample.
 
 \end{document}
-
-
 
