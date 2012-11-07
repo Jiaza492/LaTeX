@@ -59,19 +59,171 @@ b)
 \section*{Chapter 6}
 
 4. \\
+a) For 34 bets, you will win if at least one of the 34 bets win. So
+\begin{eqnarray*}
+  P_a = 1 - (\frac{37}{38})^{34} = 0.5962
+\end{eqnarray*}
+
+b) Let $X_i$ denote the $i$th bet's outcome. Then we have
+\begin{eqnarray*}
+  E[X_i] &=& 1 \times \frac{1}{38} \times 35 + (-1) \times \frac{37}{38}
+  = - \frac{1}{19} \\
+  Var(X_i)
+  &=& \frac{1 \times (35 - (- \frac{1}{19}))^2
+    + 37 \times (-1 - (- \frac{1}{19}))^2} {38}
+  = 33.2087
+\end{eqnarray*}
+
+Since 1000 is very large, we can assume the distribution of the final outcome is approximately a normal distribution with
+\begin{eqnarray*}
+  \mu &=& 1000 \times (- \frac{1}{19}) = 52.6316 \\
+  \sigma^2 &=& 1000 \times 33.2087 = 33208.7
+\end{eqnarray*}
+
+Then we get
+\begin{eqnarray*}
+  P_b
+  &=& \Phi \left( \frac{0 - \mu}{\sigma} \right) \\
+  &=& \Phi \left( \frac{0 - 52.6316}{\sqrt {33208.7}} \right) \\
+  &=& \Phi \left( -0.2888 \right) \\
+  &=& 1 - 0.6141 \\
+  &=& 0.3859
+\end{eqnarray*}
+
+c) \\
+Similar to b), we can assume the distribution of the final outcome is approximately a normal distribution with
+\begin{eqnarray*}
+  \mu &=& 100000 \times (- \frac{1}{19}) = 5263.16 \\
+  \sigma^2 &=& 100000 \times 33.2087 = 3320870
+\end{eqnarray*}
+
+Then we get
+\begin{eqnarray*}
+  P_b
+  &=& \Phi \left( \frac{0 - \mu}{\sigma} \right) \\
+  &=& \Phi \left( \frac{0 - 5263.16}{\sqrt {3320870}} \right) \\
+  &=& \Phi \left( -2.8882 \right) \\
+  &=& 1 - 0.9981 \\
+  &=& 0.0019
+\end{eqnarray*}
 
 7. \\
 
-10. \\
+Let $X_i$ denote the $i$th bet's outcome. Then we have
+\begin{eqnarray*}
+  E[X_i] &=& \frac{\sum_{i=1}^6 i} {6} = 3.5 \\
+  Var(X_i) &=& \frac{\sum_{i=1}^6 (i - 3.5)}{6} = 2.9176
+\end{eqnarray*}
+
+Since 140 is very large, we can assume the distribution of the final outcome is approximately a normal distribution with
+\begin{eqnarray*}
+  \mu &=& 140 \times 3.5 = 490 \\
+  \sigma^2 &=& 140 \times 2.9176 = 408.464
+\end{eqnarray*}
+
+Then we get
+\begin{eqnarray*}
+  P \{ require more than 140 rolls \}
+  &=& P \{ the outcome of 140 rolls is less than 400 \} \\
+  &=& \Phi(\frac{400 - \mu}{\sigma}) \\
+  &=& \Phi(\frac{400 - 490}{\sqrt {408.464}}) \\
+  &=& \Phi(-4.4531) \\
+  &=& 1 - 0.999 \\
+  &=& 0.001
+\end{eqnarray*}
+
+10.
+\begin{eqnarray*}
+  t &=& \frac {3.1 - 2.2}{0.3} = 3
+\end{eqnarray*}
+
+Then we get
+\begin{eqnarray*}
+  P\{ X > 3.1 \} = 0.0017
+\end{eqnarray*}
 
 11. \\
+\begin{eqnarray*}
+  t &=& \frac {525 - 500}{80} = 0.3125
+\end{eqnarray*}
+
+a)
+\begin{eqnarray*}
+  P\{ X > 525 \} = 0.38515
+\end{eqnarray*}
+
+b)
+\begin{eqnarray*}
+  P\{ X > 525 \} = 0.37935
+\end{eqnarray*}
+
+c)
+\begin{eqnarray*}
+  P\{ X > 525 \} = 0.37825
+\end{eqnarray*}
+
+d)
+\begin{eqnarray*}
+  P\{ X > 525 \} = 0.37785
+\end{eqnarray*}
 
 16. \\
 
+A Poisson random variable with parameter $\lambda$ can be thought of as a sum of $\lambda$ independent Poisson random variables, each with parameter one. Based on the central limit theorem, when $\lambda$ is very large, the random variable can be well approximated by a normal random variable with the same mean and variance.
+
+\begin{eqnarray*}
+  P_{exact}
+  &=& \sum_{i=0}^{k} e^{-\lambda} \frac{\lambda^i}{i!} \\
+  &=& \sum_{i=0}^{116} e^{-100} \frac{100^{116}}{116!} \\
+  &=& 0.9478
+\end{eqnarray*}
+
+\begin{eqnarray*}
+  P_{approx}
+  &=& \Phi (\frac {116 - 100}{100}) \\
+  &=& \Phi (0.16) \\
+  &=& 0.5636
+\end{eqnarray*}
+
 18. \\
+a) Since the temperature is normally distributed, we know that $(n-1) S^2 / \sigma^2$ having a chi-square distribution with $n-1$ degrees of freedom. So we get
+\begin{eqnarray*}
+  P \{ S^2 / \sigma^2 \le 1.8 \}
+  &=& P \{ (5-1) S^2 / \sigma^2 \le (5-1) \times 1.8 \} \\
+  &=& 1 - P \{ 4 S^2 / \sigma^2 \ge 7.2 \} \\
+  &=& 1 - 0.1257 \\
+  &=& 0.8743
+\end{eqnarray*}
+
+b) 
+\begin{eqnarray*}
+  P \{ 0.85 \le S^2 / \sigma^2 \le 1.15 \}
+  &=& P \{ 3.4 \le 4 S^2 / \sigma^2 \le 4.6 \} \\
+  &=& P \{ 4 S^2 / \sigma^2 \le 4.6 \} - P \{ 4 S^2 / \sigma^2 \le 3.4 \} \\
+  &=& (1 - P \{ 4 S^2 / \sigma^2 \ge 4.6 \})
+  - (1 - P \{ 4 S^2 / \sigma^2 \ge 3.4 \}) \\
+  &=& P \{ 4 S^2 / \sigma^2 \ge 3.4 \} - P \{ 4 S^2 / \sigma^2 \ge 4.6 \} \\
+  &=& 0.4932 - 0.3309 \\
+  &=& 0.1632
+\end{eqnarray*}
 
 20. \\
+we know that for sample that is normally distributed, then $(n-1) S^2 / \sigma^2$ have a chi-square distribution with $n-1$ degrees of freedom. For the first sample, we get $9 S_1^2 / 4$ have a chi-square distribution with $9$ degrees of freedom. For the second sample, we get $2 S_2^2$ have a chi-square distribution with $4$ degrees of freedom. Then we get
+\begin{eqnarray*}
+  F_{9,4}
+  &=& \frac {9 S_1^2 / 4 / 9}{2 S_2^2 / 4} \\
+  &=& \frac {S_1^2}{2 S_2^2}
+\end{eqnarray*}
 
+have a F-distribution with 9 and 4 degrees. \\
 
+We then get
+\begin{eqnarray*}
+  P \{ \text{exceeds} \}
+  &=& P \{ S_1^2 / 2 S_2^2 < 1/2 \} \\
+  &=& 1 - P \{ F_{9,4} > 1/2 \} \\
+  &=& 1 - 0.8218 \\
+  &=& 0.1782
+\end{eqnarray*}
 
 \end{document}
