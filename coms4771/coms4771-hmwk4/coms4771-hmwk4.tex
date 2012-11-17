@@ -24,6 +24,178 @@
 
 \section*{Problem 1}
 
+The \textbf{E-step}
+\begin{eqnarray*}
+  Q(z_i)
+  &=& p(z_i | x_i, \theta) \\
+  &=& \frac {\pi_{z_i} p(x_i | \mu_{z_i})}
+  {\sum_{z_i} \pi_{z_i} p(x_i | \mu_{z_i})} \\
+  &=& \frac {\pi_{z_i} \prod_{j=1}^M \mu_{z_i}(j)^{x_i(j)}}
+  {\sum_{z_p} \pi_{z_p} \prod_{q=1}^M \mu_{z_p}(p)^{x_i(q)}}
+\end{eqnarray*}
+
+The \textbf{M-step} \\
+
+Let
+\begin{equation*}
+  Q_{i,t} (z_i) = p(z_i | x_i, \theta_t)
+\end{equation*}
+
+Based on the slides, we have
+\begin{eqnarray*}
+  Q(\theta | \theta_t)
+  &=& \sum_{i=1}^N \sum_{z_i} p(z_i | x_i, \theta_t)
+  \log {p(x_i, z_i | \theta)} \\
+  &=& \sum_{i=1}^N \sum_{z_i} Q_{i,t}(z_i) \log {p(x_i, z_i | \theta)} \\
+  &=& \sum_{i=1}^N  \sum_{z_i} Q_{i,t}(z_i)
+  \log { \left( \pi_{z_i} \prod_{j=1}^M \mu_{z_i}(j)^{x_i(j)} \right) } \\
+  &=& \sum_{i=1}^N \sum_{z_i} Q_{i,t}(z_i) \left(
+    \log { \left( \pi_{z_i} \right)}
+    + \sum_{j=1}^M x_i(j) \log { \left( \mu_{z_i}(j) \right)} \right)
+\end{eqnarray*}
+
+We know the constraint that for each $z_i = 1, 2, \dots, K$
+\begin{eqnarray*}
+  \sum_{j=1}^M \mu_{z_i}(j) = 1
+\end{eqnarray*}
+
+We also know the constraint that for each $z_i = 1, 2, \dots, K$
+\begin{eqnarray*}
+  \sum_{z_i} \pi_{z_i} = 1
+\end{eqnarray*}
+
+
+Combine $Q(\theta | \theta_t)$ with the previous constraint together, we get
+\begin{eqnarray*}
+  L(\theta) = \sum_{i=1}^N \sum_{z_i} Q_{i,t}(z_i) \left(
+    \log { \left( \pi_{z_i} \right)}
+    + \sum_{j=1}^M x_i(j) \log { \left( \mu_{z_i}(j) \right)} \right)
+  + \alpha \left( \sum_{i=1}^N \sum_{j=1}^M \mu_{z_i}(j) - N \right)
+  + \beta \left( \sum_{z_i} \pi_{z_i} - 1 \right)
+\end{eqnarray*}
+
+$L(\theta)$ taking the derivative with respect to $\mu_{z_i}(j)$, we get
+\begin{eqnarray*}
+  \frac {\partial \; L(\theta)} {\partial \; \mu_{z_i}(j)}
+  &=& \frac {\partial} {\partial \; \mu_{z_i}(j)}
+  \sum_{i=1}^N \sum_{z_i} Q_{i,t}(z_i) \left( \log { \left( \pi_{z_i} \right)}
+      + \sum_{j=1}^M x_i(j) \log { \left( \mu_{z_i}(j) \right)} \right) \\
+  && + \frac {\partial} {\partial \; \mu_{z_i}(j)} \left(
+    \alpha \left( \sum_{i=1}^N \sum_{j=1}^M \mu_{z_i}(j) - N \right) \right)
+    + \frac {\partial} {\partial \; \mu_{z_i}(j)} \left(
+    \beta \left( \sum_{z_i} \pi_{z_i} - 1 \right) \right) \\
+  &=& \sum_{i=1}^N Q_{i,t}(z_i) \frac {\partial} {\partial \; \mu_{z_i}(j)}
+  \left( \log { \left( \pi_{z_i} \right)}
+    + \sum_{j=1}^M x_i(j) \log { \left( \mu_{z_i}(j) \right)} \right)
+  + \alpha \\
+  &=& \sum_{i=1}^N Q_{i,t}(z_i) \frac {x_i(j)}{\mu_{z_i}(j)} + \alpha = 0 \\
+  &\Rightarrow& \mu_{z_i}(j)
+  = \frac {- \sum_{i=1}^N Q_{i,t}(z_i) x_i(j)}{\alpha} 
+\end{eqnarray*}
+
+Plug $\mu_{z_i}(j)$ back to the previous constraint, we get
+\begin{eqnarray*}
+  \sum_{j=1}^M \mu_{z_i}(j) &=& 1 \\
+  \sum_{j=1}^M \frac {- \sum_{i=1}^N Q_{i,t}(z_i) x_i(j)}{\alpha} &=& 1 \\
+  \alpha &=& - \sum_{i=1}^N \sum_{j=1}^M Q_{i,t}(z_i) x_i(j)
+\end{eqnarray*}
+
+Given $\alpha$, we get
+\begin{eqnarray*}
+  \mu_{z_i}(j)
+  &=& \frac {- \sum_{i=1}^N Q_{i,t}(z_i) x_i(j)}{\alpha} \\
+  &=& \frac {\sum_{i=1}^N Q_{i,t}(z_i) x_i(j)}
+  {\sum_{i=1}^N \sum_{k=1}^M Q_{i,t}(z_i) x_i(k)} \\
+  &=& \frac {\sum_{i=1}^N Q_{i,t}(z_i) x_i(j)}
+  {\sum_{i=1}^N Q_{i,t}(z_i) \sum_{k=1}^M x_i(k)} \\
+  &=& \frac {\sum_{i=1}^N Q_{i,t}(z_i) x_i(j)}
+  {\sum_{i=1}^N Q_{i,t}(z_i)}
+\end{eqnarray*}
+
+$L(\theta)$ taking the derivative with respect to $\pi_{z_i}$, we get
+\begin{eqnarray*}
+  \frac {\partial \; L(\theta)} {\partial \; \pi_{z_i}}
+  &=& \frac {\partial} {\partial \; \pi_{z_i}}
+  \sum_{i=1}^N \sum_{z_i} Q_{i,t}(z_i) \left( \log { \left( \pi_{z_i} \right)}
+      + \sum_{j=1}^M x_i(j) \log { \left( \mu_{z_i}(j) \right)} \right) \\
+  && + \frac {\partial} {\partial \; \pi_{z_i}} \left(
+    \alpha \left( \sum_{i=1}^N \sum_{j=1}^M \mu_{z_i}(j) - N \right) \right)
+    + \frac {\partial} {\partial \; \pi_{z_i}} \left(
+    \beta \left( \sum_{z_i} \pi_{z_i} - 1 \right) \right) \\
+  &=& \sum_{i=1}^N Q_{i,t}(z_i) \frac {\partial} {\partial \; \pi_{z_i}}
+  \left( \log { \left( \pi_{z_i} \right)}
+    + \sum_{j=1}^M x_i(j) \log { \left( \mu_{z_i}(j) \right)} \right)
+  + \beta \\
+  &=& \sum_{i=1}^N Q_{i,t}(z_i) \frac {1}{\pi_{z_i}} + \beta = 0 \\
+  &\Rightarrow& \pi_{z_i}
+  = \frac {- \sum_{i=1}^N Q_{i,t}(z_i)}{\beta} 
+\end{eqnarray*}
+
+Plug $\pi_{z_i}$ back to the previous constraint, we get
+\begin{eqnarray*}
+  \sum_{z_i} \pi_{z_i} &=& 1 \\
+  \sum_{z_i} \frac {- \sum_{i=1}^N Q_{i,t}(z_i)}{\beta} &=& 1 \\
+  \beta &=& - \sum_{i=1}^N \sum_{z_i} Q_{i,t}(z_i)
+\end{eqnarray*}
+
+Given $\beta$, we get
+\begin{eqnarray*}
+  \pi_{z_i}
+  &=& \frac {- \sum_{i=1}^N Q_{i,t}(z_i)}{\beta} \\
+  &=& \frac {\sum_{i=1}^N Q_{i,t}(z_i)} {\sum_{i=1}^N \sum_{k} Q_{i,t}(k)} \\
+  &=& \frac {\sum_{i=1}^N Q_{i,t}(z_i)} {N}
+\end{eqnarray*}
+
+To sum up, for $M$ step, we update $\theta$ as follow
+\begin{eqnarray*}
+  \mu_{z_i}(j)
+  &=& \frac {\sum_{i=1}^N Q_{i,t}(z_i) x_i(j)}
+  {\sum_{i=1}^N Q_{i,t}(z_i)}  \\
+  \pi_{z_i}
+  &=& \frac {\sum_{i=1}^N Q_{i,t}(z_i)} {N}
+\end{eqnarray*}
+
+\section*{Problem 2}
+
+
+
+
+
+\section*{Problem 3}
+
+a) \\
+Let $x_1, x_2, \dots, x_n$ be $n$ non-negative numbers.
+\begin{eqnarray*}
+  Mean_{arithmetic} &=& \frac{1}{n} \sum_{i=1}^n x_i \\
+  Mean_{geometric} &=& \sqrt[n] {x_1x_2 \dots x_n}
+\end{eqnarray*}
+
+Then we have
+\begin{eqnarray*}
+  \ln { \left( Mean_{arithmetic} \right) }
+  &=& \ln { \left( \frac{1}{n} \sum_{i=1}^n x_i \right) } \\
+  &\ge& \sum_{i=1}^n \frac{1}{n} \ln {  x_i } \\
+  &=& \ln { \left( \sqrt[n] {x_1x_2 \dots x_n} \right) } \\
+  &=& \ln { \left( Mean_{geometric} \right) }
+\end{eqnarray*}
+
+So, the arithmetic mean of non-negative numbers is at least their geometric mean. \\
+
+b) \\
+We will begin our proof from the right side of the inequality.
+\begin{eqnarray*}
+  \exp { \left( \theta^T \sum_{i=1}^m \alpha_i f_i
+    - \sum_{i=1}^m \alpha_i \log {\alpha_i} \right) }
+  &=& \exp { \left( \sum_{i=1}^m \alpha_i (\theta^T f_i - \log {\alpha_i})
+    \right) } \\
+  &\le& \sum_{i=1}^m \alpha_i \exp { \left( 
+      \theta^T f_i - \log {\alpha_i} \right) } \\
+  &=& \sum_{i=1}^m \alpha_i \exp { \left( \theta^T f_i \right) }
+  \frac {1}{\alpha_i} \\
+  &=& \sum_{i=1}^m \exp { \left( \theta^T f_i \right) }
+\end{eqnarray*}
+
+
 
 
 \end{document}
