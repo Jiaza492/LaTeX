@@ -157,9 +157,335 @@ To sum up, for $M$ step, we update $\theta$ as follow
 
 \section*{Problem 2}
 
+Note: for how to run the code, please refer to file ``running\_script.m''. \\
 
 
+For this problem, all data will be 2-dimensional. \\
 
+For the 4 clusters, the means are
+\begin{eqnarray*}
+  \mu_1 &=& (5, 5) \\
+  \mu_2 &=& (0, 0) \\
+  \mu_3 &=& (3, -3) \\
+  \mu_4 &=& (-5, -5)
+\end{eqnarray*}
+
+All the covariance matrices are the same:
+\begin{eqnarray*}
+  \Sigma =
+  \begin{pmatrix}
+    1 & 0 \\
+    0 & 1
+  \end{pmatrix}
+\end{eqnarray*}
+
+The mixing proportions for each clusters from 1 to 4 are
+\begin{eqnarray*}
+  \pi = (0.3, 0.2, 0.1, 0.4)
+\end{eqnarray*}
+
+\textbf{Case $K = K_{true}$} \\
+
+Here is one example of one data set and one clustering. The result is shown in Fig-\ref{fig:c1}. \\
+
+\begin{figure}[ht!]
+  \centering
+  \includegraphics[width=0.7 \textwidth]{c1}
+  \caption{$K = K_{true}$ \label{fig:c1}}
+\end{figure}
+
+And the estimated parameters are listed below
+\begin{eqnarray*}
+\hat{\mu_1} &=& (-0.1131,   -0.0468) \\
+\hat{\mu_2} &=& (-4.9354,   -4.9216) \\
+\hat{\mu_3} &=& (2.9710,   -3.0306) \\
+\hat{\mu_4} &=& (4.9277,    5.0913) \\
+\hat{\Sigma_1} &=&
+  \begin{pmatrix}
+    1.1309  &  0.0494 \\
+    0.0494  &  0.9884
+  \end{pmatrix} \\
+\hat{\Sigma_2} &=& 
+  \begin{pmatrix}
+    1.2253  & -0.0254 \\
+   -0.0254  &  1.1159
+  \end{pmatrix} \\
+\hat{\Sigma_3} &=&
+  \begin{pmatrix}
+    1.1790  &  0.1493 \\
+    0.1493  &  0.8739
+  \end{pmatrix} \\
+\hat{\Sigma_4} &=& 
+  \begin{pmatrix}
+    1.0115  & -0.0813 \\
+   -0.0813  &  0.8830
+  \end{pmatrix} \\
+\hat{\pi} &=& (0.1963, 0.4006, 0.1030, 0.3000)
+\end{eqnarray*}
+
+\textbf{Case $K > K_{true}$} \\
+
+a) Example 1 \\
+
+We will let $K = 5$. The initialized means for the 5 clusters are
+\begin{eqnarray*}
+\mu_{1_0} &=& (2.7567,   -2.3419) \\
+\mu_{2_0} &=& (0.2141,    3.0156) \\
+\mu_{3_0} &=& (6.6390,   -6.6342) \\
+\mu_{4_0} &=& (-6.2178,    2.2398) \\
+\mu_{5_0} &=& (4.6239,    7.2858)
+\end{eqnarray*}
+
+The result is shown in Fig-\ref{fig:c2-1}. \\
+
+\begin{figure}[ht!]
+  \centering
+  \includegraphics[width=0.7 \textwidth]{c2-1}
+  \caption{$K = 5$ First Run \label{fig:c2-1}}
+\end{figure}
+
+And the estimated parameters are listed below
+\begin{eqnarray*}
+\hat{\mu_1} &=& (2.4849,   -3.4050) \\
+\hat{\mu_2} &=& (-0.0225,    0.0140) \\
+\hat{\mu_3} &=& (3.8133,   -2.5941) \\
+\hat{\mu_4} &=& (-5.0444,   -4.9256) \\
+\hat{\mu_5} &=& (5.0028,    5.0031) \\
+\hat{\Sigma_1} &=&
+  \begin{pmatrix}
+    0.4919  & -0.2418 \\
+   -0.2418  &  0.5845
+  \end{pmatrix} \\
+\hat{\Sigma_2} &=& 
+  \begin{pmatrix}
+    0.8721  & -0.1168 \\
+   -0.1168  &  1.1525
+  \end{pmatrix} \\
+\hat{\Sigma_3} &=&
+  \begin{pmatrix}
+    0.3017  & -0.3207 \\
+   -0.3207  &  1.1227
+  \end{pmatrix} \\
+\hat{\Sigma_4} &=& 
+  \begin{pmatrix}
+    0.9295  &  0.0660 \\
+    0.0660  &  0.9922
+  \end{pmatrix} \\
+\hat{\Sigma_5} &=& 
+  \begin{pmatrix}
+    1.1040  & -0.0058 \\
+   -0.0058  &  0.9363
+  \end{pmatrix} \\
+\hat{\pi} &=& (0.0459, 0.1996, 0.0536, 0.4000, 0.3008)
+\end{eqnarray*}
+
+For another run, the initialized means for the 5 clusters are
+\begin{eqnarray*}
+\mu_{1_0} &=& (6.8989,    6.3479) \\
+\mu_{2_0} &=& (0.4094,    1.9085) \\
+\mu_{3_0} &=& (3.8942,   -7.0989) \\
+\mu_{4_0} &=& (1.5436,   -6.7613) \\
+\mu_{5_0} &=& (-0.9384,   -0.4766)
+\end{eqnarray*}
+
+Then we get a different result, as shown in Fig-\ref{fig:c2-2}. \\
+
+\begin{figure}[ht!]
+  \centering
+  \includegraphics[width=0.7 \textwidth]{c2-2}
+  \caption{$K = 5$ Second Run \label{fig:c2-2}}
+\end{figure}
+
+And the estimated parameters are listed below
+\begin{eqnarray*}
+\hat{\mu_1} &=& (5.0027,    5.0029) \\
+\hat{\mu_2} &=& (-0.0231,    0.0105) \\
+\hat{\mu_3} &=& (3.2069,   -2.9669) \\
+\hat{\mu_4} &=& (-4.9020,   -6.7690) \\
+\hat{\mu_5} &=& (-5.0534,   -4.8094) \\
+\hat{\Sigma_1} &=&
+  \begin{pmatrix}
+    1.1041  & -0.0054 \\
+   -0.0054  &  0.9371
+  \end{pmatrix} \\
+\hat{\Sigma_2} &=& 
+  \begin{pmatrix}
+    0.8710  & -0.1136 \\
+   -0.1136  &  1.1710
+  \end{pmatrix} \\
+\hat{\Sigma_3} &=&
+  \begin{pmatrix}
+    0.8064  & -0.0264 \\
+   -0.0264  &  1.0245
+  \end{pmatrix} \\
+\hat{\Sigma_4} &=& 
+  \begin{pmatrix}
+    1.8770  &  0.0289 \\
+    0.0289  &  0.1465
+  \end{pmatrix} \\
+\hat{\Sigma_5} &=& 
+  \begin{pmatrix}
+    0.8684  &  0.0860 \\
+    0.0860  &  0.8178
+  \end{pmatrix} \\
+\hat{\pi} &=& ( 0.3008, 0.1998, 0.0994, 0.0237, 0.3763)
+\end{eqnarray*}
+
+b) Example 2 ($K = 6$) \\
+
+We will let $K = 6$. For the first run, the initialized means for the 6 clusters are
+\begin{eqnarray*}
+\mu_{1_0} &=& (-0.2314,   -4.0058) \\
+\mu_{2_0} &=& (2.9457,    4.3839) \\
+\mu_{3_0} &=& (-7.4056,   -4.8665) \\
+\mu_{4_0} &=& (-5.4095,    1.8251) \\
+\mu_{5_0} &=& (3.0565,    5.3207) \\
+\mu_{6_0} &=& (-8.4153,   -5.1901)
+\end{eqnarray*}
+
+The result is shown in Fig-\ref{fig:c2-3}. \\
+
+\begin{figure}[ht!]
+  \centering
+  \includegraphics[width=0.7 \textwidth]{c2-3}
+  \caption{$K = 6$ First Run \label{fig:c2-3}}
+\end{figure}
+
+For the second run, the initialized means for the 6 clusters are
+\begin{eqnarray*}
+\mu_{1_0} &=& (0.8004,    7.5505) \\
+\mu_{2_0} &=& (0.7264,   -6.8910) \\
+\mu_{3_0} &=& (-6.0163,   -6.8529) \\
+\mu_{4_0} &=& (-6.3469,    2.6142) \\
+\mu_{5_0} &=& (1.6702,   -2.3586) \\
+\mu_{6_0} &=& (-6.0768,   -2.0746)
+\end{eqnarray*}
+
+The result is shown in Fig-\ref{fig:c2-4}. \\
+
+\begin{figure}[ht!]
+  \centering
+  \includegraphics[width=0.7 \textwidth]{c2-4}
+  \caption{$K = 6$ Second Run \label{fig:c2-4}}
+\end{figure}
+
+\textbf{Case $K < K_{true}$} \\
+
+a) Unstable case \\
+
+As usual, we will use the means, variances and mixing proportions defined at the beginning of the answer. We will let $K = 2$. And we find that the results are unstable.
+
+For the first run, the initialized means for the 2 clusters are
+\begin{eqnarray*}
+\mu_{1_0} &=& (1.9731,    4.6843) \\
+\mu_{2_0} &=& (-6.1752,    7.7035)
+\end{eqnarray*}
+
+The result is shown in Fig-\ref{fig:c3-1}. \\
+
+\begin{figure}[ht!]
+  \centering
+  \includegraphics[width=0.7 \textwidth]{c3-1}
+  \caption{$K = 2$ Unstable: First Run \label{fig:c3-1}}
+\end{figure}
+
+The estimated parameters are listed below
+\begin{eqnarray*}
+\hat{\mu_1} &=& (2.9212,    1.8428) \\
+\hat{\mu_2} &=& (-4.9980,   -4.9982) \\
+\hat{\Sigma_1} &=&
+  \begin{pmatrix}
+    6.4136  &  5.5430 \\
+    5.5430  & 11.7903
+  \end{pmatrix} \\
+\hat{\Sigma_2} &=& 
+  \begin{pmatrix}
+    0.9033  &  0.0572 \\
+    0.0572  &  0.8967
+  \end{pmatrix} \\
+\hat{\pi} &=& (0.6098, 0.3902)
+\end{eqnarray*}
+
+For the second run, the initialized means for the 2 clusters are
+\begin{eqnarray*}
+\mu_{1_0} &=& (-7.2031,   -4.0285) \\
+\mu_{2_0} &=& (-0.4189,    7.3939)
+\end{eqnarray*}
+
+The result is shown in Fig-\ref{fig:c3-2}. \\
+
+\begin{figure}[ht!]
+  \centering
+  \includegraphics[width=0.7 \textwidth]{c3-2}
+  \caption{$K = 2$ Unstable: Second Run \label{fig:c3-2}}
+\end{figure}
+
+And the estimated parameters are listed below
+\begin{eqnarray*}
+\hat{\mu_1} &=& (-3.2826,   -4.5848) \\
+\hat{\mu_2} &=& (4.4624,    2.9207) \\
+\hat{\Sigma_1} &=&
+  \begin{pmatrix}
+   11.5557  &  2.6195 \\
+    2.6195  &  1.5741
+  \end{pmatrix} \\
+\hat{\Sigma_2} &=& 
+  \begin{pmatrix}
+    7.7172  &  6.8535 \\
+    6.8535  &  7.8699
+  \end{pmatrix} \\
+\hat{\pi} &=& (0.4966, 0.5034)
+\end{eqnarray*}
+
+b) Stable case \\
+
+For the stable case, we will use new parameters
+For the 4 clusters, the means are
+\begin{eqnarray*}
+  \mu_1 &=& (3, 4) \\
+  \mu_2 &=& (4, 3) \\
+  \mu_3 &=& (-3, -4) \\
+  \mu_4 &=& (-4, -3)
+\end{eqnarray*}
+
+All the covariance matrices are the same:
+\begin{eqnarray*}
+  \Sigma =
+  \begin{pmatrix}
+    1 & 0 \\
+    0 & 1
+  \end{pmatrix}
+\end{eqnarray*}
+
+The mixing proportions for each clusters from 1 to 4 are all equal. That is,
+\begin{eqnarray*}
+  \pi = (0.25, 0.25, 0.25, 0.25)
+\end{eqnarray*}
+
+Then we will get stable results. One result is shown in Fig-\ref{fig:c3-3}. \\
+
+\begin{figure}[ht!]
+  \centering
+  \includegraphics[width=0.7 \textwidth]{c3-3}
+  \caption{$K = 2$ Stable \label{fig:c3-3}}
+\end{figure}
+
+The estimated parameters are listed below
+\begin{eqnarray*}
+\hat{\mu_1} &=& (3.5196,    3.5090) \\
+\hat{\mu_2} &=& (-3.5037,   -3.4241) \\
+\hat{\Sigma_1} &=&
+  \begin{pmatrix}
+    1.2762  & -0.2912 \\
+   -0.2912  &  1.2448
+  \end{pmatrix} \\
+\hat{\Sigma_2} &=& 
+  \begin{pmatrix}
+    1.2471  & -0.2553 \\
+   -0.2553  &  1.2320
+  \end{pmatrix} \\
+\hat{\pi} &=& (0.5000, 0.5000)
+\end{eqnarray*}
 
 \section*{Problem 3}
 
@@ -194,8 +520,5 @@ We will begin our proof from the right side of the inequality.
   \frac {1}{\alpha_i} \\
   &=& \sum_{i=1}^m \exp { \left( \theta^T f_i \right) }
 \end{eqnarray*}
-
-
-
 
 \end{document}
