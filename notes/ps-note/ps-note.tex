@@ -68,20 +68,20 @@ A systematic collection of data on the population and the economy was begun in t
 \begin{definition}
   The \textbf{sample variance}, call it $s^2$, of the data set $x_1, \dots, x_n$ is defined by
   \begin{equation*}
-    s^2 = \sum_{i=1}^n (x_i - \bar{x})^2/(n-1)
+    s^2 = \sum_{i=1}^n (x_i - \overline{x})^2/(n-1)
   \end{equation*}
 \end{definition}
 
 \begin{theorem}
   \begin{equation*}
-    \sum_{i=1}^n (x_i - \bar{x})^2 = \sum_{i=1}^n x_i^2 - n \bar{x}^2
+    \sum_{i=1}^n (x_i - \overline{x})^2 = \sum_{i=1}^n x_i^2 - n \overline{x}^2
   \end{equation*}
 \end{theorem}
 
 \begin{definition}
   The quantity $s$, defined by
   \begin{equation*}
-    s = \sqrt{\sum_{i=1}^n (x_i - \bar{x})^2 / (n-1)}
+    s = \sqrt{\sum_{i=1}^n (x_i - \overline{x})^2 / (n-1)}
   \end{equation*}
   is called the \textbf{sample standard deviation}.
 \end{definition}
@@ -97,9 +97,9 @@ A systematic collection of data on the population and the economy was begun in t
 \subsection{Chebyshev's Inequality}
 
 \begin{theorem}[Chebyshev's Inequality]
-  Let $\bar{x}$ and $s$ be the sample mean and sample standard deviation of the data set consisting of the data $x_1, \dots, x_n$, where $s > 0$. Let
+  Let $\overline{x}$ and $s$ be the sample mean and sample standard deviation of the data set consisting of the data $x_1, \dots, x_n$, where $s > 0$. Let
   \begin{equation*}
-    S_k = \{ i, 1 \le i \le n: |x_i - \bar{x}| < ks \}
+    S_k = \{ i, 1 \le i \le n: |x_i - \overline{x}| < ks \}
   \end{equation*}
   and let $N(S_k)$ be the number of elements in the set $S_k$. Then, for any $k \ge 1$,
   \begin{equation*}
@@ -110,7 +110,7 @@ A systematic collection of data on the population and the economy was begun in t
 \begin{theorem}[The One-Sided Chebyshev Inequality]
   For $k>0$, let
   \begin{equation*}
-    N(k) = \text{number of } i: x_i - \bar{x} \ge ks
+    N(k) = \text{number of } i: x_i - \overline{x} \ge ks
   \end{equation*}
   Then we have
   \begin{equation*}
@@ -121,19 +121,19 @@ A systematic collection of data on the population and the economy was begun in t
 \subsection{Normal Data Sets}
 
 \begin{remark} [The Empirical Rule]
-  If a data set is approximately normal with sample mean $\bar{x}$ and sample standard deviation $s$, then the following statements are true.
+  If a data set is approximately normal with sample mean $\overline{x}$ and sample standard deviation $s$, then the following statements are true.
   \begin{enumerate}
     \item Approximately 68 percent of the observations lie within
       \begin{equation*}
-        \bar{x} \pm s
+        \overline{x} \pm s
       \end{equation*}
     \item Approximately 95 percent of the observations lie within
       \begin{equation*}
-        \bar{x} \pm 2s
+        \overline{x} \pm 2s
       \end{equation*}
     \item Approximately 99.7 percent of the observations lie within
       \begin{equation*}
-        \bar{x} \pm 3s
+        \overline{x} \pm 3s
       \end{equation*}
   \end{enumerate}
 \end{remark}
@@ -144,9 +144,11 @@ A systematic collection of data on the population and the economy was begun in t
   Let $s_x$ and $s_y$ denote, respectively, the sample standard deviations of the $x$ values and the $y$ values. The \textbf{sample correlation coefficient}, call it $r$, of the data pairs $(x_i,y_i),i=1,\dots,n$ is defined by
   \begin{eqnarray*}
     r
-    &=& \frac {\sum_{i=1}^n (x_i - \bar{x})(y_i - \bar{y})}{(n-1) s_x s_y} \\
-    &=& \frac {\sum_{i=1}^n (x_i - \bar{x})(y_i - \bar{y})}
-    { \sqrt{\sum_{i=1}^n (x_i - \bar{x}) \sum_{i=1}^n (y_i - \bar{y})} } \\
+    &=& \frac {\sum_{i=1}^n (x_i - \overline{x})(y_i - \overline{y})}
+    {(n-1) s_x s_y} \\
+    &=& \frac {\sum_{i=1}^n (x_i - \overline{x})(y_i - \overline{y})}
+    { \sqrt{\sum_{i=1}^n (x_i - \overline{x})
+        \sum_{i=1}^n (y_i - \overline{y})} } \\
   \end{eqnarray*}
   When $r > 0$ we say that the sample data pairs are \textbf{positively correlated}, when $r<0$ we say that they are \textbf{negatively correlated}.
 \end{definition}
@@ -599,6 +601,32 @@ The relationship between $P\{ X = k+1 \}$ and P\{ X = k \}:
   = \frac{p}{1-p} \frac{n-k}{k+1} P\{ X = k \}
 \end{equation*}
 
+\subsubsection{Negative Binomial Distribution}
+
+Suppose there is a sequence of independent Bernoulli trials. In each trial the probability of success is $p$ and of failure is $(1-p)$. The negative binomial variable $X$ is
+\begin{equation*}
+  X = \# \text{ of trials until $k$ success} \;\; X = \{k, k+1, \dots \}
+\end{equation*}
+
+The probability mass function is
+\begin{eqnarray*}
+  P(X = n) 
+  &=& \binom {n-1}{k-1} (1-p)^{n-k} p^{k-1} p \\
+  &=& \binom {n-1}{k-1} (1-p)^{n-k} p^{k}
+\end{eqnarray*}
+
+For geometric random variable $X$ with the probability of success is $p$, we have
+\begin{eqnarray*}
+  E[X] &=& \frac {1}{p} \\
+  Var(X) &=& \frac {1-p}{p^2}
+\end{eqnarray*}
+
+Since the negative binomial variable $X$ is the sum of independent geometric random variables, we have
+\begin{eqnarray*}
+  E[X] &=& \frac{k}{p} \\
+  Var(X) &=& \frac{k(1-p)}{p^2}
+\end{eqnarray*}
+
 \subsection{The Poisson Random Variables}
 
 A random variable $X$, taking on one of the values 0, 1, 2, ..., is said to be a Poisson random variable with parameter $\lambda$, $\lambda>0$, if its probability mass function is given by
@@ -640,7 +668,7 @@ We get
 
 \subsection{The Uniform Random Variable}
 
-A random variable $X$ is said to be uniformly distributed over the interval $[\lambda, \beta]$ if its probability density function is given by
+A random variable $X$ is said to be uniformly distributed over the interval $[\alpha, \beta]$ if its probability density function is given by
 \begin{equation*}
   f(x) = 
   \begin{cases}
@@ -988,15 +1016,15 @@ $\mu$ is the mean of the logistic; $\nu$ is called the dispersion parameter.
 
 We often suppose that the value associated with any member of the population can be regarded as being the value of a random variable having expectation $\mu$ and variance $\sigma^2$. The quantities $\mu$ and $\sigma^2$ are called the \textbf{population mean} and the \textbf{population variance} respectively. Let $X_1, X_2, \dots, X_n$ be a sample of values from this population. The sample mean is defined by
 \begin{equation*}
-  \bar{X} = \frac{X_1 + \cdots + X_n}{n}
+  \overline{X} = \frac{X_1 + \cdots + X_n}{n}
 \end{equation*}
 Then its expected value and variance are obtained as follows:
 \begin{equation*}
-  E[\bar{X}] = E \left[ \frac{X_1 + \cdots + X_n}{n} \right] = \mu
+  E[\overline{X}] = E \left[ \frac{X_1 + \cdots + X_n}{n} \right] = \mu
 \end{equation*}
 and
 \begin{equation*}
-  Var(\bar{X}) = Var \left( \frac{X_1 + \cdots + X_n}{n} \right)
+  Var(\overline{X}) = Var \left( \frac{X_1 + \cdots + X_n}{n} \right)
 = \frac{\sigma^2}{n}
 \end{equation*}
 
@@ -1022,12 +1050,12 @@ where $Z$ is a standard random variable.
 
 Let $X_1, \dots, X_n$ be a sample from a population having mean $\mu$ and variance $\sigma^2$. The central limit theorem can be used to approximate the distribution of the sample mean
 \begin{equation*}
-  \bar {X} = \sum_{i=1}^n X_i / n
+  \overline {X} = \sum_{i=1}^n X_i / n
 \end{equation*}
 
-Since a constant multiple of a normal random variable is also normal, it follows from the central limit theorem that $\bar{X}$ will be approximately normal when the sample size $n$ is large. Since the sample mean has expected value $\mu$ and standard deviation $\sigma / \sqrt{n}$, it then follows that
+Since a constant multiple of a normal random variable is also normal, it follows from the central limit theorem that $\overline{X}$ will be approximately normal when the sample size $n$ is large. Since the sample mean has expected value $\mu$ and standard deviation $\sigma / \sqrt{n}$, it then follows that
 \begin{equation*}
-  \frac {\bar{X} - \mu}{\sigma / \sqrt{n}}
+  \frac {\overline{X} - \mu}{\sigma / \sqrt{n}}
 \end{equation*}
 
 has approximately a standard normal distribution.
@@ -1041,7 +1069,7 @@ A general rule of thumb is that one can be confident of the normal approximation
 \begin{definition}
   The statistic $S^2$, defined by
   \begin{equation*}
-    S^2 = \frac {\sum_{i=1}^n (X_i - \bar{X})^2}{n-1}
+    S^2 = \frac {\sum_{i=1}^n (X_i - \overline{X})^2}{n-1}
   \end{equation*}
   is called the \textbf{sample variance}. $S = \sqrt{S^2}$ is called the \textbf{sample standard deviation}.
 \end{definition}
@@ -1049,10 +1077,11 @@ A general rule of thumb is that one can be confident of the normal approximation
 Using $E[W^2] = Var(W) + (E[W])^2$, we have
 \begin{eqnarray*}
   (n-1)E[S^2]
-  &=& E \left[ \sum_{i=1}^n X_i^2 - n \bar{X}^2 \right] \\
-  &=& E \left[ \sum_{i=1}^n X_i^2 \right] - n E[\bar{X}^2] \\
-  &=& n E[X_1^2] - n E[\bar{X}^2] \\
-  &=& n Var(X_1) + n (E[X_1])^2 - n Var(\bar{X}) - n (E[\bar{X}])^2 \\
+  &=& E \left[ \sum_{i=1}^n X_i^2 - n \overline{X}^2 \right] \\
+  &=& E \left[ \sum_{i=1}^n X_i^2 \right] - n E[\overline{X}^2] \\
+  &=& n E[X_1^2] - n E[\overline{X}^2] \\
+  &=& n Var(X_1) + n (E[X_1])^2 - n Var(\overline{X})
+  - n (E[\overline{X}])^2 \\
   &=& n \sigma^2 + n \mu^2 - n (\sigma^2 / n) - n \mu^2 \\
   &=& (n-1) \sigma^2 \\
   &\Rightarrow& E[S^2] = \sigma^2
@@ -1062,60 +1091,60 @@ Using $E[W^2] = Var(W) + (E[W])^2$, we have
 
 Let $X_1, X_2, \dots, X_n$ be a sample from a normal population having mean $\mu$ and variance $\sigma^2$. That is, they are independent and $X_i \sim \mathcal{N}(\mu, \sigma^2), i=1,\dots,n$. Also let
 \begin{equation*}
-  \bar{X} = \sum_{i=1}^n X_i / n
+  \overline{X} = \sum_{i=1}^n X_i / n
 \end{equation*}
 
 and
 \begin{equation*}
-  S^2 = \frac {\sum_{i=1}^n (X_i - \bar{X})^2}{n-1}
+  S^2 = \frac {\sum_{i=1}^n (X_i - \overline{X})^2}{n-1}
 \end{equation*}
 
 denote the sample mean and sample variance, respectively.
 
 \subsubsection{Distribution of the Sample Mean}
 
-Since the sum of independent normal random variable is normally distributed, it follows that $\bar{X}$ with mean
+Since the sum of independent normal random variable is normally distributed, it follows that $\overline{X}$ with mean
 \begin{equation*}
-  E[\bar{X}] = \sum_{i=1}^n \frac {E[X_i]}{n} = \mu
+  E[\overline{X}] = \sum_{i=1}^n \frac {E[X_i]}{n} = \mu
 \end{equation*}
 
 and variance
 \begin{equation*}
-  Var(\bar{X}) = \frac{1}{n^2} \sum_{i=1}^n Var(X_i) = \sigma^2 / n
+  Var(\overline{X}) = \frac{1}{n^2} \sum_{i=1}^n Var(X_i) = \sigma^2 / n
 \end{equation*}
 
-\subsubsection{Joint Distribution of $\bar{X}$ and $S^2$}
+\subsubsection{Joint Distribution of $\overline{X}$ and $S^2$}
 
-\begin{theorem}
-  If $X_1, \dots, X_n$ is a sample from a normal population having mean $\mu$ and variance $\sigma^2$, then $bar{X}$ and $S^2$ are independent with $\bar{X}$ being normal with mean $\mu$ and variance $\sigma^2/n$ and $(n-1)S^2 / \sigma^2$ having a chi-square distribution with $n-1$ degrees of freedom.
+\begin{theorem} \label{theorem-6.5.1}
+  If $X_1, \dots, X_n$ is a sample from a normal population having mean $\mu$ and variance $\sigma^2$, then $\overline{X}$ and $S^2$ are independent with $\overline{X}$ being normal with mean $\mu$ and variance $\sigma^2/n$ and $(n-1)S^2 / \sigma^2$ having a chi-square distribution with $n-1$ degrees of freedom.
 \end{theorem}
 
-For numbers $x_1, \dots, x_n$, let $y_i = x_i - \mu, i = 1, \dots, n$. Then $\bar{y} = \bar{x} - \mu$, it follows from the identity
+For numbers $x_1, \dots, x_n$, let $y_i = x_i - \mu, i = 1, \dots, n$. Then $\overline{y} = \overline{x} - \mu$, it follows from the identity
 \begin{equation*}
-  \sum_{i=1}^n (y_i - \bar{y})^2 = \sum_{i=1}^n y_i^2 - n \bar{y}^2
+  \sum_{i=1}^n (y_i - \overline{y})^2 = \sum_{i=1}^n y_i^2 - n \overline{y}^2
 \end{equation*}
 that
 \begin{equation*}
-  \sum_{i=1}^n (x_i - \bar{x})^2
-  = \sum_{i=1}^n (x_i - \bar{x})^2 - n (\bar{x} - \mu)^2
+  \sum_{i=1}^n (x_i - \overline{x})^2
+  = \sum_{i=1}^n (x_i - \overline{x})^2 - n (\overline{x} - \mu)^2
 \end{equation*}
 
 If $X_1, \dots, X_n$ is a sample from a normal population having mean $\mu$ and variance $\sigma^2$, then we obtain from the preceding identity that
 \begin{eqnarray*}
   \frac{\sum_{i=1}^n (X_i - \mu)^2}{\sigma^2}
-  &=& \frac{\sum_{i=1}^n (X_i - \bar{X})^2}{\sigma^2}
-  + \frac{n (\bar{X} - \mu)^2}{\sigma^2} \\
+  &=& \frac{\sum_{i=1}^n (X_i - \overline{X})^2}{\sigma^2}
+  + \frac{n (\overline{X} - \mu)^2}{\sigma^2} \\
   \sum_{i=1}^n \left( \frac{ (X_i - \mu}{\sigma} \right)^2
-  &=& \frac{\sum_{i=1}^n (X_i - \bar{X})^2}{\sigma^2}
-  + \left[ \frac{\sqrt{n} (\bar{X} - \mu)}{\sigma} \right]^2
+  &=& \frac{\sum_{i=1}^n (X_i - \overline{X})^2}{\sigma^2}
+  + \left[ \frac{\sqrt{n} (\overline{X} - \mu)}{\sigma} \right]^2
 \end{eqnarray*}
 
 The equation above equates a chi-square random variable having $n$ degrees of freedom to the sum of two random variables, one of which is chi-square with 1 degree of freedom. Since it has been established that the sum of two independent chi-square random variables is also chi-square with a degree of freedom equal to the sum of the two degrees of freedom. Thus, it would seem that there is a reasonable possibility that two terms on the right side of the equation are independent, with $(n-1)S^2 / \sigma^2$ having a chi-square distribution with $n-1$ degrees of freedom.
 
 \begin{corollary}
-  Let $X_1, \dots, X_n$ be a sample from a normal population with mean $\mu$. If $\bar{X}$ denotes the sample mean and $S$ the sample standard deviation, then
+  Let $X_1, \dots, X_n$ be a sample from a normal population with mean $\mu$. If $\overline{X}$ denotes the sample mean and $S$ the sample standard deviation, then
   \begin{equation*}
-    \sqrt{n} \frac{(\bar{X} - \mu)}{S} \sim t_{n-1}
+    \sqrt{n} \frac{(\overline{X} - \mu)}{S} \sim t_{n-1}
   \end{equation*}
 \end{corollary}
 
@@ -1126,8 +1155,8 @@ Recall that a t-random variable with $n$ degrees of freedom is defined as the di
 
 where $Z$ is a standard normal random variable that is independent of $\chi_n^2$, a chi-square random variable with $n$ degrees of freedom. It then follows from the previous theorem that
 \begin{equation*}
-  \frac{\sqrt{n} (\bar{X} - \mu) / \sigma}{\sqrt{S^2 / \sigma^2}}
-  = \sqrt{n} \frac{(\bar{X} - \mu)}{S} \sim t_{n-1}
+  \frac{\sqrt{n} (\overline{X} - \mu) / \sigma}{\sqrt{S^2 / \sigma^2}}
+  = \sqrt{n} \frac{(\overline{X} - \mu)}{S} \sim t_{n-1}
 \end{equation*}
 
 is a t-random variable with $n-1$ degrees of freedom.
@@ -1135,6 +1164,412 @@ is a t-random variable with $n-1$ degrees of freedom.
 \subsection{Sampling from a Finite Population}
 
 A sample of size $n$ from this population is said to be a \textbf{random sample} if it is chosen in such a manner that each of the $\binom {N}{n}$ population subsets of size $n$ is equally likely to be the sample.
+
+
+\section{Parameter Estimation}
+
+\subsection{Introduction}
+
+In this chapter, we will present the \textbf{maximum likelihood} method for determining estimators of unknown parameters. The estimators so obtained are called \textbf{point estimates}, because they specify a single quantity as an estimate of $\theta$. Also, we will consider the problem of obtaining \textbf{interval estimates}. Additionally, we consider the question of how much confidence we can attach to such an interval estimate. We then consider a variety of interval estimation problems.
+
+\subsubsection{Method of Moments}
+
+The method of moments estimates $E[x^k]$ by $\sum_{i=1}^k x^k/n$ for all $k$. Then find a functional form mapping the parameter to the moment.
+
+\subsection{Maximum Likelihood Estimators}
+
+Let $f(x_1, \dots, x_n | \theta)$ denote the joint probability mass function of the random variables $X_1, X_2, \dots, X_n$ when they are discrete, and let it be their joint probability density function when they are jointly continuous random variables. Because $\theta$ is assumed unknown, we also write $f$ as a function of $\theta$. The \textbf{maximum likelihood} estimator $\hat{\theta}$ is defined to be that value of $\theta$ maximizing $f(x_1, \dots, x_n | \theta)$ where $x_1, \dots, x_n$ are the observed values. The function $f(x_1, \dots, x_n | \theta)$ is often referred to as the \textbf{likelihood} function of $\theta$.
+
+\subsection{Interval Estimates}
+
+\begin{itemize}
+  \item two-sided confidence interval
+  \item one-sided confidence interval
+\end{itemize}
+
+\subsubsection{Confidence Interval for a Normal Mean When the Variance is Unknown}
+
+Suppose that $X_1, \dots, X_n$ is a sample from a normal distribution with unknown mean $\mu$ and unknown variance $\sigma^2$, and that we wish to construct a $100(1 - \sigma)$ percent confidence interval for $\mu$. Since $\sigma$ is unknown, we can no longer base our interval on the fact that $\sqrt{n}(\overline{X} - \mu) / \sigma$ is a standard normal random variable. However, by letting $S^2 = \sum_{i=1}^n (X_i - \overline{X})^2 / (n-1)$ denote the sample variance, we know that
+\begin{equation*}
+  \sqrt{n} \frac {\overline{X} - \mu}{S}
+\end{equation*}
+
+is a $t$-random variable with $n-1$ degrees of freedom. Hence, from the symmetry of the $t$-density function, we have that for any $\sigma \in (0, 1/2)$,
+\begin{equation*}
+  P \left\{ - t_{\alpha / 2, n-1} < 
+    \sqrt{n} \frac {\overline{X} - \mu}{S}
+    < t_{\alpha /2, n-1} \right\} = 1 - \alpha
+\end{equation*}
+
+or, equivalently
+\begin{equation*}
+  P \left\{ \overline{X} - t_{\alpha /2, n-1} \frac{S}{\sqrt{n}} < \mu
+    < \overline{X} + t_{\alpha /2, n-1} \frac{S}{\sqrt{n}} \right\}
+  = 1 - \alpha
+\end{equation*}
+
+Thus, if it is observed that $\overline{X} = \overline{x}$ and $S = s$, then we can say that ``with $100(1 - \alpha)$ percent confidence``
+\begin{equation*}
+  \mu \in \left( \overline{x} - t_{\alpha /2, n-1} \frac{s}{\sqrt{n}}, \;
+    \overline{x} + t_{\alpha /2, n-1} \frac{s}{\sqrt{n}} \right)
+\end{equation*}
+
+\subsubsection{Confidence Intervals for the Variance of a Normal Distribution}
+
+If $X_1, \dots, X_n$ is a sample from a normal distribution having unknown parameters $\mu$ and $\sigma^2$, then we can construct a confidence interval for $\sigma^2$ by using the fact that
+\begin{eqnarray*}
+  (n-1) \frac {S^2}{\sigma^2} \sim \chi^2_{n-1}
+\end{eqnarray*}
+
+Hence,
+\begin{equation*}
+  P \left\{ \chi_{1-\alpha / 2, n-1}^2 \le (n-1) \frac {S^2}{\sigma^2}
+    \le \chi_{\alpha / 2, n-1}^2 \right\} = 1 - \alpha
+\end{equation*}
+
+or, equivalently,
+\begin{equation*}
+  P \left\{ \frac {(n-1)S^2} {\chi_{\alpha / 2, n-1}^2}
+    \le \sigma^2
+    \le \frac {(n-1)S^2} {\chi_{1 - \alpha / 2, n-1}^2} \right\}
+  = 1 - \alpha
+\end{equation*}
+
+\subsection{Estimating the Difference in Means of Two Normal Populations}
+
+If $X_1, \dots, X_n$ is a sample of size $n$ from a normal population having mean $\mu_1$ and variance $\sigma_1^2$ and let $Y_1, \dots, Y_m$ be a sample of size $m$ from a different normal population having mean $\mu_2$ and variance $\sigma_2^2$ and suppose that the two samples are independent of each other. We are interested estimating $\mu_1 - \mu_2$. \\
+
+Since $\overline{X} = \sum_{i=1}^n X_i / n$ and $\overline{Y} = \sum_{i=1}^m Y_i / m$ are the maximum likelihood estimators of $\mu_1$ and $\mu_2$, it seems intuitive (and can be proven) that $\overline{X} - \overline{Y}$ is the maximum likelihood estimator of $\mu_1$ and $\mu_2$. \\
+
+To obtain a confidence interval estimator, we need the distribution of $\overline{X} - \overline{Y}$. Because
+\begin{eqnarray*}
+  \overline{X} \sim \mathcal{N} (\mu_1, \sigma_1^2 / n) \\
+  \overline{Y} \sim \mathcal{N} (\mu_2, \sigma_2^2 / n)
+\end{eqnarray*}
+
+It follows from the fact that the sum of independent normal random variables is also normal that
+\begin{eqnarray*}
+  \overline{X} - \overline{Y} \sim \mathcal{N} (\mu_1 - \mu_2,
+  \frac{\sigma_1^2}{n} + \frac{\sigma_2^2}{m})
+\end{eqnarray*}
+
+Hence, assuming $\sigma_1^2$ and $\sigma_2^2$ are known, we have that
+\begin{eqnarray*}
+  \frac {\overline{X} - \overline{Y} - (\mu_1 - \mu_2)}
+  {\sqrt {\frac{\sigma_1^2}{n} + \frac{\sigma_2^2}{m}}}
+  \sim \mathcal{N} (0,1)
+\end{eqnarray*}
+
+and so
+\begin{eqnarray*}
+  P \left\{ -z_{\alpha/2} <
+      \frac {\overline{X} - \overline{Y} - (\mu_1 - \mu_2)}
+      {\sqrt {\frac{\sigma_1^2}{n} + \frac{\sigma_2^2}{m}}}
+      < z_{\alpha_2} \right\} = 1 - \alpha
+\end{eqnarray*}
+
+Or equivalent,
+\begin{eqnarray*}
+  P \left\{ \overline{X} - \overline{Y}
+    - z_{\alpha/2} \sqrt {\frac{\sigma_1^2}{n} + \frac{\sigma_2^2}{m}}
+    < \mu_1 - \mu_2
+    < \overline{X} - \overline{Y}
+      + z_{\alpha_2} \sqrt {\frac{\sigma_1^2}{n} + \frac{\sigma_2^2}{m}}
+    \right\} = 1 - \alpha
+\end{eqnarray*}
+
+Hence, if $\overline{X}$ and $\overline{Y}$ are observed to equal $\overline{x}$ and $\overline{y}$, respectively, then a $100(1 - \alpha)$ two-sided confidence interval estimate for $\mu_1 - \mu_2$ is
+\begin{eqnarray*}
+  \mu_1 - \mu_2 \in
+  \left( \overline{x} - \overline{y}
+    - z_{\alpha/2} \sqrt {\frac{\sigma_1^2}{n} + \frac{\sigma_2^2}{m}}, \;
+    \overline{x} - \overline{y}
+      + z_{\alpha_2} \sqrt {\frac{\sigma_1^2}{n} + \frac{\sigma_2^2}{m}}
+    \right)
+\end{eqnarray*}
+
+One-sided confidence intervals for $\mu_1 - \mu_2$ are obtained in a similar fashion, we have
+\begin{eqnarray*}
+  \mu_1 - \mu_2 \in
+  \left( - \infty, \; \overline{x} - \overline{y}
+      + z_{\alpha_2} \sqrt {\frac{\sigma_1^2}{n} + \frac{\sigma_2^2}{m}}
+    \right)
+\end{eqnarray*}
+
+Let us suppose now that we again desire an interval estimator of $\mu_1 - \mu_2$ but that the population variances $\sigma_1^2$ and $\sigma_2^2$ are unknown. In this case, it is natural to try to replace $\sigma_1^2$ and $\sigma_2^2$ by sample variances
+\begin{eqnarray*}
+  S_1^2 &=& \sum_{i=1}^n \frac {(X_i - \overline{X})^2}{n-1} \\
+  S_2^2 &=& \sum_{i=1}^n \frac {(Y_i - \overline{Y})^2}{m-1}
+\end{eqnarray*}
+
+That is, it is natural to base our interval estimate on something like
+\begin{eqnarray*}
+  \frac {\overline{X} - \overline{Y} - (\mu_1 - \mu_2)}
+  {\sqrt {\frac{S_1^2}{n} + \frac{S_2^2}{m}}}
+\end{eqnarray*}
+
+However, to utilize the foregoing to obtain a confidence interval, we need its distribution and it must not depend on any of the unknown parameters $\sigma_1^2$ and $\sigma_2^2$. Unfortunately, this distribution is both complicated and does indeed depend on the unknown parameters $\sigma_1^2$ and $\sigma_2^2$. In fact, it is only in the special case when $\sigma_1^2 = \sigma_2^2$ that we will be able to obtain an interval estimator. So let us suppose that the population variances, thought unknown, are equal and let $\sigma^2$ denote their common value. Now, from Theorem~\ref{theorem-6.5.1} it follows that
+\begin{eqnarray*}
+  (n-1) \frac {S_1^2}{\sigma^2} \sim \chi_{n-1}^2
+\end{eqnarray*}
+
+and
+\begin{eqnarray*}
+  (m-1) \frac {S_2^2}{\sigma^2} \sim \chi_{m-1}^2
+\end{eqnarray*}
+
+Also, because the samples are independent, it follows that these two chi-square random variables are independent. Hence, from the additive property of chi-square random variables, which states that the sum of independent chi-square random variables is also chi-square with a degree of freedom equal to the sum of their degrees of freedom, it follows that
+\begin{eqnarray*}
+    (n-1) \frac {S_1^2}{\sigma^2} + (m-1) \frac {S_2^2}{\sigma^2}
+    \sim \chi_{n+m-2}^2
+\end{eqnarray*}
+
+Also, since
+\begin{eqnarray*}
+  \overline{X} - \overline{Y} \sim \mathcal{N} (\mu_1 - \mu_2,
+  \frac{\sigma_1^2}{n} + \frac{\sigma_2^2}{m})
+\end{eqnarray*}
+
+we see that
+\begin{eqnarray*}
+  \frac {\overline{X} - \overline{Y} - (\mu_1 - \mu_2)}
+  {\sqrt {\frac{\sigma_1^2}{n} + \frac{\sigma_2^2}{m}}}
+  \sim \mathcal{N} (0,1)
+\end{eqnarray*}
+
+Now it follows from the fundamental result that in normal sampling $\overline{X}$ and $S^2$ are independent (Theorem~\ref{theorem-6.5.1}), that $\overline{X}_1, S_1^2, \overline{X}_2, S_2^2$ are independent random variables. Hence, using the definition of a $t$-random variable (as the ratio of two independent random variables, the numerator being a standard normal and the denominator being the square root of a chi-square random variable divided by its degree of freedom parameter), it follows that if we let
+\begin{eqnarray*}
+  S_p^2 = \frac {(n-1)S_1^2 + (m-1)S_2^2}{n+m-2}
+\end{eqnarray*}
+
+then
+\begin{eqnarray*}
+  \frac {\overline{X} - \overline{Y} - (\mu_1 - \mu_2)}
+  {\sqrt {\sigma^2 (1 / n + 1 / m)}}
+  \div \sqrt{S_p^2 / \sigma^2}
+  = \frac {\overline{X} - \overline{Y} - (\mu_1 - \mu_2)}
+  {S_p \sqrt { (1 / n + 1 / m)}}
+\end{eqnarray*}
+
+has a $t$-distribution with $n+m-2$ degrees of freedom. Consequently,
+\begin{eqnarray*}
+  P \left\{ - t_{\alpha / 2, n+m-2} \le
+    \frac {\overline{X} - \overline{Y} - (\mu_1 - \mu_2)}
+    {S_p \sqrt {1 / n + 1 / m}}
+    \le t_{\alpha / 2, n+m-2} \right\} = 1 - \alpha
+\end{eqnarray*}
+
+Therefore, when the data result in the values $\overline{X} = \overline{x}, \overline{Y} = \overline{y}, S_p = s_p$, we obtain the following $100(1 - \alpha)$ percent confidence interval for $\mu_1 - \mu_2$:
+\begin{eqnarray*}
+  \left( \overline{x} - \overline{y} - t_{\alpha / 2, n+m-2}
+    s_p \sqrt{1/n + 1/m}, \overline{x} - \overline{y} + t_{\alpha / 2, n+m-2}
+    s_p \sqrt{1/n + 1/m} \right)
+\end{eqnarray*}
+
+One sided confidence intervals are similarly obtained. \\
+
+\begin{remark}
+  The confidence interval given above was obtained under the assumption that the population variances are equal; with $\sigma^2$ as their common value , it follows that
+  \begin{eqnarray*}
+      \frac {\overline{X} - \overline{Y} - (\mu_1 - \mu_2)}
+      {\sqrt {\sigma^2 / n + \sigma^2 / m}}
+      = \frac {\overline{X} - \overline{Y} - (\mu_1 - \mu_2)}
+      {\sigma \sqrt {1 / n + 1 / m}}
+  \end{eqnarray*}
+  has a standard normal distribution. However, since $\sigma^2$ is unknown this result cannot be immediately applied to obtain a confidence interval; $\sigma^2$ must first be estimated. To do so, note that both sample variances are estimators o $\sigma^2$; moreover, since $S_1^2$ has $n-1$ degrees of freedom and $S_2^2$ has $m-1$, the appropriate estimator is to take a weighted average of the two sample variances, with the weights proportional to these degrees of freedom. That is, the estimator of $\sigma^2$ is the \textbf{pooled estimator}
+  \begin{eqnarray*}
+    S_p^2 = \frac {(n-1)S_1^2 + (m-1)S_2^2}{n+m-2}
+  \end{eqnarray*}
+  and the confidence interval is then based on the statistic
+  \begin{eqnarray*}
+    \frac {\overline{X} - \overline{Y} - (\mu_1 - \mu_2)}
+    {S_p \sqrt {1 / n + 1 / m}}
+  \end{eqnarray*}
+  which, by our previous analysis, has a $t$-distribution with $n+m-2$ degrees of freedom.
+\end{remark}
+
+\subsection{Approximate Confidence Interval for the Mean of a Bernoulli Random Variable}
+
+Consider a population of items, each of which independently meets certain standards with some unknown probability $p$. If $n$ of these items are tested to determine whether they meet the standards, how can we use the resulting data to obtain a confidence interval for $p$? \\
+
+If we let $X$ denote the number of the $n$ items that meet the standards, then $X$ is a binomial random variable with parameters $n$ and $p$. Thus, when $n$ is large, it follows by the normal approximation to the binomial that $X$ is approximately normally distributed with mean $np$ and variance $np(1-p)$. Hence,
+\begin{eqnarray*}
+  \frac {X - np}{\sqrt {np(1-p)}} \sim \mathcal{N}(0,1)
+\end{eqnarray*}
+
+where $\sim$ means ``is approximately distributed as''. Therefore, for any $\alpha \in (0,1)$,
+\begin{eqnarray*}
+  P \left\{ - z_{\alpha /2} < \frac {X - np}{\sqrt {np(1-p)}}
+    < z_{\alpha / 2} \right\} \approx 1 - \alpha
+\end{eqnarray*}
+
+and so if $X$ is observed to equal $x$, then an approximate $100(1 - \alpha)$ percent confidence region for $p$ is
+\begin{eqnarray*}
+  \left\{ p: - z_{\alpha /2} < \frac {x - np}{\sqrt {np(1-p)}}
+    < z_{\alpha / 2} \right\}
+\end{eqnarray*}
+
+The foregoing region, however, is not an interval. To obtain a confidence interval for $p$, let $\hat{p} = X / n$ be the fraction of the items that meet the standards. And $\hat{p}$ is the maximum likelihood estimator of $p$, and so should be approximately equal to $p$. As a result, $\sqrt{n \hat{p}(1 - \hat{p})}$ will be approximately equal to $\sqrt{np(1-p)}$ and so we have
+\begin{eqnarray*}
+  \frac {X - n\hat{p}}{\sqrt {n\hat{p}(1-\hat{p})}} \sim \mathcal{N}(0,1)
+\end{eqnarray*}
+
+Hence, for any $\alpha \in (0,1)$ we have that
+\begin{eqnarray*}
+  P \left\{ - z_{\alpha /2} <
+    \frac {X - n\hat{p}}{\sqrt {n\hat{p}(1-\hat{p})}}
+    < z_{\alpha / 2} \right\} \approx 1 - \alpha
+\end{eqnarray*}
+
+or, equivalently,
+\begin{eqnarray*}
+  P \left\{ - z_{\alpha /2} \sqrt {n\hat{p}(1-\hat{p})} <
+    np - X < z_{\alpha /2} \sqrt {n\hat{p}(1-\hat{p})}
+  \right\} \approx 1 - \alpha
+\end{eqnarray*}
+
+Since $\hat{p} = X/n$, the preceding can be written as
+\begin{eqnarray*}
+  P \left\{\hat{p} - z_{\alpha /2} \sqrt {\hat{p}(1-\hat{p}) / n} <
+    p < \hat{p} + z_{\alpha /2} \sqrt {\hat{p}(1-\hat{p}) / n}
+  \right\} \approx 1 - \alpha
+\end{eqnarray*}
+
+We often want to specify an approximate $100(1 - \alpha)$ percent confidence interval for $p$ that is no greater than some given length, say $b$. The problem is to determine the appropriate sample size $n$ to obtain such an interval. To do so, note that the length of the approximate $100(1 - \alpha)$ percent confidence interval for $p$ from a sample of size $n$ is
+\begin{eqnarray*}
+  2 z_{\alpha / 2} \sqrt {\hat{p} (1 - \hat{p}) / n}
+\end{eqnarray*}
+
+which is approximately equal to $2 z_{\alpha / 2} \sqrt {p(1-p)/n}$. Unfortunately, $p$ is not known in advance, and so we cannot just set $2 z_{\alpha / 2} \sqrt {p(1-p)/n}$ equal to $b$ to determine the necessary sample size $n$. What we can do, however, is to first take a preliminary sample to obtain a rough estimate of $p$, and then use this estimate to determine $n$. That is, e use $p^*$, the proportion of the preliminary sample that meets the standards, as a preliminary estimate of $p$; we then determine the total sample size $n$ by solving the equation
+\begin{equation*}
+  2 z_{\alpha / 2} \sqrt {p^* (1 - p^*) / n} = b
+\end{equation*}
+
+Squaring both sides of the preceding yields that
+\begin{equation*}
+  (2 z_{\alpha / 2})^2 p^* (1 - p^*) / n = b^2
+\end{equation*}
+
+Or
+\begin{equation*}
+  n = \frac {(2 z_{\alpha / 2})^2 p^* (1 - p^*)}{b^2}
+\end{equation*}
+
+That is, if $k$ items were initially sampled to obtain the preliminary estimate of $p$, then an additional $n-k$ (or 0 if $n \le k$) items should be sampled.
+
+\begin{remark}
+  As shown, a $100(1-\alpha)$ percent confidence interval for $p$ will be of approximate length $b$ when the sample size is
+  \begin{equation*}
+    n = \frac {(2 z_{\alpha / 2})^2 p^* (1 - p^*)}{b^2}
+  \end{equation*}
+  Now it is easily shown that the function $g(p) = p(1-p)$ attains its maximum value of $1/4$, in the interval $0 \le p \le 1$, when $p = 1/2$. Thus, an upper bound on $n$ is
+  \begin{equation*}
+    n \le \frac {(z_{\alpha / 2})^2}{b^2}
+  \end{equation*}
+  and so by choosing a sample whose size is at least as large as $(z_{\alpha / 2})^2/b^2$, one can be assured of obtaining a confidence interval of length no greater than $b$ without need of any additional sampling.
+\end{remark}
+
+\subsection{Confidence Interval of the Mean of the Exponential Distribution}
+
+If $X_1, X_2, \dots, X_n$ are independent exponential random variables each having mean $\theta$, then it can be shown that the maximum likelihood estimator of $\theta$ is the sample mean $\sum_{i=1}^n X_i / n$. To obtain a confidence interval estimator of $\theta$, recall that $\sum_{i=1}^n X_i$ has a gamma distribution with parameters $n$, $1 / \theta$. This in turn implies (from the relationship between the gamma and chi-square distribution) that
+\begin{eqnarray*}
+  \frac {2}{\theta} \sum_{i=1}^n X_i \sim \chi_{2n}^2
+\end{eqnarray*}
+
+Hence, for any $\sigma \in (0,1)$
+\begin{eqnarray*}
+  P \left\{ \chi_{1-\alpha / 2, 2n}^2
+    < \frac {2}{\theta} \sum_{i=1}^n X_i
+    < \chi_{\alpha / 2, 2n}^2 \right\} = 1 - \alpha
+\end{eqnarray*}
+
+or, equivalently,
+\begin{eqnarray*}
+  P \left\{ \frac {2 \sum_{i=1}^n X_i}{\chi_{\alpha / 2, 2n}^2}
+    < \theta <\frac {2 \sum_{i=1}^n X_i}{\chi_{1-\alpha / 2, 2n}^2}
+  \right\} = 1 - \alpha
+\end{eqnarray*}
+
+Hence, a $100(1 - \alpha)$ percent confidence interval for $\theta$ is
+\begin{eqnarray*}
+  \theta \in \left(
+    \frac {2 \sum_{i=1}^n X_i}{\chi_{\alpha / 2, 2n}^2}
+    ,{2 \sum_{i=1}^n X_i}{\chi_{1-\alpha / 2, 2n}^2} \right)
+\end{eqnarray*}
+
+\subsection{Evaluating a Point Estimator}
+
+Let $\textbf{X} = (X_1, \dots, X_n)$ be a sample from a population whose distribution is specified up to an unknown parameter $\theta$, and let $d = d(\textbf{X})$ be an estimator of $\theta$. How are we to determine its worth as an estimator of $\theta$? One way is to consider the square of the difference between $d(\textbf{X})$ and $\theta$. However, since $(d(\textbf{X}) - \theta)^2$ is a random variable, let us agree to consider $r(d, \theta)$, the \textbf{mean square error} of the estimator $d$, which is defined by
+\begin{equation*}
+  r(d, \theta) = E[(d(\textbf{X}) - \theta)^2]
+\end{equation*}
+
+as an indication of the worth of $d$ as an estimator of $\theta$.
+
+\begin{definition}
+  let $d = d(\textbf{X})$ be an estimator of the parameter $\theta$. Then
+  \begin{equation*}
+    b_{\theta}(d) = E[d(\textbf{X})] - \theta
+  \end{equation*}
+  is called the \textbf{bias} of $d$ as an estimator of $\theta$. If $b_{\theta}(d) = 0$ for all $\theta$, then we say that $d$ is an \textbf{unbiased} estimator of $\theta$.
+\end{definition}
+
+If $d(X_1, \dots, X_n)$ is an unbiased estimator, then its mean square error is given by
+\begin{eqnarray*}
+  r(d, \theta)
+  &=& E[(d(\textbf{X}) - \theta)^2] \\
+  &=& E[(d(\textbf{X}) - E[d(\textbf{X})])^2] \\
+  &=& Var(d(\textbf{X}))
+\end{eqnarray*}
+
+Thus the mean square error of an unbiased estimator is equal to its variance. \\
+
+A generalization of the result that the mean square error of an unbiased estimator is equal to its variance is that the mean square error of any estimator is equal to its variance plus the square of its bias. This follows since
+\begin{eqnarray*}
+  r(d, \theta)
+  &=& E[(d(\textbf{X}) - \theta)^2] \\
+  &=& E[(d - E[d] + E[d] - \theta)^2] \\
+  &=& E[ (d - E[d])^2 + (E[d] - \theta)^2 + 2(E[d] - \theta)(d - E[d]) ] \\
+  &=& E[(d - E[d])^2] + E[(E[d] - \theta)^2] \\
+  &&  + 2E[(E[d] - \theta)(d - E[d])] \\
+  &=& E[(d - E[d])^2] + (E[d] - \theta)^2 
+  + 2(E[d] - \theta)E[d - E[d]] \\
+  &=& E[(d - E[d])^2] + (E[d] - \theta)^2
+\end{eqnarray*}
+
+The last equality follows since
+\begin{equation*}
+  E[d - E[d]] = 0
+\end{equation*}
+
+Hence
+\begin{equation*}
+  r(d, \theta) = Var(d) + b_{\theta}^2 (d)
+\end{equation*}
+
+\subsection{The Bayes Estimator}
+
+In certain situations it seems reasonable to regard an unknown parameter $\theta$ as being the value of a random variable from a given probability distribution. This usually arises when, prior to the observance of the outcomes of the data $X_1, \dots, X_n$, we have some information about the value of $\theta$ and this information is expressible in terms of a probability distribution (called appropriately the \textbf{prior} distribution of $\theta$). \\
+
+Suppose now that our prior feelings about $\theta$ are that it can be regarded as being the value of a continuous random variable having probability density function $p(\theta)$; and suppose that we are about to observe the value of a sample whose distribution depends on $\theta$. Specially, suppose that $f(x | \theta)$ represents the likelihood--that ism it is the probability mass function in the discrete case or the probability density function in the continuous case-- that a data value is equal to $x$ when $\theta$ is the value of the parameter. If the observed data values are $X_i = x_i, i =1,\dots,n$, then the updated, or conditional, probability density function of $\theta$ is as follows:
+\begin{eqnarray*}
+  f(\theta | x_1, \dots, x_n)
+  &=& \frac {f(\theta, x_1, \dots, x_n)}{f(x_1, \dots, x_n)} \\
+  &=& \frac {p(\theta) f(x_1, \dots, x_n | \theta)}
+  {\int f(x_1, \dots, x_n | \theta) p(\theta) \; d \theta}
+\end{eqnarray*}
+
+The condition density function $f(\theta | x_1, \dots, x_n)$ is called the \textbf{posterior} density function. (Thus, before observing the data, one's feelings about $\theta$ are expressed in terms of the prior distribution, whereas once the data are observed, this prior distribution is updated to yield the posterior distribution.) \\
+
+Now we have shown that whenever we are given the probability distribution of a random variable, the best estimate of the value of the random variable, in the sense of minimizing the expected squared error, is its mean. Therefore, it follows that the best estimate of $\theta$, given the data values $X_i = x_i, i= 1, \dots, n$, is the mean of the posterior distribution $f(\theta | x_1, \dots, x_n)$. This estimator, called the \textbf{Bayes estimator}, is written as $E[\theta | X_1, \dots, X_n]$. That is, if $X_i = x_i, i = 1, \dots, n$, then the value of the Bayes estimator is
+\begin{eqnarray*}
+  E[\theta | X_1 = x_1, \dots, X_n = x_n]
+  = \int \theta f(\theta | x_1, \dots, x_n) \; d \theta
+\end{eqnarray*}
+
+
+
+
 
 \end{document}
 
