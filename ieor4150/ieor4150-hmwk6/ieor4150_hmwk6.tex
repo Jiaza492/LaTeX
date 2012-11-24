@@ -22,32 +22,196 @@
 
 1. \\
 
+We know that $\theta \in (-\infty, \min (x_1, x_2, \dots, x_n))$.
+\begin{eqnarray*}
+  f(X_1, \dots, X_n | \theta)
+  &=& \prod_{i=1}^n e^{-(x_i - \theta)} \\
+  &=& e^{- \sum_{i=1}^n (x_i - \theta)} \\
+  &=& e^{n \theta - \sum_{i=1}^n x_i}
+\end{eqnarray*}
 
+Then we have
+\begin{eqnarray*}
+  \log {\left( f(X_1, \dots, X_n | \theta) \right)}
+  &=& n \theta - \sum_{i=1}^n x_i
+\end{eqnarray*}
 
+Taking the derivative with respect to $\theta$, we have
+\begin{eqnarray*}
+  \frac {d \; \log f(X_1, \dots, X_n | \theta)}{d \; \theta}
+  &=& n
+\end{eqnarray*}
 
-
+That is, the likelihood function is strictly increasing, so we have
+\begin{eqnarray*}
+  \hat{\theta} = \min (x_1, x_2, \dots, x_n)
+\end{eqnarray*}
 
 5. \\
 
+The likelihood function is
+\begin{eqnarray*}
+  \mathcal{L}
+  &=& \prod_{i=1}^n \frac {1}{\sqrt{2\pi} \sigma}
+  exp^{\left[ \frac{-(x_i - \mu_1)^2}{2\sigma^2} \right]}
+  \prod_{i=1}^n \frac {1}{\sqrt{2\pi} \sigma}
+  exp^{\left[ \frac{-(y_i - \mu_2)^2}{2\sigma^2} \right]}
+  \prod_{i=1}^n \frac {1}{\sqrt{2\pi} \sigma}
+  exp^{\left[ \frac{-(w_i - (\mu_1+\mu_2))^2}{2\sigma^2} \right]}
+\end{eqnarray*}
 
+Taking $\log$, we have
+\begin{eqnarray*}
+  \log {\mathcal{L}}
+  &=& \sum_{i=1}^n \left( \log {\frac {1}{\sqrt{2\pi} \sigma}} +
+    \frac{-(x_i - \mu_1)^2}{2\sigma^2} \right) + 
+  \sum_{i=1}^n \left( \log {\frac {1}{\sqrt{2\pi} \sigma}} +
+    \frac{-(y_i - \mu_2)^2}{2\sigma^2} \right) \\
+  && + \sum_{i=1}^n \left( \log {\frac {1}{\sqrt{2\pi} \sigma}} +
+    \frac{-(w_i - (\mu_1+\mu_2))^2}{2\sigma^2} \right)
+\end{eqnarray*}
+
+Taking the derivative with respect to $\mu_1$, we have
+\begin{eqnarray*}
+  \frac {d \; \log {\mathcal{L}}}{d \; \mu_1}
+  &=& \sum_{i=1}^n \left( \frac{x_i - \mu_1}{\sigma^2} \right) + 
+  \sum_{i=1}^n \left( \frac{w_i - (\mu_1+\mu_2)}{\sigma^2} \right) \\
+  &=& \frac {\sum_{i=1}^n (x_i + w_i) - 2n \mu_1 - n \mu_2}{\sigma^2} = 0
+\end{eqnarray*}
+
+Taking the derivative with respect to $\mu_2$, we have
+\begin{eqnarray*}
+  \frac {d \; \log {\mathcal{L}}}{d \; \mu_2}
+  &=& \sum_{i=1}^n \left( \frac{y_i - \mu_2}{\sigma^2} \right) + 
+  \sum_{i=1}^n \left( \frac{w_i - (\mu_1+\mu_2)}{\sigma^2} \right) \\
+  &=& \frac {\sum_{i=1}^n (y_i + w_i) - n \mu_1 - 2n \mu_2}{\sigma^2} = 0
+\end{eqnarray*}
+
+Solving the two equations, we get
+\begin{eqnarray*}
+  \mu_1 &=& \frac {1}{3n} \sum_{i=1}^n (2x_i + w_i - y_i) \\
+  \mu_2 &=& \frac {1}{3n} \sum_{i=1}^n (2y_i + w_i - x_i)
+\end{eqnarray*}
 
 6. \\
+Since charge $D$ follows a lognormal distribution, let $X = \log (D)$. Then we have $X$ follows a normal distribution. Then, we will use sample mean and sample variance to estimate $\mu$ and $\sigma$. By R programming, we have
+\begin{eqnarray*}
+  \overline{X} &=& 9.593013 \\
+  S^2 &=& 0.2693762
+\end{eqnarray*}
 
+So, we get
+\begin{eqnarray*}
+  P \left\{ D \ge v \right\}
+  &=& P \left\{ \log (D) \ge \log (v) \right\} \\
+  &=& P \left\{ \frac {\log (D) - \overline{X}}{S}
+    \ge \frac {\log (v) - \overline{X}}{S} \right\} \\
+  &=& 1 - \Phi \left( \frac {\log (v) - \overline{X}}{S} \right) = 0.01 \\
+  \Rightarrow \frac {\log (v) - \overline{X}}{S} = 2.33 \\
+  \Rightarrow v = 18075.58
+\end{eqnarray*}
 
+As a result, the value of a 100-year flood is 18075.58. \\
 
 9. \\
 
+a) Since
+\begin{eqnarray*}
+  z_{0.05/2} &=& 1.96 \\
+  \overline{x} &=& 11.48 \\
+  \sigma &=& 0.08
+\end{eqnarray*}
 
+we have
+\begin{eqnarray*}
+  P \left\{ \overline{x} - z_{\alpha / 2} \frac {\sigma}{\sqrt{n}} < \mu
+    < \overline{x} + z_{\alpha / 2} \frac {\sigma}{\sqrt{n}}
+  \right\} &=& 1 - \alpha \\
+  P \left\{ 11.43042 < \mu < 11.52958 \right\} &=& .95
+\end{eqnarray*}
+
+So the 95 percent confidence interval for the PCB level of this fish is
+\begin{eqnarray*}
+  \left( 11.43042, \; 11.52958 \right)
+\end{eqnarray*}
+
+b) We have
+\begin{eqnarray*}
+    \left( -\infty, \overline{x} + z_{\alpha} \frac {\sigma}{\sqrt{n}} \right)
+\end{eqnarray*}
+
+to be the lower confidence interval, so the 95 percent lower confidence interval for the PCB level of this fish is
+\begin{eqnarray*}
+  \left( - \infty, \; 11.52149 \right)
+\end{eqnarray*}
+
+c) We have
+\begin{eqnarray*}
+    \left( \overline{x} + z_{\alpha} \frac {\sigma}{\sqrt{n}}, \infty \right)
+\end{eqnarray*}
+
+to be the upper confidence interval, so the 95 percent upper confidence interval for the PCB level of this fish is
+\begin{eqnarray*}
+  \left( 11.43851, \; \infty \right)
+\end{eqnarray*}
 
 17. \\
 
+Since
+\begin{eqnarray*}
+  z_{0.05/2} &=& 1.96 \\
+  z_{0.01/2} &=& 2.5758 \\
+  \overline{x} &=& 333.9958 \\
+  S &=& 6.957603
+\end{eqnarray*}
 
+For the 95 percent two-sided confidence interval, we have
+\begin{eqnarray*}
+  P \left\{ \overline{x} - t_{\alpha / 2, 23} \frac {S}{\sqrt{n}} < \mu
+    < \overline{x} + t_{\alpha / 2, 23} \frac {S}{\sqrt{n}}
+  \right\} &=& 1 - \alpha \\
+  P \left\{ 331.0574 < \mu < 336.9343 \right\} &=& .95
+\end{eqnarray*}
+
+So the 95 percent confidence interval for the PCB level of this fish is
+\begin{eqnarray*}
+  \left( 331.0574, \; 336.9343 \right)
+\end{eqnarray*}
+
+For the 99 percent two-sided confidence interval, we have
+\begin{eqnarray*}
+  P \left\{ \overline{x} - t_{\alpha / 2, 23} \frac {S}{\sqrt{n}} < \mu
+    < \overline{x} + t_{\alpha / 2, 23} \frac {S}{\sqrt{n}}
+  \right\} &=& 1 - \alpha \\
+  P \left\{ 330.0093 < \mu < 337.9824 \right\} &=& .99
+\end{eqnarray*}
+
+So the 99 percent confidence interval for the PCB level of this fish is
+\begin{eqnarray*}
+  \left( 330.0093, \; 337.9824 \right)
+\end{eqnarray*}
 
 29. \\
 
+For this problem, I used MATLAB to generate the random numbers. And the 36 random variables are as follow: 2, 2, 4, 4, 3, 2, 2, 2, 3, 4, 3, 3, 2, 3, 2, 2, 3, 4, 3, 2, 4, 2, 2, 2, 4, 2, 5, 3, 2, 2, 3, 2, 4, 2, 2, 4. \\
 
+As a result, we have
+\begin{eqnarray*}
+  \mu = 2.778 \\
+  S = 0.8980
+\end{eqnarray*}
+
+Due to the law of large numbers, we can assume all 36 random variables follows a normal distribution. So we could estimate the confidence interval from a t-distribution. As a result, the 95 percent confidence interval estimate of $E[N]$ is
+\begin{eqnarray*}
+  \left( 2.4275, \; 3.1285 \right)
+\end{eqnarray*}
+
+Based on this interval, I guess the exact value of $E[N]$ is $e$. \\
 
 32. \\
+
+
+
 
 
 
