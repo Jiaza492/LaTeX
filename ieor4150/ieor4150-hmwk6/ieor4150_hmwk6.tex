@@ -60,7 +60,7 @@ Taking $\log$, we have
 \begin{eqnarray*}
   \log {\mathcal{L}}
   &=& \sum_{i=1}^n \left( \log {\frac {1}{\sqrt{2\pi} \sigma}} +
-    \frac{-(x_i - \mu_1)^2}{2\sigma^2} \right) + 
+    \frac{-(x_i - \mu_1)^2}{2\sigma^2} \right) +
   \sum_{i=1}^n \left( \log {\frac {1}{\sqrt{2\pi} \sigma}} +
     \frac{-(y_i - \mu_2)^2}{2\sigma^2} \right) \\
   && + \sum_{i=1}^n \left( \log {\frac {1}{\sqrt{2\pi} \sigma}} +
@@ -70,7 +70,7 @@ Taking $\log$, we have
 Taking the derivative with respect to $\mu_1$, we have
 \begin{eqnarray*}
   \frac {d \; \log {\mathcal{L}}}{d \; \mu_1}
-  &=& \sum_{i=1}^n \left( \frac{x_i - \mu_1}{\sigma^2} \right) + 
+  &=& \sum_{i=1}^n \left( \frac{x_i - \mu_1}{\sigma^2} \right) +
   \sum_{i=1}^n \left( \frac{w_i - (\mu_1+\mu_2)}{\sigma^2} \right) \\
   &=& \frac {\sum_{i=1}^n (x_i + w_i) - 2n \mu_1 - n \mu_2}{\sigma^2} = 0
 \end{eqnarray*}
@@ -78,7 +78,7 @@ Taking the derivative with respect to $\mu_1$, we have
 Taking the derivative with respect to $\mu_2$, we have
 \begin{eqnarray*}
   \frac {d \; \log {\mathcal{L}}}{d \; \mu_2}
-  &=& \sum_{i=1}^n \left( \frac{y_i - \mu_2}{\sigma^2} \right) + 
+  &=& \sum_{i=1}^n \left( \frac{y_i - \mu_2}{\sigma^2} \right) +
   \sum_{i=1}^n \left( \frac{w_i - (\mu_1+\mu_2)}{\sigma^2} \right) \\
   &=& \frac {\sum_{i=1}^n (y_i + w_i) - n \mu_1 - 2n \mu_2}{\sigma^2} = 0
 \end{eqnarray*}
@@ -374,12 +374,37 @@ So we have the 95 percent two-sided confidence interval for $\theta$ is
     \Rightarrow \theta  &\in& \left( 0.7396, \; 1.4278 \right)
 \end{eqnarray*}
 
-62. \\
+62. Assume for the $i$th, the number of accidents is $X_i$. So we have
+\begin{eqnarray*}
+    P(X_i = k) = e^{-\lambda} \frac {\lambda^k}{k!}
+\end{eqnarray*}
 
+where $\lambda$ is the parameter o the Poisson distribution. Since $\sum_{i=1}^n X_i$ is also a Poisson random variable with parameter $n\lambda$. So we have
+\begin{eqnarray*}
+    P(\sum_{i=1}^n X_i = k) = e^{-n\lambda} \frac {(n\lambda)^k}{k!}
+\end{eqnarray*}
 
+So the likelihood function $f(\theta, x_1, \dots, x_n)$ is
+\begin{eqnarray*}
+    f(\theta, x_1, \dots, x_n)
+    &=& p(\theta)e^{-n\lambda} \frac {(n\lambda)^k}{k!} \\
+    &=& e^{-\lambda}e^{-n\lambda} \frac {(n\lambda)^k}{k!} \\
+    &=& e^{-(n+1)\lambda} \frac {(n\lambda)^k}{k!} \\
+    &=& e^{-11\lambda} \frac {(10\lambda)^{83}}{83!}
+\end{eqnarray*}
 
+Since $f(\theta, x_1, \dots, x_n)$ is a concave function, $\theta$ reaches its maximum when the derivative is 0. Taking derivative with respect to $\lambda$
+\begin{eqnarray*}
+    \frac {d \; f(\theta, x_1, \dots, x_n)}{d \; \lambda}
+    &=& \frac {d}{d \; \lambda} e^{-11\lambda} \frac {(10\lambda)^{83}}{83!} \\
+    &=& e^{-11 \lambda}(-11) \frac {(10\lambda)^{83}}{83!}
+    + e^{-11\lambda} \frac {10 (10\lambda)^{82}}{82!} = 0 \\
+    \Rightarrow  11 e^{-11 \lambda} \frac {(10\lambda)^{83}}{83!}
+    &=& e^{-11\lambda} \frac {10 (10\lambda)^{82}}{82!} \\
+    \Rightarrow \lambda &=& \frac {83}{11}
+\end{eqnarray*}
 
-
+The maximum likelihood estimate is $83/11$.
 
 
 \end{document}
