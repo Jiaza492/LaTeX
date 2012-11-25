@@ -20,9 +20,7 @@
 
 \setlength{\parindent}{0in}
 
-1. \\
-
-We know that $\theta \in (-\infty, \min (x_1, x_2, \dots, x_n))$.
+1. We know that $\theta \in (-\infty, \min (x_1, x_2, \dots, x_n))$.
 \begin{eqnarray*}
   f(X_1, \dots, X_n | \theta)
   &=& \prod_{i=1}^n e^{-(x_i - \theta)} \\
@@ -47,9 +45,7 @@ That is, the likelihood function is strictly increasing, so we have
   \hat{\theta} = \min (x_1, x_2, \dots, x_n)
 \end{eqnarray*}
 
-5. \\
-
-The likelihood function is
+5. The likelihood function is
 \begin{eqnarray*}
   \mathcal{L}
   &=& \prod_{i=1}^n \frac {1}{\sqrt{2\pi} \sigma}
@@ -93,8 +89,7 @@ Solving the two equations, we get
   \mu_2 &=& \frac {1}{3n} \sum_{i=1}^n (2y_i + w_i - x_i)
 \end{eqnarray*}
 
-6. \\
-Since charge $D$ follows a lognormal distribution, let $X = \log (D)$. Then we have $X$ follows a normal distribution. Then, we will use sample mean and sample variance to estimate $\mu$ and $\sigma$. By R programming, we have
+6. Since charge $D$ follows a lognormal distribution, let $X = \log (D)$. Then we have $X$ follows a normal distribution. Then, we will use sample mean and sample variance to estimate $\mu$ and $\sigma$. By R programming, we have
 \begin{eqnarray*}
   \overline{X} &=& 9.593013 \\
   S^2 &=& 0.2693762
@@ -107,14 +102,13 @@ So, we get
   &=& P \left\{ \frac {\log (D) - \overline{X}}{S}
     \ge \frac {\log (v) - \overline{X}}{S} \right\} \\
   &=& 1 - \Phi \left( \frac {\log (v) - \overline{X}}{S} \right) = 0.01 \\
-  \Rightarrow \frac {\log (v) - \overline{X}}{S} = 2.33 \\
-  \Rightarrow v = 18075.58
+  \Rightarrow \frac {\log (v) - \overline{X}}{S} &=& 2.33 \\
+  \Rightarrow v &=& 18075.58
 \end{eqnarray*}
 
 As a result, the value of a 100-year flood is 18075.58. \\
 
 9. \\
-
 a) Since
 \begin{eqnarray*}
   z_{0.05/2} &=& 1.96 \\
@@ -155,12 +149,10 @@ to be the upper confidence interval, so the 95 percent upper confidence interval
   \left( 11.43851, \; \infty \right)
 \end{eqnarray*}
 
-17. \\
-
-Since
+17. Since
 \begin{eqnarray*}
-  z_{0.05/2} &=& 1.96 \\
-  z_{0.01/2} &=& 2.5758 \\
+  t_{0.05/2, 23} &=& 2.069 \\
+  t_{0.01/2, 23} &=& 2.807 \\
   \overline{x} &=& 333.9958 \\
   S &=& 6.957603
 \end{eqnarray*}
@@ -191,9 +183,7 @@ So the 99 percent confidence interval for the PCB level of this fish is
   \left( 330.0093, \; 337.9824 \right)
 \end{eqnarray*}
 
-29. \\
-
-For this problem, I used MATLAB to generate the random numbers. And the 36 random variables are as follow: 2, 2, 4, 4, 3, 2, 2, 2, 3, 4, 3, 3, 2, 3, 2, 2, 3, 4, 3, 2, 4, 2, 2, 2, 4, 2, 5, 3, 2, 2, 3, 2, 4, 2, 2, 4. \\
+29. For this problem, I used MATLAB to generate the random numbers. And the 36 random variables are as follow: 2, 2, 4, 4, 3, 2, 2, 2, 3, 4, 3, 3, 2, 3, 2, 2, 3, 4, 3, 2, 4, 2, 2, 2, 4, 2, 5, 3, 2, 2, 3, 2, 4, 2, 2, 4. \\
 
 As a result, we have
 \begin{eqnarray*}
@@ -203,35 +193,189 @@ As a result, we have
 
 Due to the law of large numbers, we can assume all 36 random variables follows a normal distribution. So we could estimate the confidence interval from a t-distribution. As a result, the 95 percent confidence interval estimate of $E[N]$ is
 \begin{eqnarray*}
-  \left( 2.4275, \; 3.1285 \right)
+  \left( 2.4302, \; 3.1258 \right)
 \end{eqnarray*}
 
-Based on this interval, I guess the exact value of $E[N]$ is $e$. \\
+Based on this interval, the estimated mean is 2.779, which is close to $e$. So I guess the exact value of $E[N]$ is $e$. \\
 
 32. \\
+a) Since all $X_i$ comes from the same normal distribution, we can use $S_n$ to estimate the variance of $X_{n+1}$. That is, $S_n / \sqrt{n}$. As a result, the variance of $X_{n+1} - \overline{X}_n$ is
+\begin{eqnarray*}
+  S_n + \frac {S_n}{\sqrt{n}} = S_n \sqrt{1 + \frac{1}{n}}
+\end{eqnarray*}
 
+Given the sample mean $\overline{X}_n$ and sample variance $S_n$, we can conclude that
+\begin{eqnarray*}
+  \frac{X_{n+1} - \overline{X}_n}{S_n \sqrt{1 + \frac{1}{n}}}
+  &\sim& T_{n-1} \\
+  \Rightarrow   X_{n+1} - \overline{X}_n
+  &\sim& T_{n-1} \left( S_n \sqrt{1 + \frac{1}{n}} \right)
+\end{eqnarray*}
 
+The distribution of $X_{n+1} - \overline{X}_n$ is $T_{n-1} \left( S_n \sqrt{1 + \frac{1}{n}} \right)$. \\
 
+b) From part a, we know that the distribution of
+\begin{eqnarray*}
+  \frac{X_{n+1} - \overline{X}_n}{S_n \sqrt{1 + \frac{1}{n}}}
+\end{eqnarray*}
 
+is a $t$-distribution with $n-1$ degree of freedom. \\
 
+c) Since
 
-37. \\
+\begin{eqnarray*}
+  \frac{X_{n+1} - \overline{X}_n}{S_n \sqrt{1 + \frac{1}{n}}}
+  &\sim& T_{n-1}
+\end{eqnarray*}
 
+We have
+\begin{eqnarray*}
+  P \left\{ - t_{\alpha/2, n-1} <
+    \frac{X_{n+1} - \overline{X}_n}{S_n \sqrt{1 + \frac{1}{n}}}
+    < t_{\alpha/2, n-1}
+  \right\} = 1 - \alpha \\
+  P \left\{ - t_{\alpha/2, n-1} S_n \sqrt{1 + \frac{1}{n}} <
+    X_{n+1} - \overline{X}_n
+    < t_{\alpha/2, n-1} S_n \sqrt{1 + \frac{1}{n}}
+  \right\} = 1 - \alpha \\
+  P \left\{ \overline{X}_n - t_{\alpha/2, n-1} S_n \sqrt{1 + \frac{1}{n}}
+    < X_{n+1} < \overline{X}_n + t_{\alpha/2, n-1} S_n \sqrt{1 + \frac{1}{n}}
+  \right\} = 1 - \alpha
+\end{eqnarray*}
+
+So the $100(1-\alpha)$ prediction interval is
+\begin{eqnarray*}
+  \left( \overline{X}_n - t_{\alpha/2, n-1}
+    S_n \sqrt{1 + \frac{1}{n}}, \;
+    \overline{X}_n + t_{\alpha/2, n-1}
+    S_n \sqrt{1 + \frac{1}{n}} \right)
+\end{eqnarray*}
+
+d) The meaning is, Repeating this experiments $N$ times, there will be about $100(1 - \alpha)N$ times, that the value of $X_{n+1}$ is in the prediction interval given by part c). \\
+
+37. I used MATLAB to perform an t-test to calculate the 95 percent two-sided confidence interval. The result is
+\begin{eqnarray*}
+  \left(6.7047, \; 6.7425 \right)
+\end{eqnarray*}
 
 41. \\
+a) Using MATLAB to perform a pared t-test, I got the 95 percent two-sided confidence interval is
+\begin{eqnarray*}
+  \left( -67.6445, \;  523.0445 \right)
+\end{eqnarray*}
 
+b) Using MATLAB to perform a pared t-test, I got the 95 percent one-sided upper confidence interval is
+\begin{eqnarray*}
+  \left( -11.6290, \; + \infty \right)
+\end{eqnarray*}
 
-46. \\
+c) Using MATLAB to perform a pared t-test, I got the 95 percent one-sided lower confidence interval is
+\begin{eqnarray*}
+  \left( - \infty, \; 467.0290 \right)
+\end{eqnarray*}
 
+46. Let $S_1$ denote the sample variance for the data of analyst 1, $S_2$ denote the sample variance for the data of analyst 2. We have
+\begin{eqnarray*}
+  S_1^2 &=& 0.0865 \\
+  S_2^2 &=& 0.2494
+\end{eqnarray*}
+
+Since
+\begin{eqnarray*}
+  (8-1) \frac {S_1^2}{\sigma_1^2} &\sim& \chi_{8-1}^2 \\
+  (10-1) \frac {S_2^2}{\sigma_2^2} &\sim& \chi_{10-1}^2
+\end{eqnarray*}
+
+We have
+\begin{eqnarray*}
+  F_{9, 7}
+  &=& \frac {\chi_{9}^2 / 9} {\chi_{7}^2 / 7} \\
+  &=& \frac {9 \frac {S_2^2}{\sigma_2^2} / 9}
+  {7 \frac {S_1^2}{\sigma_1^2} / 7} \\
+  &=& \frac {\sigma_1^2 S_2^2}{\sigma_2^2 S_1^2}
+\end{eqnarray*}
+
+Then we get
+\begin{eqnarray*}
+  P \left\{ f_{1 - \alpha / 2, 9, 7}
+    < \frac {\sigma_1^2 S_2^2}{\sigma_2^2 S_1^2} <
+    f_{\alpha / 2, 9, 7} \right\} = 1 - \alpha \\
+  P \left\{ f_{1 - \alpha / 2, 9, 7} \frac {S_1^2}{S_2^2}
+    < \frac {\sigma_1^2}{\sigma_2^2} <
+    f_{\alpha / 2, 9, 7} \frac {S_1^2}{S_2^2} \right\} = 1 - \alpha \\
+  P \left\{ f_{1 - 0.05 / 2, 9, 7} \frac {S_1^2}{S_2^2}
+    < \frac {\sigma_1^2}{\sigma_2^2} <
+    f_{0.05 / 2, 9, 7} \frac {S_1^2}{S_2^2} \right\} = .95 \\
+  P \left\{ 0.2383 \frac{0.0865}{0.2494}
+    < \frac {\sigma_1^2}{\sigma_2^2} <
+    4.8232 \frac{0.0865}{0.2494} \right\} = .95 \\
+  P \left\{ 0.8027 < \frac {\sigma_1^2}{\sigma_2^2} <
+    1.6732 \right\} = .95 \\
+\end{eqnarray*}
+
+So the 95 percent two-sided confidence interval for $\sigma_1^2 / \sigma_2^2$ is
+\begin{eqnarray*}
+  \left( 0.8027, \; 1.6732 \right)
+\end{eqnarray*}
 
 49. \\
+a) Since $\hat{p} = X/n = 5106/10000 = 0.5106$, we have
+\begin{eqnarray*}
+  P \left\{\hat{p} - z_{\alpha /2} \sqrt {\hat{p}(1-\hat{p}) / n} <
+    p < \hat{p} + z_{\alpha /2} \sqrt {\hat{p}(1-\hat{p}) / n}
+  \right\} &\approx& 1 - \alpha \\
+  P \left\{\hat{p} - z_{0.10 /2} \sqrt {\hat{p}(1-\hat{p}) / n} <
+    p < \hat{p} + z_{0.10 /2} \sqrt {\hat{p}(1-\hat{p}) / n}
+  \right\} &\approx& 0.90 \\
+  P \left\{0.5106 - 1.6449 \sqrt {\frac{0.5106(1-0.5106)}{10000}} <
+    p < 0.5106 + 1.6449 \sqrt {\frac{0.5106(1-0.5106)}{10000}}
+  \right\} &\approx& 0.90 \\
+  P \left\{0.5024 < p < 0.5188 \right\} &\approx& 0.90
+\end{eqnarray*}
 
+So the 90 percent two-sided confidence interval is
+\begin{eqnarray*}
+  P \left(0.5024, \; 0.5188 \right)
+\end{eqnarray*}
 
-57. \\
+b) Similar to part a), we have
+\begin{eqnarray*}
+  P \left\{\hat{p} - z_{\alpha /2} \sqrt {\hat{p}(1-\hat{p}) / n} <
+    p < \hat{p} + z_{\alpha /2} \sqrt {\hat{p}(1-\hat{p}) / n}
+  \right\} &\approx& 1 - \alpha \\
+  P \left\{\hat{p} - z_{0.01 /2} \sqrt {\hat{p}(1-\hat{p}) / n} <
+    p < \hat{p} + z_{0.01 /2} \sqrt {\hat{p}(1-\hat{p}) / n}
+  \right\} &\approx& 0.99 \\
+  P \left\{0.5106 - 2.5758 \sqrt {\frac{0.5106(1-0.5106)}{10000}} <
+    p < 0.5106 + 2.5758 \sqrt {\frac{0.5106(1-0.5106)}{10000}}
+  \right\} &\approx& 0.99 \\
+  P \left\{0.4977 < p < 0.5235 \right\} &\approx& 0.99
+\end{eqnarray*}
 
+So the 95 percent two-sided confidence interval is
+\begin{eqnarray*}
+  P \left(0.4977, \; 0.5235 \right)
+\end{eqnarray*}
 
+57. From the book, we know that a $100(1 - \alpha)$ percent confidence interval for $\theta$ is
+\begin{eqnarray*}
+  \theta \in \left(
+    \frac {2 \sum_{i=1}^n X_i}{\chi_{\alpha / 2, 2n}^2}
+    , \frac{2 \sum_{i=1}^n X_i}{\chi_{1-\alpha / 2, 2n}^2} \right)
+\end{eqnarray*}
+
+So we have the 95 percent two-sided confidence interval for $\theta$ is
+\begin{eqnarray*}
+  \theta &\in& \left(
+    \frac {2 \times 36}{\chi_{0.05 / 2, 2 \times 36}^2}
+    , \; \frac {2 \times 36}{\chi_{1-0.05 / 2, 2\times 36}^2} \right) \\
+  \Rightarrow \theta  &\in& \left( \frac {72}{97.3528},
+    \; {72}{97.3528} \right) \\
+    \Rightarrow \theta  &\in& \left( 0.7396, \; 1.4278 \right)
+\end{eqnarray*}
 
 62. \\
+
 
 
 

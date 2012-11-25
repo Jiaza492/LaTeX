@@ -9,7 +9,7 @@ end
 mu = mean(N);
 sd = std(N);
 factor = sd / sqrt(n);
-t = 2.3420;
+t = 2.0301;
 
 ci_lower = mu - t * factor;
 ci_upper = mu + t * factor;
