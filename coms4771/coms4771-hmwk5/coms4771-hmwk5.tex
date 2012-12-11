@@ -1,0 +1,161 @@
+\documentclass[12pt]{article}
+\parindent=.25in
+
+\setlength{\oddsidemargin}{0pt}
+\setlength{\textwidth}{440pt}
+\setlength{\topmargin}{0in}
+
+\usepackage[dvips]{graphicx}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+
+\title{Machine Learning Homework 5}
+\author{Mengqi Zong $<mz2326@columbia.edu>$}
+
+\begin{document}
+
+\maketitle
+
+\setlength{\parindent}{0in}
+
+\section*{Problem 1}
+
+No matter what condition, we should always switch. \\
+
+$A, B, C$ denote three doors. And let $Car_A, Car_B, Car_C$ denote that event that the car is behind $A, B, C$ respectively. And let $Open_A, Open_B, Open_C$ denote that the host opened $A, B, C$ respectively. \\
+
+Without loss of generality, we assume we always select door $A$, and the game host always opens door $B$. Then from Bayes' Theorem, we have
+\begin{eqnarray*}
+  P(Car_A | Open_B)
+  &=& \frac {P(Car_A \; Open_B)}{P(Open_B)} \\
+  &=& \frac {P(Open_B | Car_A) P(Car_A)}
+  {\sum_{K \in \{A,B,C\}} P(Open_B | Car_K) P(Car_K)} \\
+  &=& \frac {1/2 \times 1/3}{1/2 \times 1/3 + 0 \times 1/3 + 1 \times 1/3} \\
+  &=& \frac {1}{3}
+\end{eqnarray*}
+
+Also,
+\begin{eqnarray*}
+  P(Car_c | Open_B)
+  &=& \frac {P(Car_C \; Open_B)}{P(Open_B)} \\
+  &=& \frac {P(Open_B | Car_C) P(Car_C)}
+  {\sum_{K \in \{A,B,C\}} P(Open_B | Car_K) P(Car_K)} \\
+  &=& \frac {1 \times 1/3}{1/2 \times 1/3 + 0 \times 1/3 + 1 \times 1/3} \\
+  &=& \frac {2}{3}
+\end{eqnarray*}
+
+Comparing the probabilities, we draw the conclusion that we should always switch.
+
+\section*{Problem 2}
+
+a) Since $X \bot Y | Z$, we have
+\begin{eqnarray*}
+  p(x|y,z) &=& p(x|z)
+\end{eqnarray*}
+
+So we get
+\begin{eqnarray*}
+  p(x, y, z)
+  &=& \frac {p(x,y,z)}{p(y,z)} p(y,z) \\
+  &=& p(x | y, z) p(y,z) \\
+  &=& p(x | z) p(y,z) \\
+  &=& \frac {p(x, z)}{p(z)} p(y,z) \\
+  &=& a(x,y) b(y,z)
+\end{eqnarray*}
+
+And vice versa. \\
+
+b) Since $X \bot Y | Z$ and $X \bot W | (Y, Z)$, we have
+\begin{eqnarray*}
+  p(x|y,z) &=& p(x|z) \\
+  p(x|w,y,z) &=& p(x|y,z)
+\end{eqnarray*}
+
+So we get
+\begin{eqnarray*}
+  p(x|y,z,w)
+  &=& p(x|y,z) \\
+  &=& p(x|z)
+\end{eqnarray*}
+ 
+That is, $X \bot (W,Y) | Z$. \\
+
+c) We will prove this one by contradiction. First, we assume $X \bot (Y,Z)|W$ is not true. \\
+
+In this case, $X$ will depend on at least $Y$ or $Z$ given $W$. However, this means that at least one of $X \ bot Y |(Z,W)$ and $X \bot Z|(Y,W)$ is not true. Hence, we get a contradiction. \\
+
+As a result, $X \bot (Y,Z)|W$ is true. \\
+
+\textbf{BONUS}) For a directed acyclic graph, we first do a reverse-topological sort to get the node order $X_{a_1}, X_{a_2}, \dots, X_{a_n}$. That is, every $X_{a_{i}}$ is either the parent of $X_{a_{i+1}}$, or they are independent from each other. \\
+
+Due to the conditional independent statements $X_i \bot X_{\text{Non-descendent of } i \ \pi_i} | X_{\pi_i}$, if $X_{a_1}$ is the parent of  $X_{a_{2}}$, we have
+\begin{eqnarray*}
+  P(X_{a_1}, X_{a_2}) = P(X_{a_1}) P(X_{a_2} | X_{a_1})
+\end{eqnarray*}
+
+If they are independent, then
+\begin{eqnarray*}
+  P(X_{a_1}, X_{a_2}) = P(X_{a_1}) P(X_{a_2})
+\end{eqnarray*}
+
+As a result, in the general case, we have
+\begin{eqnarray*}
+  P(X_1, X_2, \dots, X_n) = \prod_{i=1}^n P(X_i | X_{\pi_i})
+\end{eqnarray*}
+
+\section*{Problem 3}
+
+The graph after moralization and triangulation is shown in Fig-\ref{fig:moral}. \\
+
+\begin{figure}[ht!]
+  \centering
+  \includegraphics[width=0.7 \textwidth]{moral}
+  \caption{The graph after moralization and triangulation \label{fig:moral}}
+\end{figure}
+
+Based on the graph in Fig-\ref{fig:moral}, we build the junction-tree, as shown in Fig-\ref{fig:jt}.
+
+\begin{figure}[ht!]
+  \centering
+  \includegraphics[width=0.7 \textwidth]{jt}
+  \caption{The junction tree \label{fig:jt}}
+\end{figure}
+
+\section*{Problem 4}
+
+The code is in file ``jta\_mc.m''. To see how to run the code, please refer to file ``script.m''. \\
+
+The results are shown as follows
+\begin{eqnarray*}
+  \psi(x_1, x_2) &=&
+  \begin{Bmatrix}
+    0.0405   & 0.4451 \\
+    0.3237   & 0.1908
+  \end{Bmatrix} \\
+  \psi(x_2, x_3) &=&
+  \begin{Bmatrix}
+    0.2601 & 0.1040 \\
+    0.0578 & 0.5780
+  \end{Bmatrix} \\
+  \psi(x_3, x_4) &=&
+  \begin{Bmatrix}
+    0.1192   &	0.1987 \\
+    0.6395   &	0.0426
+  \end{Bmatrix} \\
+  \psi(x_4, x_5) &=&
+  \begin{Bmatrix}
+    0.0405   &  0.4451 \\
+    0.3237   &  0.1908
+  \end{Bmatrix} \\
+  \phi(x_2) &=& (0.3642, 0.6358) \\
+  \phi(x_3) &=& (0.3179, 0.6821) \\
+  \phi(x_4) &=& (0.7587, 0.2413)
+\end{eqnarray*}
+
+Discussion: We can see that result is consistent since every clique could be summed up to 1. Also for a Markov Chain, we can see that sending message is enough, both effective and efficient. This is due to the simple structure of a Markov Chain.
+
+\end{document}
