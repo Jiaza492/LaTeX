@@ -10,6 +10,7 @@
 \usepackage{amsfonts}
 \usepackage{amsmath}
 \usepackage{verbatim}
+\usepackage{appendix}
 
 \title{IEOR 4150 Homework 8}
 \author{Mengqi Zong $<mz2326@columbia.edu>$}
@@ -21,5 +22,205 @@
 \setlength{\parindent}{0in}
 
 \section*{Chapter 9}
+
+2. Using R to do the simple linear regression, the model we get is
+\begin{eqnarray*}
+  \text{\# of ordered} = 206.74 - 2.376 \times \text{price}
+\end{eqnarray*}
+
+If price were 25, we get the number ordered is 147.34. \\
+
+12. \\
+a) Using R to do the simple linear regression, the model we get is
+\begin{eqnarray*}
+  \text{salary} = 15.532 - 1.154 \times \text{height}
+\end{eqnarray*}
+
+Using R, the summary is shown as follow:
+\begin{verbatim}
+Call:
+lm(formula = salary ~ height)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-18.129  -5.398   0.950   4.217  21.104 
+
+Coefficients:
+            Estimate Std. Error t value Pr(>|t|)
+(Intercept)  15.5321    56.6279   0.274    0.789
+height        1.1536     0.8039   1.435    0.182
+
+Residual standard error: 10.98 on 10 degrees of freedom
+Multiple R-squared: 0.1708,	Adjusted R-squared: 0.08784 
+F-statistic: 2.059 on 1 and 10 DF,  p-value: 0.1818
+\end{verbatim}
+
+Based on the summary, we can see that the p-value for the regression parameter of height is 0.182. Based on the sample, we can not conclude that lawyer's salary is related to his height. \\
+
+b) The null hypothesis in part a) is the regression parameter of height is 0. \\
+
+13. \\
+a) Given x, $\alpha = Y - \beta x - e$
+\begin{eqnarray*}
+  x &<& \frac {\alpha}{1 - \beta} \\
+  x &<& \frac {Y - \beta x - e}{1 - \beta} \\
+  (1 - \beta) x &<& Y - \beta x - e \\
+  x &<& Y - e \\
+  x &<& E[Y]
+\end{eqnarray*}
+
+Also,
+\begin{eqnarray*}
+  Y &=& \alpha + \beta x + e \\
+  &<& \alpha + \beta \frac {\alpha}{1 - \beta} + e \\
+  &=& \frac {\alpha}{1-\beta} + e \\
+  \Rightarrow E[Y] &<& \frac {\alpha}{1-\beta}
+\end{eqnarray*}
+
+So, we have $x < E[Y] < \frac {\alpha}{1 - \beta}$. \\
+
+b) Given x, $\alpha = Y - \beta x - e$
+\begin{eqnarray*}
+  x &>& \frac {\alpha}{1 - \beta} \\
+  x &>& \frac {Y - \beta x - e}{1 - \beta} \\
+  (1 - \beta) x &>& Y - \beta x - e \\
+  x &>& Y - e \\
+  x &>& E[Y]
+\end{eqnarray*}
+
+Also,
+\begin{eqnarray*}
+  Y &=& \alpha + \beta x + e \\
+  &>& \alpha + \beta \frac {\alpha}{1 - \beta} + e \\
+  &=& \frac {\alpha}{1-\beta} + e \\
+  \Rightarrow E[Y] &>& \frac {\alpha}{1-\beta}
+\end{eqnarray*}
+
+So, we have $x > E[Y] > \frac {\alpha}{1 - \beta}$. \\
+
+Based on the results of a) and b), we can conclude that $E[Y]$ is always between $x$ and $\alpha / (1 - \beta)$. \\
+
+15. We can not draw the conclusion of a cause and effect relationship between praise and low performance levels, and verbal criticism and high performance levels. But it is possible there are certain correlations between them. \\
+
+We know that praise is strongly associated with an exceptionally fine landing, and criticism is strongly associated with a faulty landing. However, an exceptionally fine landing is a rare event, so it is normal that the next landing will be worse than this one. Similarly, a faulty landing is also an rare event, and it is normal that the next landing will be better than this one. In this case, the verbal praise and criticism do not affect the performance. \\
+
+20. \\
+a) The scatter diagram is shown in Fig~\ref{fig:p20-1}. \\
+\begin{figure}[ht!]
+  \centering
+  \includegraphics[width=0.7\textwidth]{p20-1}
+  \caption{Scatter diagram for P20-a) \label{fig:p20-1}}
+\end{figure}
+
+b) Using R to do the simple linear regression, the model we get is
+\begin{eqnarray*}
+  \text{Lung Cancer} = 6.197628     0.005202 \times \text{Cigarettes per Person}
+\end{eqnarray*}
+
+c) The test result from R is as follow
+\begin{verbatim}
+Call:
+lm(formula = lung ~ cigar)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-5.2252 -1.3819 -0.0994  2.0216  3.8987 
+
+Coefficients:
+            Estimate Std. Error t value Pr(>|t|)   
+(Intercept) 6.197628   3.212077   1.929  0.07765 . 
+cigar       0.005202   0.001221   4.260  0.00111 **
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1 
+
+Residual standard error: 2.867 on 12 degrees of freedom
+Multiple R-squared: 0.602,	Adjusted R-squared: 0.5688 
+F-statistic: 18.15 on 1 and 12 DF,  p-value: 0.001107
+\end{verbatim}
+
+As we can see, the p-value for the regression parameter of Cigarettes per Person is 0.00111. So, we reject the null hypothesis. \\
+
+d) As shown in part c), p-value is 0.00111. \\
+
+30. From the book, we know that
+\begin{eqnarray*}
+  SS_R = \frac {S_{xx}S_{YY} - S_{xY}^2}{S_{xx}}
+\end{eqnarray*}
+
+Then we have
+\begin{eqnarray*}
+  R^2 &=& \frac {S_{YY} - SS_{R}}{S_{YY}} \\
+  &=& \frac {S_{xx}S_{YY} - S_{xx}SS_R}{S_{xx}S_{YY}} \\
+  &=& \frac {S_{xx}S_{YY} - (S_{xx}S_{YY} - S_{xY}^2)}{S_{xx}S_{YY}} \\
+  &=& \frac {S_{xY}^2}{S_{xx}S_{YY}}
+\end{eqnarray*}
+
+37. \\
+a) The scatter diagram is shown in Fig~\ref{fig:p37}. \\
+\begin{figure}[ht!]
+  \centering
+  \includegraphics[width=0.7\textwidth]{p37}
+  \caption{Scatter diagram for p37-a) \label{fig:p37}}
+\end{figure}
+
+b) Using R, the model we get is
+\begin{eqnarray*}
+  Y = 1.83 - 0.33976 x + 0.02667 x^2
+\end{eqnarray*}
+
+41. Using R, the model we get is
+\begin{eqnarray*}
+  Prop = 0.009521 \times \text{year} - 0.099133
+\end{eqnarray*}
+
+So the probability for a coal miner who has worked for 42 years will have pneumoconiosis is
+\begin{eqnarray*}
+  p = 0.009521 \times 42 - 0.099133 = 0.300749
+\end{eqnarray*}
+
+49. \\
+a) Using R, the model we get is
+\begin{eqnarray*}
+ y = 1108.7245 + 8.6393 x_1 +  0.2608 x_2 - 0.7114 x_3
+\end{eqnarray*}
+
+b) Using R, the error variance is 512.7389. (The code is shown in the appendix). \\
+
+c) Using R, the 95 confidence interval for all parameters are
+\begin{verbatim}
+                  2.5 %       97.5 %
+(Intercept) 678.3804305 1539.0685518
+x1            5.1378047   12.1408589
+x2            0.0561966    0.4653448
+x3           -1.9745615    0.5517491
+\end{verbatim}
+
+So, the confidence interval for $x_1 = 124, x_2 = 900, x_3 = 160$ is
+\begin{eqnarray*}
+  (678.38 + 5.1378 \times 124 + 0.0562 \times 900 - 1.9746 \times 160, \\
+    1539 + 12.141 \times 124 + 0.4653 \times 900 + 0.5517 \times 160) \\
+  \Rightarrow (1150.111,  3351.526)
+\end{eqnarray*}
+
+54. \\
+a) Using R, the model we get is
+\begin{eqnarray*}
+  \text{Satisfaction} = 2.8437 + 0.1619 \times \text{Income} - 0.1128 \times \text{Year}
+\end{eqnarray*}
+
+b) Since the regression variable for Years on the Job is negative, this indicates that the job satisfaction will decrease when income remains fixed and the number of years of service increases. \\
+
+c)
+\begin{eqnarray*}
+  \text{Satisfaction} = 2.8437 + 0.1619 \times 31 - 0.1128 \times 5 = 7.2986
+\end{eqnarray*}
+
+
+\appendix
+\appendixpage
+
+The R code is listed below:
+
+\verbatiminput{ieor4150_hmwk8.r}
 
 \end{document}
