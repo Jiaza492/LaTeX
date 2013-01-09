@@ -25,6 +25,8 @@
 
 \maketitle
 
+\tableofcontents
+
 \setlength{\parindent}{0in}
 
 \section{The Role of Algorithms in Computing}
@@ -369,13 +371,13 @@ Viewing a heap as a tree, we define the {\bf height} of a node in a heap to be t
  MAX-HEAPIFY($A,i$)
 \begin{algorithmic}[1]
 \State $l = \text {LEFT}(i)$
-\State $r = \text {RIGHTT}(i)$
-\If {$l \le A.heap-size$ and $A[l] > A[i]$}
-	\State $largest = 1$
+\State $r = \text {RIGHT}(i)$
+\If {$l \le A.\text{heap-size}$ and $A[l] > A[i]$}
+	\State $largest = l$
 \Else
 	\State $largest = i$
 \EndIf
-\If {$r \le A.heap-size$ and $A[r] > A[largest]$}
+\If {$r \le A.\text{heap-size}$ and $A[r] > A[largest]$}
 	\State $largest = r$
 \EndIf
 \If {$largest \neq i$}
@@ -394,7 +396,7 @@ The solution to this recurrence is $T(n) = O(\lg n)$. Alternatively, we can char
 
 BUILD-MAX-HEAP(A)
 \begin{algorithmic}[1]
-\State $A.heap-size = A.length$
+\State $A.\text{heap-size} = A.length$
 \For {$i = \lfloor A.length/2 \rfloor \text {{ \bf downto} } 1$}
 	\State MAX-HEAPIFY($A, i$)
 \EndFor
@@ -416,7 +418,7 @@ HEAPSORT(A)
 \State BUILD-MAX-HEAP(A)
 \For {$i = A.length \text {{ \bf downto} } 2$}
 	\State exchange $A[1]$ with $A[i]$
-        \State $A.heap-size = A.heap-size - 1$
+        \State $A.\text{heap-size} = A.\text{heap-size} - 1$
 	\State MAX-HEAPIFY($A, 1$)
 \EndFor
 \end{algorithmic}
@@ -432,12 +434,12 @@ HEAP-MAXIMUM(A)
 
 HEAP-EXTRACT-MAX(A)
 \begin{algorithmic}[1]
-\If {$A.heap-size < 1$}
+\If {$A.\text{heap-size} < 1$}
 	\State \textbf {error} ``heap underflow''
 \EndIf
 \State $max$ = A[1]
-\State $A[1] = A[A.heap-size]$
-\State $A.heap-size = A.heap-size - 1$
+\State $A[1] = A[A.\text{heap-size}]$
+\State $A.\text{heap-size} = A.\text{heap-size} - 1$
 \State MAX-HEAPIFY($A,1$)
 \State \textbf {return} $max$
 \end{algorithmic}
@@ -460,9 +462,9 @@ The running time of HEAP-INCREASE-KEY on an $n-$element heap is $O(\lg n)$. \\
 
 MAX-HEAP-INSERT($A, key$)
 \begin{algorithmic}[1]
-\State $A.heap-size = A.heap-size + 1$
-\State $A[A.heap-size] = -\infty$
-\State HEAP-INCREASE-KEY($A, A.heap-size,key$)
+\State $A.\text{heap-size} = A.\text{heap-size} + 1$
+\State $A[A.\text{heap-size}] = -\infty$
+\State HEAP-INCREASE-KEY($A, A.\text{heap-size},key$)
 \end{algorithmic}
 
 The running time of MAX-HEAP-INSERT on an $n-$element heap is $O(\lg n)$. \\
@@ -517,7 +519,7 @@ PARTITION($A, p, r$)
   \item \textbf {Balanced partitioning}
     \begin{eqnarray*}
       T(n)
-      &=& T(9n/10) + T(n/10) + cn.
+      &=& T(9n/10) + T(n/10) + cn
     \end{eqnarray*}    
     We get $T(n) = \Theta (n \lg n)$.
 \end{itemize}
@@ -601,7 +603,7 @@ For a value $r \le b$, we view each key as having $d = \lceil b/r \rceil$ digits
 
 \textbf {Bucket sort} assumes that the input is drawn from a uniform distribution and has an average-case running time of $O(n)$. Bucket sort divides the interval $[0,1)$ into $n$ equal-sized subintervals, or \textbf {buckets}, and then distributes the $n$ input numbers into the buckets. \\
 
-Our code for bucket sort assumes that the input is an $n$-element array $A$ and that each element $A[i]$ in the array satisfies $0 \le A[i] < 1$. The code requires an auxiliary array $B[0..n-1]$ of linked lists (buckets) and assumes that there is a mechanism for maintaining such lists. \\
+Our code for bucket sort assumes that the input is an $n$-element array $A$ and that each element $A[i]$ in the array satisfies $0 \le A[i] < 1$. The code requires an auxiliary array $B[0...n-1]$ of linked lists (buckets) and assumes that there is a mechanism for maintaining such lists. \\
 
 BUCKET-SORT($A$)
 \begin{algorithmic}[1]
@@ -884,14 +886,14 @@ The keys in a binary search tree are always stored in such a way as to satisfy t
 \begin{quote}
   Let $x$ be a node in a binary search tree. If $y$ is a node in the left subtree of $x$, then $y.key \le x.key$. If $y$ is a node in the right subtree of $x$, then $y.key \ge x.key$.
 \end{quote}
-\textbf {Inorder tree walk} prints the key of the root of a subtree between printing the values in its left subtree and printing those in its right subtree. Similarly, a \textbf {preorder tree walk} prints the root before the values in either subtree, and a \textbf {postorder tree walk} prints the root after the values in its substrees. \\
+\textbf {Inorder tree walk} prints the key of the root of a subtree between printing the values in its left subtree and printing those in its right subtree. Similarly, a \textbf {preorder tree walk} prints the root before the values in either subtree, and a \textbf {postorder tree walk} prints the root after the values in its subtrees. \\
 
 INORDER-TREE-WALK($x$)
 \begin{algorithmic}[1]
 \If {$x \neq \text {NIL}$}
-\State INORDER-TREE-WALK($x.left$)
-\State print $x.key$
-\State INORDER-TREE-WALK($x.right$)
+\State INORDER-TREE-WALK($x.\text{left}$)
+\State print $x.\text{key}$
+\State INORDER-TREE-WALK($x.\text{right}$)
 \EndIf
 \end{algorithmic}
 
@@ -901,23 +903,23 @@ INORDER-TREE-WALK($x$)
 
 TREE-SEARCH($x, k$)
 \begin{algorithmic}[1]
-\If {$x == \text {NIL}$ or $k == x.key$}
+\If {$x == \text {NIL}$ or $k == x.\text{key}$}
 	\State \textbf {return} $x$
 \EndIf
-\If {$k < x.key$}
-	\State \textbf {return} TREE-SEARCH($x.left, k$)
+\If {$k < x.\text{key}$}
+	\State \textbf {return} TREE-SEARCH($x.\text{left}, k$)
 \Else
-	\State \textbf {return} TREE-SEARCH($x.right, k$)
+	\State \textbf {return} TREE-SEARCH($x.\text{right}, k$)
 \EndIf
 \end{algorithmic}
 
 ITERATIVE-TREE-SEARCH($x, k$)
 \begin{algorithmic}[1]
-\While {$x \neq \text {NIL}$ and $x \neq x.key$}
-	\If {$k < x.key$}
-		\State $x = x.left$
+\While {$x \neq \text {NIL}$ and $x \neq x.\text{key}$}
+	\If {$k < x.\text{key}$}
+		\State $x = x.\text{left}$
         \Else
-		\State $x = x.right$
+		\State $x = x.\text{right}$
 	\EndIf
 \EndWhile
 \State \textbf {return} $x$
@@ -925,27 +927,27 @@ ITERATIVE-TREE-SEARCH($x, k$)
 
 TREE-MINIMUM($x$)
 \begin{algorithmic}[1]
-\While {$x.left \neq \text {NIL}$}
-	\State $x = x.left$
+\While {$x.\text{left} \neq \text {NIL}$}
+	\State $x = x.\text{left}$
 \EndWhile
 \State \textbf {return} $x$
 \end{algorithmic}
 
 TREE-MAXIMUM($x$)
 \begin{algorithmic}[1]
-\While {$x.right \neq \text {NIL}$}
-	\State $x = x.right$
+\While {$x.\text{right} \neq \text {NIL}$}
+	\State $x = x.\text{right}$
 \EndWhile
 \State \textbf {return} $x$
 \end{algorithmic}
 
 TREE-SUCCESSOR($x$)
 \begin{algorithmic}[1]
-\If {$x.right \neq \text {NIL}$}
-	\State \textbf {return} TREE-MINIMUM($x.right$)
+\If {$x.\text{right} \neq \text {NIL}$}
+	\State \textbf {return} TREE-MINIMUM($x.\text{right}$)
 \EndIf
 \State $y = x.p$
-\While {$y \neq \text {NIL}$ and $x == y.right$}
+\While {$y \neq \text {NIL}$ and $x == y.\text{right}$}
 	\State $x = y$
         \State $y = y.p$
 \EndWhile
@@ -963,23 +965,23 @@ TREE-SUCCESSOR($x$)
 TREE-INSERT($T,z$)
 \begin{algorithmic}[1]
 \State $y = \text {NIL}$
-\State $x = T.root$
+\State $x = T.\text{root}$
 \While {$x \neq NIL$}
 	\State $y = x$
-        \If {$z.key < x.key$}
-        	\State $x = x.left$
+        \If {$z.\text{key} < x.\text{key}$}
+        	\State $x = x.\text{left}$
         \Else
-        	\State $x = x.right$
+        	\State $x = x.\text{right}$
         \EndIf
 \EndWhile
 \State $z.p = y$
 \If {$y == NIL$}
-	\State $T.root = z$
+	\State $T.\text{root} = z$
         \Comment tree $T$ was empty
-\ElsIf {$z.key < y.key$}
-	\State $y.left = z$
+\ElsIf {$z.\text{key} < y.\text{key}$}
+	\State $y.\text{left} = z$
 \Else
-	\State $y.right = z$
+	\State $y.\text{right} = z$
 \EndIf
 \end{algorithmic}
 
@@ -990,11 +992,11 @@ TRANSPLANT replaces one subtree ($u$) as a child of its parent ($u.p$) with anot
 TRANSPLANT($T,u,v$)
 \begin{algorithmic}[1]
 \If {$u.p == \text {NIL}$}
-	\State $T.root = v$
-\ElsIf {$u == u.p.left$}
-	\State $u.p.left = v$
+	\State $T.\text{root} = v$
+\ElsIf {$u == u.p.\text{left}$}
+	\State $u.p.\text{left} = v$
 \Else
-	\State $u.p.right = v$
+	\State $u.p.\text{right} = v$
 \EndIf
 \If {$v \neq \text {NIL}$}
 	\State $v.p = u.p$
@@ -1005,19 +1007,20 @@ Deletion: Replace $z$ with its successor $y$. And $y$ does not have a left subtr
 
 TREE-DELETE($T,z$)
 \begin{algorithmic}[1]
-\If {$z.left == \text {NIL}$}
-	\State TRANSPLANT($T,z,z.right$)
-\ElsIf {$z.right == \text {NIL}$}
-	\State TRANSPLANT($T,z,z.left$)
+\If {$z.\text{left} == \text {NIL}$}
+	\State TRANSPLANT($T,z,z.\text{right}$)
+\ElsIf {$z.\text{right} == \text {NIL}$}
+	\State TRANSPLANT($T,z,z.\text{left}$)
 \Else
-	\State $y = \text {TREE-MINIMUM}(z.right)$
+	\State $y = \text {TREE-MINIMUM}(z.\text{right})$
         \If {$y.p \neq z$}
-		\State TRANSPLANT($T,y,y.right$)
-                \State $y.right = z.right$
-                \State $y.right.p = y$
+		\State TRANSPLANT($T,y,y.\text{right}$)
+                \State $y.\text{right} = z.\text{right}$
+                \State $y.\text{right}.p = y$
         \EndIf
-        \State $y.left = z.left$
-        \State $y.left.p = y$
+        \State TRANSPLANT($T,z,y$)
+        \State $y.\text{left} = z.\text{left}$
+        \State $y.\text{left}.p = y$
 \EndIf
 \end{algorithmic}
 
@@ -1032,6 +1035,162 @@ A \textbf {randomly built binary search tree} on $n$ keys as one that arises fro
 \begin{theorem}
   The expected height of a randomly built binary search tree on $n$ distinct keys is $O(\lg n)$.
 \end{theorem}
+
+\section{Red-Black Tree}
+
+Red-black trees are one of many search-tree schemes that are ``balanced'' in order to guarantee that basic dynamic-set operations take $O(\lg n)$ time in the worst case.
+
+\subsection{Properties of red-black trees}
+
+A \textbf {red-black tree} is a binary search tree with one extra bit of storage per node: its \textbf {color}, which can be either RED or BLACK. By constraining the node colors on any simple path from the root to a leaf, red-black trees ensure that no such path is more than twice as long as any other, so that the tree is approximately \textbf {balanced}. \\
+
+A red-black tree is a binary tree that satisfies the following \textbf {red-black properties}:
+\begin{enumerate}
+  \item Every node is either red or black.
+  \item The root is black.
+  \item Every leaf (NIL) is black.
+  \item Of a node is red, then both its children are black.
+  \item For each node, all simple paths from the node to descendant leaves contain the same number of black nodes.
+\end{enumerate}
+
+We call the number of black nodes on any simple path from, but not including, a node $x$ down to a leaf the \textbf {black-height} of the node, denoted $bh(x)$. We define the black-height of a red-black tree to be the black-height of its root.
+
+\begin{lemma}
+  A red-black tree with $n$ internal nodes has height at most $2 \lg (n+1)$.
+\end{lemma}
+
+As an immediate consequence of this lemma, we can implement the dynamic-set operations SEARCH, MINIMUM, MAXIMUM, SUCCESSOR, and PREDECESSOR in $O(\lg n)$ time on red-black tree.
+
+\subsection{Rotations}
+
+We change the pointer structure through \textbf {rotation}, which is a local operation in a search tree that preserves the binary-search-tree property. \\
+
+The pseudocode for LEFT-ROTATE assumes that $x.right \neq T.nil$ and that root's parent is $T.nil$. \\
+
+LEFT-ROTATE($T,x$)
+\begin{algorithmic}[1]
+\State $y = x.\text{right}$
+\Comment set $y$
+\State $x.\text{right} = y.\text{left}$
+\Comment turn $y$'s left subtree into $x$'s right subtree
+\If {$y.\text{left} \neq T.\text{nil}$}
+	\State $y.\text{left}.p = x$
+\EndIf
+\State $y.p = x.p$
+\Comment link $x$'s parent to $y$
+\If {$x.p == T.ni$}
+	\State $T.\text{root} = y$
+\ElsIf {$x == x.p.\text{left}$}
+	\State $x.p.left = y$
+\Else
+	\State $x.p.right = y$
+\EndIf
+\State $y.left = x$
+\Comment put $x$ on $y$'s left
+\State $x.p = y$
+\end{algorithmic}
+
+Both LEFT-ROTATE and RIGHT-ROTATE run in $O(1)$ time. Only pointers are changed by a rotation; all other attributes in a node remain the same.
+
+\subsection{Insertion}
+
+RB-INSERT($T,z$)
+\begin{algorithmic}[1]
+\State $y = T.nil$
+\State $x = T.root$
+\While {$x \neq T.nil$}
+	\State $y = x$
+        \If {$z.key < x.key$}
+        	\State $x = x.left$
+        \Else
+        	\State $x = x.right$
+        \EndIf
+\EndWhile
+\State $z.p = y$
+\If {$y == T.nil$}
+	\State $T.root = z$
+\ElsIf {$z.key < y.key$}
+	\State $y.left = z$
+\Else
+	\State $y.right = z$
+\EndIf
+\State $z.left = T.nil$
+\State $z.right = T.nil$
+\State $z.color = RED$
+\State RB-INSERT-FIXUP($T,z$)
+\end{algorithmic}
+
+RB-INSERT-FIXUP($T,z$)
+\begin{algorithmic}[1]
+\While {$z.p.color == RED$}
+        \If {$z.p == z.p.p.left$}
+        	\State $y = z.p.p.right$
+                \If $y.color == RED$
+                	\State $z.p.color = BLACK$
+                        \State $y.color = BLACK$
+                        \State $z.p.p.color = RED$
+                        \State $z = z.p.p$
+                \Else
+                	\If {$z == z.p.right$}
+                		\State $z = z.p$
+                        	\State LEFT-ROTATE($T,z$)
+                        \EndIf
+                        \State $z.p.color = BLACK$
+                        \State $z.p.p.color = RED$
+                        \State RIGHT-ROTATE($T,z.p.p$)
+                \EndIf
+        \Else
+        	\State (same as \textbf {then} clause with ``right'' and ``left'' exchanged)
+        \EndIf
+\EndWhile
+\State $T.root.color = BLACK$
+\end{algorithmic}
+
+\section{Augmenting Data Structures}
+
+\subsection{Dynamic order statistics}
+
+Recall that the $i$th order statistic of a set of $n$ elements, where $i \in \{ 1,2,\dots,n \}$, is simply the element in the set with the $i$th smallest key. The \textbf{rank} of an element is its position in the linear order of the set. \\
+
+An \textbf{order-statistic tree} T is simply a red-black tree with additional information sorted in each node. Besides the usual red-black tree attributes $x.key$, $x.color$, $x.p$, $x.left$ and $x.right$ in a node x, we have another attribute, $x.size$. This attribute contains the number of (internal) nodes in the subtree rooted at $x$ (including $x$ itself), that is, the size of the subtree. \\
+
+\subsubsection*{Retrieving an element with a given rank}
+
+OS-SELECT($x,i$)
+\begin{algorithmic}[1]
+\State $r = x.left.size + 1$
+\If {$i == r$}
+	\State \textbf{return} $x$
+\ElsIf {$i < r$}
+	\State \textbf{return} OS-SELECT($x.left, i$)
+\Else
+	\State \textbf{return} OS-SELECT($x.right, i-r$)
+\EndIf
+\end{algorithmic}
+
+The running time o $OS-SELECT$ is $O(\lg n)$ for a dynamic set of $n$ elements.
+
+\subsection*{Determining the rank of an element}
+
+OS-RANK($T, x$)
+\begin{algorithmic}[1]
+\State $r = x.left.size + 1$
+\State $y = x$
+\While {$y \neq T.root$}
+	\If {$y == y.p.right$}
+        	\State $r = r + y.p.left.size + 1$
+        \EndIf
+        \State $y = y.p$
+\EndWhile
+\State \textbf{return} $r$
+\end{algorithmic}
+
+The running time of OS-RANK is at worst proportional to the height of the tree: $O(\lg n)$ on an $n$-node order-statistic tree.
+
+
+
+
+
 
 
 

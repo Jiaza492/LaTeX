@@ -1182,10 +1182,55 @@ Let $f(x_1, \dots, x_n | \theta)$ denote the joint probability mass function of 
 
 \subsection{Interval Estimates}
 
-\begin{itemize}
-  \item two-sided confidence interval
-  \item one-sided confidence interval
-\end{itemize}
+Suppose that $X_1, \dots, X_n$ is a sample from a normal population having unknown mean $\mu$ and known variance $\sigma^2$. It has been shown that $\overline{X} = \sum_{i=1}^n X_i / n$ is the maximum likelihood estimator for $\mu$. However, we don't expect the sample mean $\overline{X}$ will exactly equal $\mu$, but rather that it will ``be close''. Since the point estimator $\overline{X}$ is normal with mean $\mu$ and variance $\sigma^2 / n$, it follows that
+\begin{eqnarray*}
+  \frac {\overline{X} - \mu}{\sigma / \sqrt{n}}
+  = \sqrt{n} \frac {\overline{X} - \mu}{\sigma}
+\end{eqnarray*}
+
+has a standard normal distribution. For any $\sigma$,
+\begin{eqnarray*}
+  P \left\{ - z_{\alpha / 2} < Z < z_{\alpha / 2} \right\} = 1 - \alpha
+\end{eqnarray*}
+
+when $Z$ is a standard normal random variable. As a result, we have
+\begin{eqnarray*}
+  P \left\{ - z_{\alpha / 2} < \sqrt{n} \frac {\overline{X} - \mu}{\sigma}
+      < z_{\alpha / 2} \right\} &=& 1 - \alpha \\
+  P \left\{ \overline{X} - z_{\alpha / 2} \frac {\sigma}{\sqrt{n}} < \mu
+      < \overline{X} + z_{\alpha / 2} \frac {\sigma}{\sqrt{n}}
+    \right\} &=& 1 - \alpha
+\end{eqnarray*}
+
+If we now observe the sample and it turns out that $\overline{X} = \overline{x}$, then the interval
+\begin{eqnarray*}
+  \left( \overline{x} - z_{\alpha / 2} \frac {\sigma}{\sqrt{n}},
+    \overline{x} + z_{\alpha / 2} \frac {\sigma}{\sqrt{n}} \right)
+\end{eqnarray*}
+
+is called a \textbf{$100(1 - \alpha)$ two-sided confidence interval estimate} of $\mu$. \\
+
+Similarly, knowing that $Z = \sqrt{n} \frac{\overline{X} - \mu}{\sigma}$ is a standard normal random variable, along with the identities
+\begin{eqnarray*}
+  P \left\{ Z > z_{\alpha} \right\} = \alpha
+\end{eqnarray*}
+
+and
+\begin{eqnarray*}
+  P \left\{ Z < -z_{\alpha} \right\} = \alpha
+\end{eqnarray*}
+
+results in one-sided confidence intervals of any desired level of confidence. Specially, we obtain that
+\begin{eqnarray*}
+  \left( \overline{x} - z_{\alpha} \frac {\sigma}{\sqrt{n}}, \infty \right)
+\end{eqnarray*}
+
+and
+\begin{eqnarray*}
+  \left( -\infty, \overline{x} + z_{\alpha} \frac {\sigma}{\sqrt{n}} \right)
+\end{eqnarray*}
+
+are, respectively, $100(1 - \alpha)$ percent one-sided upper and $100(1 - \alpha)$ percent one-sided lower confidence intervals for $\mu$.
 
 \subsubsection{Confidence Interval for a Normal Mean When the Variance is Unknown}
 
@@ -1244,7 +1289,7 @@ Since $\overline{X} = \sum_{i=1}^n X_i / n$ and $\overline{Y} = \sum_{i=1}^m Y_i
 To obtain a confidence interval estimator, we need the distribution of $\overline{X} - \overline{Y}$. Because
 \begin{eqnarray*}
   \overline{X} \sim \mathcal{N} (\mu_1, \sigma_1^2 / n) \\
-  \overline{Y} \sim \mathcal{N} (\mu_2, \sigma_2^2 / n)
+  \overline{Y} \sim \mathcal{N} (\mu_2, \sigma_2^2 / m)
 \end{eqnarray*}
 
 It follows from the fact that the sum of independent normal random variables is also normal that
@@ -1265,7 +1310,7 @@ and so
   P \left\{ -z_{\alpha/2} <
       \frac {\overline{X} - \overline{Y} - (\mu_1 - \mu_2)}
       {\sqrt {\frac{\sigma_1^2}{n} + \frac{\sigma_2^2}{m}}}
-      < z_{\alpha_2} \right\} = 1 - \alpha
+      < z_{\alpha/2} \right\} = 1 - \alpha
 \end{eqnarray*}
 
 Or equivalent,
@@ -1274,7 +1319,7 @@ Or equivalent,
     - z_{\alpha/2} \sqrt {\frac{\sigma_1^2}{n} + \frac{\sigma_2^2}{m}}
     < \mu_1 - \mu_2
     < \overline{X} - \overline{Y}
-      + z_{\alpha_2} \sqrt {\frac{\sigma_1^2}{n} + \frac{\sigma_2^2}{m}}
+      + z_{\alpha/2} \sqrt {\frac{\sigma_1^2}{n} + \frac{\sigma_2^2}{m}}
     \right\} = 1 - \alpha
 \end{eqnarray*}
 
@@ -1284,7 +1329,7 @@ Hence, if $\overline{X}$ and $\overline{Y}$ are observed to equal $\overline{x}$
   \left( \overline{x} - \overline{y}
     - z_{\alpha/2} \sqrt {\frac{\sigma_1^2}{n} + \frac{\sigma_2^2}{m}}, \;
     \overline{x} - \overline{y}
-      + z_{\alpha_2} \sqrt {\frac{\sigma_1^2}{n} + \frac{\sigma_2^2}{m}}
+      + z_{\alpha/2} \sqrt {\frac{\sigma_1^2}{n} + \frac{\sigma_2^2}{m}}
     \right)
 \end{eqnarray*}
 
@@ -1292,7 +1337,7 @@ One-sided confidence intervals for $\mu_1 - \mu_2$ are obtained in a similar fas
 \begin{eqnarray*}
   \mu_1 - \mu_2 \in
   \left( - \infty, \; \overline{x} - \overline{y}
-      + z_{\alpha_2} \sqrt {\frac{\sigma_1^2}{n} + \frac{\sigma_2^2}{m}}
+      + z_{\alpha/2} \sqrt {\frac{\sigma_1^2}{n} + \frac{\sigma_2^2}{m}}
     \right)
 \end{eqnarray*}
 
@@ -1494,7 +1539,7 @@ Hence, a $100(1 - \alpha)$ percent confidence interval for $\theta$ is
 \begin{eqnarray*}
   \theta \in \left(
     \frac {2 \sum_{i=1}^n X_i}{\chi_{\alpha / 2, 2n}^2}
-    ,{2 \sum_{i=1}^n X_i}{\chi_{1-\alpha / 2, 2n}^2} \right)
+    , \; frac{2 \sum_{i=1}^n X_i}{\chi_{1-\alpha / 2, 2n}^2} \right)
 \end{eqnarray*}
 
 \subsection{Evaluating a Point Estimator}
