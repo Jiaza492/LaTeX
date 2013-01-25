@@ -96,7 +96,7 @@ MERGE-SORT($A, p, r$)
 \begin{eqnarray*}
   \Theta (g(n)) = \{ f(n): && \text{there exist positive constants
     $c_1$, $c_2$, and $n_0$ such that} \\
-  && 0 \le c_1 g(n) \le f(n) \text{ for all } n \ge n_0 \} \\
+  && 0 \le c_1 g(n) \le f(n) \le c_2 g(n) \text{ for all } n \ge n_0 \} \\
   O(g(n)) = \{ f(n): && \text{there exist positive constants
     $c$ and $n_0$ such that} \\
   && 0 \le f(n) \le cg(n) \text{ for all } n \ge n_0 \} \\
@@ -123,10 +123,10 @@ MERGE-SORT($A, p, r$)
   \begin{equation*}
     T(n) = aT(n/b) + f(n),
   \end{equation*}
-  where we interpret $n/b$ to mean either $\lfloor n/b \rfloor$ or $\lceil n/b \rceil$. Then $T(n)$ can be bounded asymptotically as follows.
+  where we interpret $n/b$ to mean either $\lfloor n/b \rfloor$ or $\lceil n/b \rceil$. Then $T(n)$ has the following asymptotic bounds:
   \begin{enumerate}
   \item If $f(n) = O(n^{\log_b^a - \epsilon})$ for some constant $\epsilon > 0$, then $T(n) = \Theta (n^{\log_b a})$.
-  \item If $f(n) = O(n^{\log_b^a})$, then $T(n) = \Theta (n^{\log_b a} \lg n)$.
+  \item If $f(n) = \Theta (n^{\log_b^a})$, then $T(n) = \Theta (n^{\log_b a} \lg n)$.
   \item If $f(n) = O(n^{\log_b^a + \epsilon})$ for some constant $\epsilon > 0$, and if $af(n/b) \le cf(n)$ for some constant $c < 1$ and all sufficiently large $n$, then $T(n) = \Theta \left( f(n) \right)$.
   \end{enumerate}
 \end{theorem}
@@ -368,6 +368,8 @@ Viewing a heap as a tree, we define the {\bf height} of a node in a heap to be t
 
 \subsection{Maintaining the heap property}
 
+MAX-HEAPIFY 's inputs are an array $A$ and an index $i$ into the array. When it is called, MAX-HEAPIFY assumes that the binary trees rooted at LEFT($i$) and RIGHT($i$) are max-heaps, but that $A[i]$ might be smaller than its children, thus violating he max-heap property. MAX-HEAPIFY lets the value at $A[i]$ ``float down'' in the max-heap so that the subtree rooted an index $i$ obeys the max-heap property. \\
+
  MAX-HEAPIFY($A,i$)
 \begin{algorithmic}[1]
 \State $l = \text {LEFT}(i)$
@@ -588,7 +590,7 @@ RADIX-SORT($A, d$)
 \end{algorithmic}
 
 \begin{lemma}
-  Given $n$ $d-$digit numbers in which each digit can take on up to $k$ possible values, RADIX-SORT correctly sorts these numbers in $\Theta(d(n+k))$ time if the stable sort it uses takes $\Theta (n+k)$.
+  Given $n$ $d-$digit numbers in which each digit can take on up to $k$ possible values, RADIX-SORT correctly sorts these numbers in $\Theta(d(n+k))$ time if the stable sort it uses takes $\Theta (n+k)$ time.
 \end{lemma}
 
 When $d$ is constant and $k = O(n)$, we can make radix sort run in linear time. More generally, we have some flexibility in how to break each key into digits.
@@ -704,7 +706,7 @@ Each of these operations takes only $O(1)$ time.
 
 \subsection{Hash tables}
 
-With hashing, an element with key $k$ is stored in slot $h(k)$; that is, we use a \textbf {hash function} $h$ to compute the slot from the key $k$. here, $h$ maps the universe $U$ of keys into the slots of a \textbf {hash table} $T[0..m-1]$:
+With hashing, an element with key $k$ is stored in slot $h(k)$; that is, we use a \textbf {hash function} $h$ to compute the slot from the key $k$. Here, $h$ maps the universe $U$ of keys into the slots of a \textbf {hash table} $T[0..m-1]$:
 \begin{equation*}
   h: U \rightarrow \{ 0,1, \dots, m-1 \},
 \end{equation*}
@@ -761,7 +763,7 @@ A prime not too close to an exact power of $2$ is often a good choice for $m$.
 
 \subsubsection{The multiplication method}
 
-The \textbf {multiplication method} for creating hash functions operates in two steps. First, we multiply the key $k$ by a constant $A$ in the range $0 < A < 1$ and extract the fractional part of $kA$. Then, we multiply this value by $m$ and take the floor o the result. In short, the hash function is
+The \textbf {multiplication method} for creating hash functions operates in two steps. First, we multiply the key $k$ by a constant $A$ in the range $0 < A < 1$ and extract the fractional part of $kA$. Then, we multiply this value by $m$ and take the floor of the result. In short, the hash function is
 \begin{equation*}
   h(k) = \lfloor m (kA \mod 1) \rfloor,
 \end{equation*}
@@ -780,7 +782,7 @@ Let $\mathcal {H}$ be a finite collection of hash functions that map a given uni
 Recall that $n_i$ denotes the length of list $T[i]$.
 
 \begin{theorem}
-  Suppose that a hash function $h$ is chosen randomly from a universal collection of hash functions and has been used to hash $n$ keys into a table $T$ of size $m$, using chaining to resolve collisions. If key $k$ is not in the table, then the expected length $E[n_{h(k)}]$ of the list that key $k$ hashes to is at most the load factor $\alpha = m/m$. If key $k$ is in the table, then the expected length $E[n_{h(k)}]$ of the list containing key $k$ is at most $1 + \alpha$.
+  Suppose that a hash function $h$ is chosen randomly from a universal collection of hash functions and has been used to hash $n$ keys into a table $T$ of size $m$, using chaining to resolve collisions. If key $k$ is not in the table, then the expected length $E[n_{h(k)}]$ of the list that key $k$ hashes to is at most the load factor $\alpha = n/m$. If key $k$ is in the table, then the expected length $E[n_{h(k)}]$ of the list containing key $k$ is at most $1 + \alpha$.
 \end{theorem}
 
 \begin{corollary}
@@ -796,7 +798,6 @@ To perform insertion using open addressing, we successively examine, or \textbf 
   h: U \times \{ 0,1,\dots,m-1 \} \rightarrow \{ 0,1,\dots,m-1 \}.
 \end{equation*}
 With open addressing, we require that for every key $k$, the \textbf {probe sequence}
-
 \begin{equation*}
   <h(k,0), h(k,1), \dots, h(k, m-1)>
 \end{equation*}
@@ -836,7 +837,7 @@ Given an ordinary hash function $h': U \rightarrow \{ 0,1,\dots,m-1 \}$, which w
 \begin{equation*}
   h(k,i) = (h'(k) + i) \mod m
 \end{equation*}
-for $i = 0,1,\dots,m-1$. Linear probing is easy to implement, but it suffers from a problem known as \textbf {primary clustering}.
+for $i = 0,1,\dots,m-1$. Linear probing is easy to implement, but it suffers from a problem known as \textbf {primary clustering}. Long runs of occupied slots build up, increasing the average search time. Clusters arise because an empty slot preceded by $i$ full slots get filled next with probability $(i+1)/m$. Long runs of occupied slots tend to get longer, and the average search time increases.
 
 \subsubsection*{Quadratic probing}
 
@@ -966,7 +967,7 @@ TREE-INSERT($T,z$)
 \begin{algorithmic}[1]
 \State $y = \text {NIL}$
 \State $x = T.\text{root}$
-\While {$x \neq NIL$}
+\While {$x \neq \text {NIL}$}
 	\State $y = x$
         \If {$z.\text{key} < x.\text{key}$}
         	\State $x = x.\text{left}$
@@ -975,7 +976,7 @@ TREE-INSERT($T,z$)
         \EndIf
 \EndWhile
 \State $z.p = y$
-\If {$y == NIL$}
+\If {$y == \text {NIL}$}
 	\State $T.\text{root} = z$
         \Comment tree $T$ was empty
 \ElsIf {$z.\text{key} < y.\text{key}$}
@@ -1003,7 +1004,7 @@ TRANSPLANT($T,u,v$)
 \EndIf
 \end{algorithmic}
 
-Deletion: Replace $z$ with its successor $y$. And $y$ does not have a left subtree. \\
+Deletion: Replace $z$ with its successor $y$. Note that when $z$ has both left and right subtrees, then its successor $y$ does not have a left subtree. \\
 
 TREE-DELETE($T,z$)
 \begin{algorithmic}[1]
@@ -1030,7 +1031,7 @@ TREE-DELETE($T,z$)
 
 \subsection{Randomly built binary search tree}
 
-A \textbf {randomly built binary search tree} on $n$ keys as one that arises from inserting the keys in random order into an initially empty tree, where each of the $n!$ permutations of the input keys is equally likely. 
+A \textbf {randomly built binary search tree} on $n$ keys is one that arises from inserting the keys in random order into an initially empty tree, where each of the $n!$ permutations of the input keys is equally likely. 
 
 \begin{theorem}
   The expected height of a randomly built binary search tree on $n$ distinct keys is $O(\lg n)$.
@@ -1078,14 +1079,14 @@ LEFT-ROTATE($T,x$)
 \EndIf
 \State $y.p = x.p$
 \Comment link $x$'s parent to $y$
-\If {$x.p == T.ni$}
+\If {$x.p == T.\text{nil}$}
 	\State $T.\text{root} = y$
 \ElsIf {$x == x.p.\text{left}$}
-	\State $x.p.left = y$
+	\State $x.p.\text{left} = y$
 \Else
-	\State $x.p.right = y$
+	\State $x.p.\text{right} = y$
 \EndIf
-\State $y.left = x$
+\State $y.\text{left} = x$
 \Comment put $x$ on $y$'s left
 \State $x.p = y$
 \end{algorithmic}
@@ -1096,54 +1097,54 @@ Both LEFT-ROTATE and RIGHT-ROTATE run in $O(1)$ time. Only pointers are changed 
 
 RB-INSERT($T,z$)
 \begin{algorithmic}[1]
-\State $y = T.nil$
-\State $x = T.root$
-\While {$x \neq T.nil$}
+\State $y = T.\text{nil}$
+\State $x = T.\text{root}$
+\While {$x \neq T.\text{nil}$}
 	\State $y = x$
-        \If {$z.key < x.key$}
-        	\State $x = x.left$
+        \If {$z.key < x.\text{key}$}
+        	\State $x = x.\text{left}$
         \Else
-        	\State $x = x.right$
+        	\State $x = x.\text{right}$
         \EndIf
 \EndWhile
 \State $z.p = y$
-\If {$y == T.nil$}
-	\State $T.root = z$
-\ElsIf {$z.key < y.key$}
-	\State $y.left = z$
+\If {$y == T.\text{nil}$}
+	\State $T.\text{root} = z$
+\ElsIf {$z.\text{key} < y.\text{key}$}
+	\State $y.\text{left} = z$
 \Else
-	\State $y.right = z$
+	\State $y.\text{right} = z$
 \EndIf
-\State $z.left = T.nil$
-\State $z.right = T.nil$
-\State $z.color = RED$
+\State $z.\text{left} = T.\text{nil}$
+\State $z.\text{right} = T.\text{nil}$
+\State $z.\text{color} = RED$
 \State RB-INSERT-FIXUP($T,z$)
 \end{algorithmic}
 
 RB-INSERT-FIXUP($T,z$)
 \begin{algorithmic}[1]
-\While {$z.p.color == RED$}
-        \If {$z.p == z.p.p.left$}
-        	\State $y = z.p.p.right$
-                \If $y.color == RED$
-                	\State $z.p.color = BLACK$
-                        \State $y.color = BLACK$
-                        \State $z.p.p.color = RED$
+\While {$z.p.\text{color} == RED$}
+        \If {$z.p == z.p.p.\text{left}$}
+        	\State $y = z.p.p.\text{right}$
+                \If {$y.\text{color} == RED$}
+                	\State $z.p.\text{color} = BLACK$
+                        \State $y.\text{color} = BLACK$
+                        \State $z.p.p.\text{color} = RED$
                         \State $z = z.p.p$
                 \Else
-                	\If {$z == z.p.right$}
+                	\If {$z == z.p.\text{right}$}
                 		\State $z = z.p$
                         	\State LEFT-ROTATE($T,z$)
                         \EndIf
-                        \State $z.p.color = BLACK$
-                        \State $z.p.p.color = RED$
+                        \State $z.p.\text{color} = BLACK$
+                        \State $z.p.p.\text{color} = RED$
                         \State RIGHT-ROTATE($T,z.p.p$)
                 \EndIf
         \Else
         	\State (same as \textbf {then} clause with ``right'' and ``left'' exchanged)
         \EndIf
 \EndWhile
-\State $T.root.color = BLACK$
+\State $T.\text{root}.\text{color} = BLACK$
 \end{algorithmic}
 
 \section{Augmenting Data Structures}
@@ -1152,7 +1153,10 @@ RB-INSERT-FIXUP($T,z$)
 
 Recall that the $i$th order statistic of a set of $n$ elements, where $i \in \{ 1,2,\dots,n \}$, is simply the element in the set with the $i$th smallest key. The \textbf{rank} of an element is its position in the linear order of the set. \\
 
-An \textbf{order-statistic tree} T is simply a red-black tree with additional information sorted in each node. Besides the usual red-black tree attributes $x.key$, $x.color$, $x.p$, $x.left$ and $x.right$ in a node x, we have another attribute, $x.size$. This attribute contains the number of (internal) nodes in the subtree rooted at $x$ (including $x$ itself), that is, the size of the subtree. \\
+An \textbf{order-statistic tree} T is simply a red-black tree with additional information sorted in each node. Besides the usual red-black tree attributes $x.key$, $x.color$, $x.p$, $x.left$ and $x.right$ in a node x, we have another attribute, $x.size$. This attribute contains the number of (internal) nodes in the subtree rooted at $x$ (including $x$ itself), that is, the size of the subtree. If we define the sentinel's size to be 0 -- that is, we set $T.\text{nil}.\text{size}$ to be 0 -- then we have the identity
+\begin{equation*}
+  x.\text{size} = x.\text{left}.\text{size} + x.\text{right}.\text{size} + 1
+\end{equation*}
 
 \subsubsection*{Retrieving an element with a given rank}
 
@@ -1168,9 +1172,9 @@ OS-SELECT($x,i$)
 \EndIf
 \end{algorithmic}
 
-The running time o $OS-SELECT$ is $O(\lg n)$ for a dynamic set of $n$ elements.
+The running time of OS-SELECT is $O(\lg n)$ for a dynamic set of $n$ elements.
 
-\subsection*{Determining the rank of an element}
+\subsubsection*{Determining the rank of an element}
 
 OS-RANK($T, x$)
 \begin{algorithmic}[1]
@@ -1187,10 +1191,19 @@ OS-RANK($T, x$)
 
 The running time of OS-RANK is at worst proportional to the height of the tree: $O(\lg n)$ on an $n$-node order-statistic tree.
 
+\subsection{How to augment a data structure}
 
+We can break the process of augmenting a data structure into four steps:
+\begin{enumerate}
+  \item Choose an underlying data structure.
+  \item Determine additional information to maintain in the underlying data structure.
+  \item Verify that we can maintain the additional information for the basic modifying operations on the underlying data structure.
+  \item Develop new operations.
+\end{enumerate}
 
-
-
+\begin{theorem} [Augmenting a red-black tree]
+  Let $f$ be an attribute that augments a red-black tree $T$ of $n$ nodes, and suppose that the value of $f$ for each node $x$ depends on only the information in nodes $x$, $x.\text{left}$, and $x.\text{right}$, possibly including $x.\text{left}.f$ and $x.\text{right}.f$. Then, we can maintain the values of $f$ in all nodes of $T$ during insertion and deletion without asymptotically affecting the $O(\lg n)$ performance of these operations.
+\end{theorem}
 
 
 
