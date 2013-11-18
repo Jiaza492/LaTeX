@@ -39,7 +39,7 @@ Informally, an \textbf {algorithm} is any well-defined computational procedure t
 
 INSERTION-SORT(A)
 \begin{algorithmic}[1]
-\For {$j = 2 \textbf { to } A.legnth$}
+\For {$j = 2 \textbf { to } A.length$}
 	\State $key = A[j]$
         \State // Insert $A[j]$ into the sorted sequence $A[1..j-1]$.
         \State $i = j - 1$
@@ -119,7 +119,7 @@ MERGE-SORT($A, p, r$)
 \subsection{The master method}
 
 \begin{theorem}
-  Let $a \ge 1$ and $b \ge 1$ be constants, let $f(n)$ be a function, and let $T(n)$ be defined on the nonnegative integers by recurrence
+  Let $a \ge 1$ and $b \ge 1$ be constants, let $f(n)$ be a function, and let $T(n)$ be defined on the non-negative integers by recurrence
   \begin{equation*}
     T(n) = aT(n/b) + f(n),
   \end{equation*}
@@ -343,6 +343,8 @@ Like merge sort, but unlike insertion sort, heapsort's running time is $O(n \lg 
 
 \subsection{Heaps}
 
+The \textbf {(binary) heap} data structure is an array object that we can view as a nearly complete binary tree. \\
+
 PARENT($i$)
 \begin{algorithmic}[1]
 \State \textbf {return} $\lfloor i/2 \rfloor$
@@ -358,7 +360,7 @@ RIGHT($i$)
 \State \textbf {return} $2i+1$
 \end{algorithmic}
 
-There are two kinds of binary heaps: max-heaps and min-heaps. In both kinds, the values in the nodes satisfy a {\bf heap property}, the specifics of which depends on the kind of heap. In a {\bf max-heap}, the {\bf max-heap perperty} is that for every node $i$ other than the root,
+There are two kinds of binary heaps: max-heaps and min-heaps. In both kinds, the values in the nodes satisfy a {\bf heap property}, the specifics of which depends on the kind of heap. In a {\bf max-heap}, the {\bf max-heap property} is that for every node $i$ other than the root,
 \begin{equation*}
   A[\text{PARENT}(i)] \ge A[i],
 \end{equation*}
@@ -392,7 +394,7 @@ We can describe the running time of MAX-HEAPIFY by recurrence
 \begin{equation*}
   T(n) \le T(2n/3) + \Theta(1).
 \end{equation*}
-The solution to this recurrence is $T(n) = O(\lg n)$. Alternatively, we can characterize the running time of MAX-HEAPIFY on a node of height $h$ as $O(h)$.
+Worst case occurs when the bottom level of the tree is exactly half full. The solution to this recurrence is $T(n) = O(\lg n)$. Alternatively, we can characterize the running time of MAX-HEAPIFY on a node of height $h$ as $O(h)$.
 
 \subsection{Building a heap}
 
@@ -603,7 +605,7 @@ For a value $r \le b$, we view each key as having $d = \lceil b/r \rceil$ digits
 
 \subsection{Bucket sort}
 
-\textbf {Bucket sort} assumes that the input is drawn from a uniform distribution and has an average-case running time of $O(n)$. Bucket sort divides the interval $[0,1)$ into $n$ equal-sized subintervals, or \textbf {buckets}, and then distributes the $n$ input numbers into the buckets. \\
+\textbf {Bucket sort} assumes that the input is drawn from a uniform distribution and has an average-case running time of $O(n)$. Bucket sort divides the interval $[0,1)$ into $n$ equal-sized sub-intervals, or \textbf {buckets}, and then distributes the $n$ input numbers into the buckets. \\
 
 Our code for bucket sort assumes that the input is an $n$-element array $A$ and that each element $A[i]$ in the array satisfies $0 \le A[i] < 1$. The code requires an auxiliary array $B[0...n-1]$ of linked lists (buckets) and assumes that there is a mechanism for maintaining such lists. \\
 
@@ -733,7 +735,7 @@ CHAINED-HASH-DELETE($T, x$)
 
 \subsubsection*{Analysis of hashing with chaining}
 
-Given a hash table $T$ with $m$ slots that stores $n$ elements, we define the \textbf {load factor} $\alpha$ for $T$ as $n/m$, that is, the average number of elements stored in a chain. \\
+Given a hash table $T$ with $m$ slots that stores $n$ elements, we define the \textbf {load factor} $\alpha$ for $T$ as $n/m$, that is, the average number of elements stored in a chain. Load factor can be less than, equal to, or greater than 1. \\
 
 The average-case performance of hashing depends on how well the hash function $h$ distributes the set of keys to be stored among the $m$ slots, on the average. Now we shall assume that any given element is equally likely to hash into any of the $m$ slots, independently of where any other element has hashed to. We call this the assumption of \textbf {simple uniform hashing}.
 
@@ -1204,6 +1206,305 @@ We can break the process of augmenting a data structure into four steps:
 \begin{theorem} [Augmenting a red-black tree]
   Let $f$ be an attribute that augments a red-black tree $T$ of $n$ nodes, and suppose that the value of $f$ for each node $x$ depends on only the information in nodes $x$, $x.\text{left}$, and $x.\text{right}$, possibly including $x.\text{left}.f$ and $x.\text{right}.f$. Then, we can maintain the values of $f$ in all nodes of $T$ during insertion and deletion without asymptotically affecting the $O(\lg n)$ performance of these operations.
 \end{theorem}
+
+\section{Dynamic Programming}
+
+Dynamic programming, like the divide-and-conquer method, solves problems by combining the solutions to sub-problems. (``Programming'' in this context refers to a tabular method, not to writing computer code.)
+
+We typically apply dynamic programming to optimization problems. When developing a dynamic-programming algorithm, we follow a sequence of four steps:
+\begin{enumerate}
+  \item Characterize the structure of an optimal solution.
+  \item Recursively define the value of an optimal solution.
+  \item Compute the value of an optimal solution, typically in a bottom-up fashion.
+  \item Construct an optimal solution from computed information.
+\end{enumerate}
+
+\subsection{Rod cutting}
+
+The \textbf{rod-cutting problem} is the following. Given a rod of length $n$ inches and a table of prices $p_i$ for $i = 1, 2, \dots, n$, determine the maximum revenue $r_n$ obtainable by cutting up the rod and selling the pieces. Note that if the price $p_n$ for a rod of length n is large enough, an optimal solution may require no cutting at all.
+
+\subsubsection*{Recursive top-down implementation}
+
+CUT-ROD($p, n$)
+\begin{algorithmic}[1]
+\If {$n == 0$}
+	\State \textbf{return } $0$
+\EndIf
+\State $q = -\infty$
+\For {$i = 1 \textbf { to } n$}
+	\State $q = \max (q, p[i] + \text{CUT-ROD}(p, n-i))$
+\EndFor
+\State \textbf{return } $q$
+\end{algorithmic}
+
+For this algorithm, $T(0) = 1$. And the time complexity is
+
+\begin{eqnarray*}
+  T(n) &=& 1 + \sum_{j=0}^{n-1} {T(j)} \\
+  \Rightarrow T(n) &=& 2^n
+\end{eqnarray*}
+
+\subsubsection*{Using dynamic programming for optimal rod cutting}
+
+The dynamic-programming method works as follows. Having observed that naive recursive solution is inefficient because it solves the same sub-problems repeatedly, we arrange for each sub-problem to be solved only once, saving its solution. If we need to refer to this sub-problem's solution again later, we can just look it up, rather than recompute it. Dynamic programming thus uses additional memory to save computation time; it serves an example of a \textbf{time-memory trade-off}. The savings may be dramatic: an exponential-time solution may be transformed into a polynomial-time solution. A dynamic-programing approach runs in polynomial time when the number of distinct sub-problems involved is polynomial int the input size and we can solve each sub-problem in polynomial time. \\
+
+There are usually two equivalent ways to implement a dynamic-programming approach: \textbf{top-down with memorization} and \textbf{bottom-up method}. \\
+
+MEMORIZED-CUT-ROD($p, n$)
+\begin{algorithmic}[1]
+\State let $r[0 \dots n]$ be a new array
+\For {$i = 0 \textbf{ to } n$}
+	\State $r[i] = -\infty$
+\EndFor
+\State \textbf{return } MEMORIZED-CUT-ROD-AUX($p, n, r$)
+\end{algorithmic}
+
+
+MEMORIZED-CUT-ROD-AUX($p, n$)
+\begin{algorithmic}[1]
+\If $r[n] \ge 0$
+	\State \textbf{return } $r[n]$
+\EndIf
+\If {$n == 0$}
+	\State $q = 0$
+\Else
+	\State $q = -\infty$
+        \For {$i = 1 \textbf{ to } n$}
+        	\State $q = \max(q, p[i] + MEMORIZED-CUT-ROD-AUX(p, n-i, r))$
+        \EndFor
+\EndIf
+\State $r[n] = q$
+\State \textbf{return } $q$
+\end{algorithmic}
+
+The bottom-up version is even simpler: \\
+
+BOTTOM-UP-CUT-ROD($p, n$)
+\begin{algorithmic}[1]
+\State let $r[0 \dots n]$ be a new array
+\State $r[0] = 0$
+\For {$j = 1 \textbf{ to } n$}
+	\State $q = -\infty$
+        \For {$i = 1 \textbf{ to } j$}
+        	\State $q = \max(q, p[i] + r(j-i))$
+        \EndFor
+        \State $r[j] = q$
+\EndFor
+\State \textbf{return } $r[n]$
+\end{algorithmic}
+
+\subsubsection{Reconstructing a solution}
+
+EXTENDED-BOTTOM-UP-CUT-ROD($p, n$)
+\begin{algorithmic}[1]
+\State let $r[0 \dots n]$ and $s[0 \dots n]$ be a new array
+\State $r[0] = 0$
+\For {$j = 1 \textbf{ to } n$}
+	\State $q = -\infty$
+        \For {$i = 1 \textbf{ to } j$}
+        	\State $q = \max(q, p[i] + r(j-i))$
+                \State $S[j] = i$
+        \EndFor
+        \State $r[j] = q$
+\EndFor
+\State \textbf{return } $r[n]$
+\end{algorithmic}
+
+The following procedure prints out the complete list of piece sizes in an optimal decomposition of a rod of length $n$: \\
+
+PRINT-CUT-ROD-SOLUTION($p, n$)
+\begin{algorithmic}[1]
+\State $(r,s) = \text{EXTENDED-BOTTOM-UP-CUT-ROD($p, n$)}$
+\While {$ n > 0$}
+	\State print $S[n]$
+        \State $n = n - S[n]$
+\EndWhile
+\end{algorithmic}
+
+\section{Greedy Algorithms}
+
+For many optimization problems, using dynamic programming to determine the best choices is overkill; simpler, more efficient algorithms will do. A \textbf{greedy algorithm} always makes the choice that looks best at the moment. That is, it makes a locally optimal choice in the hope that this choice will lead to a globally optimal solution.
+
+\subsection{An activity-selection problem}
+
+Suppose we have a set $S = \{ a_1, a_2, \dots, a_n \}$ of $n$ proposed \textbf{activities} that wish to use a resource, such as a lecture hall, which can serve only one activity at a time. Each activity $a_i$ has a \textbf{start time} $s_i$ and a \textbf{finish time} $f_i$, where $0 \le s_i < f_i < \infty$. If selected, activity $a_i$ takes place during the half0open time interval $[s_i, f_i)$. Activities $a_i$ and $a_j$ are \textbf{compatible} if the intervals $[s_i, f_i)$ and $[s_j, f_j)$. do not overlap. That is, $a_i$ and $a_j$ are compatible if $s_i \ge f_j$ or $s_j \ge f_i$. In the \textbf{activity-selection problem}, we wish to select a maximum-size subset of mutually compatible activities. We assume that the activities are sorted in monotonically increasing order of finish time:
+
+\begin{equation*}
+  f_1 \le f_2 \le f_3 \le \dots \le f_{n-1} \le f_n
+\end{equation*}
+
+\subsubsection*{The optimal sub-structure of the activity-selection problem}
+
+Let us denote by $S_{ij}$ the set of activities that start after activity $a_i$ finishes and that finish before activity $a_j$ starts. Suppose that we wish to find a maximum set of mutually compatible activities in $S_{ij}$, and suppose further that such a maximum set is $A_{ij}$, which includes some activity $a_k$. By including $a_k$ in an optimal solution, we are left with two sub-problems: finding mutually compatible activities in the set $S_{ik}$ and fining mutually compatible activities in the set $S_{kj}$. Let $A_{ik} = A_{ij} \cap S_{ik}$ and $A_{kj} = A_{ij} \cap S_{kj}$, so that $A_{ik}$ contains the activities in $A_{ij}$ finish before $a_k$ starts and $A_{kj}$ contains activities in $A_{ij}$ that start after $a_k$ finishes. Thus we have $A_{ij} = A_{ik} \cup \{ a_k \} \cup A_{kj}$, and so the maximum-size set $A_{ij}$ of mutually compatible activities in $S_{ij}$ consists of $|A_{ij}| = |A_{ik}| + |A_{kj}| + 1$activities. \\
+
+The usual cut-and-paste argument shows that the optimal solution $A_{ij}$ must also include optimal solutions to the two sub-problems for $S_{ik}$ and $S_{kj}$. \\
+
+This way of characterizing optimal substructure suggests that we might solve the activity-selection problem by dynamic programming. If we denote the size of an optimal solution for the set $S_{ij}$ by $c[i,j]$, then we would have the recurrence
+
+\begin{equation*}
+  c[i,j] = c[i,k] + c[k,j] + 1
+\end{equation*}
+
+Of course, if we did not know that an optimal solution for the set $S_{ij}$ includes activity $a_k$, we would have to examine all activities in $S_{ij}$ to find which one to choose, so that
+
+\begin{equation*}
+  c[i,j] =
+  \begin{cases}
+    0 & \text{if $S_{ij} = \emptyset$,} \\
+    \max_{a_k \in S_{i,j}} \{ c[i,k] + c[k,j] + 1\} & \text{if $S_{ij} \neq \emptyset$.}
+  \end{cases}
+\end{equation*}
+
+\subsubsection*{Making the greedy choice}
+
+For the activity-selection problem, we need consider only one choice: the greedy choice. \\
+
+What do we mean by the greedy choice for the activity-selection problem? Intuition suggests that we should choose an activity that leaves the resource available for as many other activities as possible. Now, of activities we end up choosing, one of them must be the first one to finish. Our intuition tells us, therefore, to choose the activity in S with the earliest finish time, since that would leave the resource available for as many of the activities that follow it as possible. \\
+
+\begin{theorem}
+  Consider any nonempty sub-problem $S_k$, and let $a_m$ be an activity in $S_k$ with the earliest finish time. Then $a_m$ is included in some maximum-size subset of mutually compatible activities of $S_k$.
+\end{theorem}
+
+\subsubsection*{A recursive greedy algorithm}
+
+The procedure $RECURSIVE-ACTIVITY-SELECTOR$ takes the start and finish time of the activities, represented as arrays $s$ and $f$, the index $k$ that defines the sub-problem $S_k$ it is to solve, and the size $n$ of the original problem. It returns a maximum-size set of mutually compatible activities in $S_k$. We assume that the $n$ input activities are already ordered by monotonically increasing finish time, according to the previous equation. If not we can sort them into this order in $O(n \log n)$ time, breaking ties arbitrarily. In order to start, we add the fictitious activity $a_0$ with $f_0 = 0$, so that sub-problem $S_0$ is the entire set of activities $S$. The initial call, which solves the entire problem, is $RECURSIVE-ACTIVITY-SELECTOR(s, f, 0, n)$
+
+RECURSIVE-ACTIVITY-SELECTOR($s, f, k, n$)
+\begin{algorithmic}[1]
+\State $m = k + 1$
+\While {$ m \le n \text{ and } s[m] < f[k]$}
+	\State $m = m + 1$
+\EndWhile
+\If {$m \le n$}
+	\State \textbf{return } $\{ a_m\} \cup \text{RECURSIVE-ACTIVITY-SELECTOR}(s, f, m, n)$
+\Else
+	\State \textbf{return } $\emptyset$
+\EndIf
+\end{algorithmic}
+
+\subsubsection*{An iterative greedy algorithm}
+
+GREEDY-ACTIVITY-SELECTOR($s, f$)
+\begin{algorithmic}[1]
+\State $n = s. \text{length}$
+\State $A = {a_1}$
+\State $k = 1$
+\For {$ m = 2 \textbf{ to } n$}
+	\If {$s[m] \ge f[k]$}
+		\State $A = A \cup \{ a_m \}$
+                \State $k = m$
+	\EndIf
+\EndFor
+\State \textbf{return } $A$
+\end{algorithmic}
+
+\subsection{Elements of the greedy strategy}
+
+\begin{enumerate}
+  \item Determine the optimal substructure of the problem.
+  \item Develop a recursive solution.
+  \item Show that if we make the greedy choice, then only one sub-problem remains.
+  \item Prove that it is always safe to make the greedy choice.
+  \item Develop a recursive algorithm that implements that greedy strategy.
+  \item Convert the recursive algorithm to an iterative algorithm.
+\end{enumerate}
+
+More generally, we design greedy algorithms according to the following sequence of steps:
+
+\begin{enumerate}
+  \item Cast the optimization problem as one in which we make a choice and are left with one sub-problem to solve.
+  \item Prove that there is always an optimal solution to the original problem that makes the greedy choice, so that greedy choice is always safe.
+  \item Demonstrate optimal sub-structure by showing that, having made the greedy choice, what remains is a sub-problem wit the property that if we combine an optimal solution to the sub-problem with the greedy choice we have made, we arrive at an optimal solution to the original problem.
+\end{enumerate}
+
+\subsubsection*{Greedy-choice property}
+
+The first key ingredient is the \textbf{greedy-choice property}: we can assemble a globally optimal solution by making locally optimal (greedy) choices. \\
+
+Here is where greedy algorithms differ from dynamic programming. In dynamic programming, we make a choice at each step, but the choice usually depends on the solutions to sub-problems. Consequently, we typically solve dynamic-programming problems in a bottom-up manner, progressing from smaller sub-problems to larger sub-problems. In a greedy algorithm, we make whatever choice seems best at the moment and then solve the sub-problem that remains. The choice made by a greedy algorithm may depend on choices so far, but it cannot depend on any future choices or on the solutions to sub-problems. Thus, unlike dynamic programming, which solves the sub-problems before making the first choice, a greedy algorithm makes its first choice before solving any sub-problems.
+
+\subsubsection*{Optimal substructure}
+
+A problem exhibits \textbf{optimal substructure} if an optimal solution to the problem contains within it optimal solutions to sub-problems. This property is a key ingredient of assessing the applicability of dynamic programming as well as greedy algorithms.
+
+\section{Amortized Analysis}
+
+In an amortized analysis, we average the time required to perform a sequence of data-structure operations over all the operations performed. With amortized analysis, we can show that the average cost of an operation is small, if we average over a sequence of operations, even though a single operation within the sequence might be expensive. Amortized analysis differs from average-case analysis in that probability is not involved; an amortized analysis guarantees the average performance of each operation in the worst case.
+
+\subsection{Aggregate analysis}
+
+In \textbf{aggregate analysis}, we show that for all $n$, a sequence of $n$ operations takes worst-case time $T(n)$ in total. In the worst case, the average cost, or \textbf{amortized cost}, per operation is therefore $T(n)/n$.
+
+\subsection{The accounting method}
+
+In the \textbf{accounting method} of amortized analysis, we assign differing charges to different operations, with some operations charged more or less than they actually cost. We call the amount we charge an operation its \textbf{amortized cost}. When an operation's amortized cost exceeds its actual cost, we assign the difference to specific objects in the data structure as \textbf{credits}. Credit can help pay for later operations whose amortized cost is less than their actual cost. Thus, we can view the amortized cost of an operation as being split between its actual cost and credit that is either deposited or used up. Different operations may have different amortized costs. This method differs from aggregate analysis, in which all operations have the same amortized cost. \\
+
+IF we denote the actual cost of the $i$th operation by $c_i$ and the amortized cost of the $i$th operation by $\hat{c}_i$, we require
+
+\begin{equation*}
+  \sum_{i=1}^{n} \hat{c}_i \ge \sum_{i=1}^n c_i
+\end{equation*}
+
+for all sequences of $n$ operations. The total credit stored in the data structure is the difference between the total amortized cost and the total actual cost, or $\sum_{i=1}^{n} \hat{c}_i - \sum_{i=1}^n c_i$. By the previous inequality, the total credit associated with the data structure must be non-negative at all times. 
+
+\subsection{The potential method}
+
+Instead of representing prepaid work as credit stored with specific objects in the data structure, the \textbf{potential method} of amortized analysis represents the prepaid work as ``potential energy'', or just ``potential,'' which can be released to pay for future operations. We associate the potential with the data structure as a whole rather than with specific objects with the data structure. \\
+
+The potential method works as follows. We will perform $n$ operations, starting with an initial data structure $D_0$. For each $i = 1,2,\dots$, we let $c_i$ be the actual cost of the $i$th operation and $D_i$ be the data structure that results after applying the $i$th operation to the data structure $D_{i-1}$. A \textbf{potential function} $\Phi$ maps each data structure $D_i$ to a real number $\Phi(D_i)$, which is the \textbf{potential} associated with data structure $D_i$. The \textbf{amortized cost} $\hat{c}_i$ of the $i$th operation with respect to potential function $\Phi$ is defined by
+
+\begin{equation*}
+  \hat{c}_i = c_i + \Phi(D_i) - \Phi(D_{i-1}).
+\end{equation*}
+
+The amortized cost of each operation is therefore its actual cost plus the change in potential due to the operation. By the previous equation, the total amortized cost of the $n$ operation is
+
+\begin{eqnarray*}
+  \sum_{i=1}^n \hat{c}_i
+  &=& \sum_{i=1}^n (c_i + \Phi(D_i) - \Phi(D_{i-1})) \\
+  &=& \sum_{i=1}^n c_i + \Phi(D_i) - \Phi(D_0)
+\end{eqnarray*}
+
+If we can define a potential function $\Phi$ so that $\Phi(D_n) \ge \Phi(D_0)$, then the total amortized cost $\sum_{i=1}^n \hat{c}_i$ gives an upper bound on the total actual cost $\sum_{i=1}^n c_i$. In practice, we do not always know how many operations might be performed. Therefore, if we require that $\Phi(D_i) \ge \Phi(D_0)$ for all $i$, then we guarantee, as in the accounting method, that we pay in advance. We usually just define $\Phi(D_0)$ to be 0 and then show that $\Phi(D_i) \ge 0$ for all $i$.
+
+\section{B-Trees}
+
+B-trees are balanced search trees designed to work well on disks or other direct-access secondary storage devices. B-trees are similar to red-black trees, but they are better at minimizing disk I/O operations. Many database systems use B-trees, or variants of B-trees, to store information. \\
+
+B-tree differ from red-black trees in that B-tree nodes may have many children, from a few to thousands. That is, the ``branching factor'' of a B-tree can be quite large, although it usually depends on characteristics of the disk unit used. B-trees are similar to red-black trees in that every n-node B-tree has height $O(\log n)$. The exact height of a B-tree can be considerably less than that of a red-black tree, however, because its branching factor, and hence the base of the logarithm that expresses its height, can be much larger. Therefore, we can also use B-trees to implement many dynamic-set operations in time $O(\log n)$.
+
+\subsection{Definition of B-trees}
+
+A common variant on a B-tree, known as a \textbf{$B^+$-tree}, stores all the satellite information in the leaves and stores only keys and child pointers in the internal nodes, thus maximizing the branching factor of the internal nodes. \\
+
+A \textbf{B-tree} $T$ is a rooted tree (whose root is T.root) having the following properties:
+\begin{enumerate}
+  \item Every node $x$ has the following attributes:
+    \begin{enumerate}
+    	\item $x.n$, the number of keys currently stored in node $x$,
+        \item the $x.n$ keys themselves, $x.\text{key}_1, x.\text{key}_2, \dots, x.\text{key}_{x.n}$, stored in non-decreasing order, so that $x.\text{key}_1 \le x.\text{key}_2 \le \dots \le x.\text{key}_{x.n}$,
+        \item $x.\text{leaf}$, a boolean value that is TRUE if $x$ is a leaf and FALSE if $x$ is an internal node.
+    \end{enumerate}
+  \item Each internal node $x$ also contains $x.n+1$ pointers $x.c_1, x.c_2, \dots, x.c_{x.n+1}$ to its children. Leaf nodes have no children, and so their $c_i$ attributes are undefined.
+  \item The keys $x.\text{key}_i$ separate the ranges of keys stored in each subtree: if $k_i$ is any key stored in the subtree with root $x.c_i$, then 
+    \begin{equation}
+      k_1 \le x.key_1 \le k_2 \le x.key_2 \le \dots \le x.key_{x.n} \le k_{x.n+1}
+    \end{equation}
+  \item All leaves have the same depth, which is the tree's height $h$.
+  \item Nodes have lower and upper bounds on the number of keys they can contain. We express these bounds in terms of a fixed integer $t \ge 2$ called the \textbf{minimum degree} of the B-tree:
+    \begin{enumerate}
+      \item Every node other than the root must have at least $t-1$ keys. Every internal node other than the root thus has at least $t$ children. If the tree is non-empty, the root must have at least one key.
+      \item Ever node may contain at most $2t-1$ keys. Therefore, an internal node may have at most $2t$ children. We say that a node is \textbf{full} if it contains exactly $2t-1$ keys.
+    \end{enumerate}
+\end{enumerate}
+
+The simplest B-tree occurs when $t=2$. Every internal node then has either 2, 3, or 4 children, and we have a \textbf{2-3-4 tree}. In practice, however, much larger values of $t$ yield of B-trees with smaller height.
+
+\section{Elementary Graph Algorithms}
+
+\subsection{Representations of graphs}
+
+
 
 
 
