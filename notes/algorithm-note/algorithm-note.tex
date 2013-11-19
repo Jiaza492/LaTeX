@@ -1500,6 +1500,91 @@ A \textbf{B-tree} $T$ is a rooted tree (whose root is T.root) having the followi
 
 The simplest B-tree occurs when $t=2$. Every internal node then has either 2, 3, or 4 children, and we have a \textbf{2-3-4 tree}. In practice, however, much larger values of $t$ yield of B-trees with smaller height.
 
+\section{Data Structures for Disjoint Sets}
+
+\subsection{Disjoint-set operations}
+
+A \textbf{disjoint-set data structure} maintains a collection $\delta = \{ S_1, S-2, \dots, S_k \}$ of disjoint dynamic sets. We identify each set by a \textbf{representative}, which is some member of the set. In some applications, it doesn't matter which member is used as the representative; we care only that if we ask for the representative of a dynamic set twice without modifying the set between the requests, we get the same answer both times. Other applications may require a pre-specified rule for choosing the representative, such as choosing the smallest member in the set (assuming that the elements can be ordered). \\
+
+As in the order dynamic-set implementations we have studied, we represent each element of a set by an object. Letting $x$ denote an object, we wish to support the following operations: \\
+
+$MAKE-SET(x)$ creates a new set whose only member (and thus representative is $x$). Since the sets are disjoint, we require that $x$ not already be in some other set. \\
+
+$UNION(x,y)$ unites the dynamic sets that contain $x$ and $y$, say $S_x$ and $S_y$, into a new set that is the union of these two sets. We assume that the two sets are disjoint prior to the operation. The representative of the resulting set is any member joint prior to the operation. The representative of the resulting set is any member of $S_x \cup S_y$, although many implementations of $UNION$ specifically choose the representative of either $S_x$ or $S_y$ as the new representative. Since we require the sets in the collection to be the new representative. Since we require the sets in the collection to be disjoint, conceptually we destroy sets $S_x$ and $S_y$, removing them from collection $\delta$. In practice, we often absorb the elements of one of the sets into the other set. \\
+
+$FIND-SET(x)$ returns a pointer to the representative of the (unique) set containing $x$. \\
+
+Throughout this chapter, we shall analyze the running times of disjoint-set data structures in terms of two parameters: $n$, the number of $MAKE-SET$ operations, and $m$, the total number of $MAKE-SET$, $UNION$, and $FIND-SET$ operations.
+
+\subsection{Linked-list representation of disjoint sets}
+
+A simple way to implement a disjoint-set data structure: each set is represented by its own linked list. The object for each set has attributes $head$, pointing to the first object in the list, and $tail$, pointing to the last object. Each object in the list contains a set member, a pointer to the next object in the list, and a pointer back to the set object. Within each linked list, the objects may appear in any order. The representative is the set member in the first object in the list. \\
+
+With this linked-list representation, both $MAKE-SET$ and $FIND-SET$ are easy, requiring $O(1)$ time. \\
+
+\subsubsection*{A simple implementation of union}
+
+The simplest implementation of the $UNION$ operation using the linked-list set representation takes significantly more time than $MAKE-SET$ or $FIND-SET$. We perform $UNION(x,y)$ by appending $y$'s list onto the end of $x$'s list. Unfortunately, we must update the pointer to the set object for each object originally on $y$'s list, which takes time linear in the length of $y$'s list. \\
+
+In fact, we can easily construct a sequence of $m$ operations on $n$ objects that requires $\Theta(n^2)$ time. That is, the amortized time of an operation is $\Theta(n)$.
+
+\subsubsection*{A weighted-union heuristic}
+
+Suppose instead that each list also includes the length of the list (which we can easily maintain) and that we always append the shorter list onto the longer, breaking ties arbitrarily. With this simple \textbf{weighted-union heuristic}, a single $UNION$ operation can still take $\Omega(n)$ time if both sets have $\Omega(n)$ members. As the following theorem shows, however, a sequence of $m$ $MAKE-SET$, $UNION$, and $FIND-SET$ operations, $n$ of which are $MAKE-SET$ operations, takes $O(m + n \log n)$ time.
+
+\begin{theorem}
+  Using the linked-list representation of disjoint sets and the weighted-union heuristic, a sequence of $m$ $MAKE-SET$, $UNION$, and $FIND-SET$ operations, $n$ of which are $MAKE-SET$ operations, takes $O(m + n \log n)$ time.
+\end{theorem}
+
+\subsection{Disjoint-set forests}
+
+In a \textbf{disjoint-set forests}, each member points only to its parent. The root of each tree contains the representative and is its own parent. \\
+
+We perform the three disjoint-set operations as follows. A $MAKE-SET$ operation simply creates a tree with just one node. We perform a $FIND-SET$ operation by following parent pointers until we find the root of the tree. The nodes visited on this simple path toward the root constitute the \textbf{find path}. A $UNION$ operation, cause the root of one tree to point to the root of the other.
+
+\subsubsection*{Heuristics to improve the running time}
+
+The first heuristic is \textbf{union by rank}. We want to make the root of the tree with fewer nodes point to the root of the tree with more nodes. Rather than explicitly keeping track of the size of the subtree rooted at each node, we shall use an approach that ease the analysis. For each node, we maintain a \textbf{rank}, which is an upper bound on the height of the node. In union by rank, we make the root with smaller rank point to the root with smaller rank point to the root with larger rank during a $UNION$ operation. \\
+
+The second heuristic, \textbf{path compression}, is also quite simple and highly effective. We use it during $FIND-SET$ operations to make each node on the find path point directly to the root. Path compression does not change any ranks.
+
+\subsubsection*{Pseudocode for disjoint-set forests}
+
+MAKE-SET($x$)
+\begin{algorithmic} [1]
+\State $x.p = x$
+\State $x.\text{rank} = 0$
+\end{algorithmic}
+
+UNION($x, y$)
+\begin{algorithmic} [1]
+\State LINK(FIND-SET($x$), FIND-SET($y$))
+\end{algorithmic}
+
+LINK($x, y$)
+\begin{algorithmic} [1]
+\If {$x.rank > y.rank$}
+	\State $y.p = x$
+\Else
+	\State $x.p = y$
+	\If {$x.rank == y.rank$}
+		\State $y.rank = y.rank + 1$
+        \EndIf
+\EndIf
+\end{algorithmic}
+
+FIND-SET($x$)
+\begin{algorithmic} [1]
+\If {$x \neq x.p$}
+	\State $x.p = \text{FIND-SET}(x.p)$
+\EndIf
+\State \textbf{return } $x.p$
+\end{algorithmic}
+
+\subsubsection*{Effect of the heuristics on the running time}
+
+When we use both union by rank and path compression, the worst-case running time is $O(m \alpha(n))$, where $\alpha(n)$ is a very slowly growing function. For $n < 10^{80}$, $alpha(n) \le 4$. Thus, we can view the running time as linear in $m$ in all practical situations. Strictly speaking, however, it is super linear.
+
 \section{Elementary Graph Algorithms}
 
 \subsection{Representations of graphs}
@@ -1773,6 +1858,88 @@ The following corollary tells us that each edge in $G^T$ that goes between diffe
 
 Here is another way to look at how the second depth-first search operates. Consider the component graph $(G^T)^{SCC}$ of $G^T$. If we map each strongly connected component visited in the second depth-first search to a vertex of $(G^T)^{SCC}$, the second depth-first search visits vertices of $(G^T)^{SCC}$, the second depth-first search visits vertices of $(G^T)^{SCC}$ in the reverse of a topologically sorted order. If we reverse the edges of $(G^T)^{SCC}$, we get the graph $((G^T)^{SCC})^T$. Because $((G^T)^{SCC})^T = (G^T)^{SCC}$, the second depth-first search visits the vertices of $G^{SCC}$ in topologically sorted order.
 
+\section{Minimum Spanning Trees}
+
+\subsection{Growing a minimum spanning tree}
+
+The generic greedy method manages a set of edges $A$ maintaining the following loop invariant:
+
+\begin{equation*}
+  \text{Prior to each iteration, $A$ is a subset of some minimum spanning tree.}
+\end{equation*}
+
+At each step, we determine an edge $(u,v)$ that we can add to $A$ without violating this invariant, in the sense that $A \cup \{ (u,v) \}$ is also a subset of a minimum spanning tree.  We call such an edge a \textbf{safe edge} for $A$, since we can add it safely to $A$ while maintaining the invariant. \\
+
+GENERIC-MST($G, \omega$)
+\begin{algorithmic} [1]
+\State $A = \emptyset$
+\While {$A$ does not form a spanning tree}
+	\State find an edge $(u,v)$ that is safe for $A$
+	\State $A = A \cup \{ (u,v) \}$
+\EndWhile
+\State \textbf{return } $A$
+\end{algorithmic}
+
+A \textbf{cut} $(S, V-S)$ of an undirected graph $G = (V,E)$ is a partition of $V$. We say that an edge $(u,v) \in E$ crosses the cut $(S, V-S)$ if one of its endpoints is in $S$ and the other is in $V-S$. We say that a cut $respects$ a set $A$ of edges if no edge in A crosses the cut. An edge is a \textbf{light edge} crossing a cut if its weight is the minimum of any edge crossing the cut.
+
+\begin{theorem}
+  Let $G = (V,E)$ be a connected, undirected graph with a real-valued weight function $\omega$ defined on $E$. Let $A$ be a subset of $E$ that is included in some minimum tree for $G$, let $(S, V-S)$ be any cut of $G$ that respects $A$, and let $(u,v)$ be a light edge crossing $(S, V-S)$. Then, edge $(u,v)$ is safe for $A$.
+\end{theorem}
+
+\begin{corollary}
+  Let $G = (V,E)$ be a connected, undirected graph with a real-valued weight function $\omega$ defined on $E$. Let $A$ be a subset of $E$ that is included in some minimum spanning tree for $G$, and let $C = (V_C, E_C)$ be a connected component (tree) in the forest $G_A = (V, A)$. If $(u,v)$ is a light edge connecting $C$ to some other component in $G_A$, then $(u,v)$ is safe for $A$.
+\end{corollary}
+
+\subsection{The algorithms of Kruskal and Prim}
+
+\subsubsection*{Kruskal's algorithm}
+
+The operation $FIND-SET(u)$ returns a representative element from the set that contains $u$. \\
+
+MST-KRUSKAL($G, \omega$)
+\begin{algorithmic} [1]
+\State $A = \emptyset$
+\For {each vertex $v \in G$}
+	\State MAKE-SET($v$)
+\EndFor
+\State sort the edges of $G.E$ into non-decreasing order by weight $\omega$
+\For {each edge $(u,v) \in G.E$, taken in non-decreasing order by weight}
+	\If {$\text{FIND-SET}(u) \neq \text{FIND-SET}(v)$}
+        	\State $A = A \cup \{ (u,v) \}$
+		\State $UNION(u,v)$
+	\EndIf
+\EndFor
+\State \textbf{return } $A$
+\end{algorithmic}
+
+The running time of Kruskal's algorithm is $O(E \log V)$. \\
+
+\subsubsection*{Prim's algorithm}
+
+During the execution of the algorithm, all vertices that are not in the tree reside in a min-priority queue $Q$ based on a $key$ attribute. For each vertex $v$, the attribute $v$ is the minimum weight of any edge connecting $v$ to a vertex in the tree; by convention, $v.\text{key} = \infty$ if there is no such edge. \\
+
+MST-PRIM($G, \omega, r$)
+\begin{algorithmic} [1]
+\For {each $u \in G.V$}
+	\State $u.\text{key} = \infty$
+        \State $u.\pi = \text{NIL}$
+\EndFor
+\State $r.\text{key} = 0$
+\State $Q = G.V$
+\While {$Q \neq \emptyset$}
+	\State $u = \text{EXTRACT-MIN}(Q)$
+	\For {each $v \in G.Adj[u]$}
+		\If {$v \in Q$ and $\omega(u,v) < v.\text{key}$}
+			\State $v.\pi = u$
+                        \State $v.\text{key} = \omega(u,v)$
+                \EndIf
+        \EndFor
+\EndWhile
+\end{algorithmic}
+
+The assignment in line 12 involve an implicit DECREASE-KEY operation on the min-heap, which a binary min-heap supports in $O(\log V)$ time. Thus the total time for Prim's algorithm is $O(V \log V + E \log V) = O(E \log V)$, which is asymptotically the same as for our implementation of Kruskal's algorithm. \\
+
+We can improve the asymptotic running time of Prim's algorithm by using Fibonacci heaps. If so, the running time of Prim's algorithm improves to $O(E + V \log V)$.
 
 
 
