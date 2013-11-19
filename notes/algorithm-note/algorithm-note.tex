@@ -1941,6 +1941,169 @@ The assignment in line 12 involve an implicit DECREASE-KEY operation on the min-
 
 We can improve the asymptotic running time of Prim's algorithm by using Fibonacci heaps. If so, the running time of Prim's algorithm improves to $O(E + V \log V)$.
 
+\section{Single-Source Shortest Paths}
+
+In a \textbf{shortest-paths problem}, we are given a weighted, directed graph $G = (V,E)$, with weight function $\omega : E \rightarrow \mathbb{R}$ mapping edges to real-valued weights. The \textbf{weights} $\omega(p)$ of path $p = <v_0, v_1, \dots, v_k>$ is the sum of the weights of its constituent edges:
+
+\begin{equation*}
+  \omega = \sum_{i=1}^k \omega (v_{i-1}, v_i)
+\end{equation*}
+
+We define the \textbf{shortest-path weight} $\delta (u,v)$ from $u$ to $v$ by
+
+\begin{equation*}
+  \delta(u,v) =
+  \begin{cases}
+    \min \{ \omega(p) : u \leadsto^p v\} & \text{if there is  a path from $u$ to $v$,} \\
+    \infty & \text{otherwise.}
+  \end{cases}
+\end{equation*}
+
+A \textbf{shortest path} from vertex $u$ to vertex $v$ is then defined as any path $p$ with weight $\omega(p) = \delta(u,v)$.
+
+\subsubsection*{Variants}
+
+In this chapter we shall focus on the \textbf{single-source shortest-paths problem}: given a graph $G = (V,E)$, we want to find a shortest path from a given \textbf{source} vertex $s \in V$ to each vertex $v \in V$. The algorithm for the single-source problem can solve man other problems, including the following variants. \\
+
+\textbf{Single-destination shortest-path problem:} Find a shortest path to a given \textbf{destination} vertex $t$ from each vertex $v$. By reversing the direction of each edge in the graph, we can reduce this problem to a single-source problem. \\
+
+\textbf{Single-pair shortest path problem:} Find a shortest path from $u$ to $v$ for given vertices $u$ and $v$. If we solve the single-source problem with source vertex $u$, we solve this problem also. Moreover, all known algorithms for this problem have the same worst-case asymptotic running time as the best single-source algorithms. \\
+
+\textbf{All-pairs shortest-path problem:} Find a shortest path from $u$ to $v$ for ever pair of vertices $u$ and $v$. Although we can solve this problem by running a single-source algorithm once from each vertex, we usually can solve it faster. Additionally, its structure is interesting in its own right.
+
+\subsubsection*{Optimal substructure of a shortest path}
+
+Shortest-paths algorithms typically rely on the property that a shortest path between two vertices contains other shortest paths within it.
+
+\begin{lemma} [Subpaths of shortest paths are shortest paths]
+  Given a weighted, directed graph $G = (V,E)$ with weight function $\omega : E \rightarrow \mathbb{R}$, let $p = <v_0, v_1, \dots, v_k>$ be a shortest path from vertex $v_0$ to vertex $v_k$ and, for any $i$ and $j$ such that $0 \le i \le j \le k$, let $p_{ij} = <v_i, v_{i+1}, \dots, v_J>$ be the subpath of $p$ from vertex $v_i$ to vertex $v_j$. Then $p_{ij}$ is a shortest path from $v_i$ to $v_j$.
+\end{lemma}
+
+\subsubsection*{Relaxation}
+
+The algorithm in this chapter use the technique of \textbf{relaxation}. For each vertex $v \in V$, we maintain an attribute $v.d$, which is an upper bound on the weight of a shortest path from source $s$ to $v$. We call $v.d$ a \textbf{shortest-path estimate}. We initialize the shortest path estimate and predecessors by the following $\Theta(V)$-time procedure: \\
+
+INITIALIZE-SINGLE-SOURCE($G,s$)
+\begin{algorithmic} [1]
+\For {each vertex $v \in G.V$}
+	\State $v.d = \infty$
+        \State $v.\pi = \text{NIL}$
+\EndFor
+\State $s.d = 0$
+\end{algorithmic}
+
+After initialization, we have $v.\pi = \text{NIL}$ for all $v \in V$, $s.d = 0$, and $v.d = \infty$ for $v \in V - \{ s \}$. \\
+
+RELAX($u,v,w$)
+\begin{algorithmic} [1]
+\If {$v.d > u.d + \omega(u,v)$}
+	\State $v.d = u.d + \omega(u,v)$
+	\State $v.\pi = u$
+\EndIf
+\end{algorithmic}
+
+\subsubsection*{Properties of shortest paths and relaxation}
+
+\begin{itemize}
+  \item \textbf{Triangle inequality} For any edge $(u,v) \in E$, we have $\delta(s,v) \le \delta(s,u) + w(u,v)$
+  \item \textbf{Upper-bound property} We always have $v.d \ge \delta(s,v)$ for all vertices $v \in V$, and once $v.d$ achieves the value $\delta(s,v)$, it never changes.
+  \item \textbf{No-path property} If there is no path from $s$ to $v$, then we always have $v.d = \delta(s,v) = \infty$.
+  \item \textbf{Convergence property} If $s \leadsto u \rightarrow v$ is a shortest path in $G$ for some $u,v \in V$, and if $u.d = \delta(s,u)$ at any time prior to relaxing edge $(u,v)$, then $v.d = \delta(s,v)$ at all times afterward.
+  \item \textbf{Path-relaxation property} If $p = <v_0, v_1, \dots, v_k>$ is a shortest path from $s = v_0 \text{ to } v_k$, and we relax the edges of $p$ in the order $(v_0, v_1), (v_1, v_2), \dots, (v_{k-1}, v_k)$, then $v_k.d = \delta(s, v_k)$. This property holds regardless of any other relaxation steps that occur, even if they are intermixed with relaxations of the edges of $p$.
+  \item \textbf{Predecessor-subgraph property} Once $v.d=\delta(s,v)$ for all $v \in V$, the predecessor subgraph is a shortest-paths tree rooted at $s$.
+\end{itemize}
+
+\subsection{The Bellman-Ford algorithm}
+
+The \textbf{Bellman-Ford algorithm} solves the single-source shortest-paths problem in the general case in which edge weights may be negative. Given a weighted, directed graph $G = (V,E)$ with source $s$ and weight function $\omega : E \rightarrow \mathbb{R}$, the Bellman-Ford algorithm returns a boolean value indicating whether or not there is a negative-weight cycle that is reachable from the source. If there is such a cycle, the algorithm indicates that on solution exists. If there is no such cycle the algorithm produce the shortest paths and their weights. \\
+
+BELLMAN-FORD($G, \omega, s$)
+\begin{algorithmic} [1]
+\State INITIALIZE-SINGLE-SOURCE($G,s$)
+\For {$i = 1 \textbf{ to } |G.V| - 1$}
+	\For {each edge $(u,v) \in G.E$}
+		\State RELAX($u,v,\omega$)
+        \EndFor
+\EndFor
+\For {each edge $(u,v) \in G.E$}
+	\If {$v.d > u.d + \omega(u,v)$}
+		\State \textbf{return } FALSE
+        \EndIf
+\EndFor
+\State \textbf{return } TRUE
+\end{algorithmic}
+
+The Bellman-Ford algorithm runs in time $O(VE)$. \\
+
+\begin{lemma}
+  Let $G = (V,E)$ be a weighted, directed graph with source $s$ and weight function $\omega : E \rightarrow \mathbb{R}$, and assume that $G$ contains no negative-weight cycles that are reachable from $s$. Then after the $|V| - 1$ iterations of the first \textbf{for} loop of BELLMAN-FORD, we have $v.d = \delta(s.v)$ for all vertices $v$ that are reachable from $s$.
+\end{lemma}
+
+\begin{corollary}
+  Let $G = (V,E)$ be a weighted, directed graph with source vertex $s$ and weight function $\omega : E \rightarrow \mathbb{R}$, and assume that $G$ contains  no negative-weight cycles that are reachable from $s$. Then, for each vertex $v \in V$, there is a path from $s$ to $v$ if and only if BELLMAN-FORD terminates with $v.d < \infty$ when it is run on $G$.
+\end{corollary}
+
+\begin{theorem} [Correctness of Bellman-Ford algorithm]
+  Let BELLMAN-FORD be run on a weighted, directed graph $G = (V,E)$ with source $s$ and weight function $\omega : E \rightarrow \mathbb{R}$. If G contains no negative-weight cycles that are reachable from $s$, then the algorithm returns $TRUE$, we have $v.d = \delta(s,v)$ for all vertices $v \in V$, and the predecessor subgraph $G_{\pi}$ is a shortest-paths tree rooted at $s$. If $G$ does contain a negative-weight cycle reachable from $s$, then the algorithm returns $FALSE$.
+\end{theorem}
+
+\subsection{Single-source shortest paths in directed acyclic graphs}
+
+By relaxing the edges of a weighted dag $G = (V,E)$ according to a topological sort of its vertices, we can compute shortest paths from a single source in $\Theta(V+E)$ time. \\
+
+DAG-SHORTEST-PATHS($G, \omega, s$)
+\begin{algorithmic} [1]
+\State topologically sort the vertices of $G$
+\State INITIALIZE-SINGLE-SOURCE($G,s$)
+\For {each vertex $u$, taken in topologically sorted order}
+	\For {each vertex $v \in G.Adj[u]$}
+		\State RELAX($u, v, \omega$)
+        \EndFor
+\EndFor
+\end{algorithmic}
+
+The total running time is $\Theta(V+E)$.
+
+\begin{theorem}
+  If a weighted, directed graph $G = (V,E)$ has source vertex $s$ and no cycles, then at the termination of the $DAG-SHORTEST-PATHS$ procedure, $v.d=\delta(s,v)$ for all vertices $v \in V$, and the predecessor subgraph $G_{\pi}$ is a shortest-paths tree.
+\end{theorem}
+
+\subsection{Dijkstra's algorithm}
+
+Dijkstra's algorithm solves the single-source shortest-paths problem on a weighted directed graph $G = (V,E)$ for the case in which all edge weights are non-negative. \\
+
+DIJKSTRA($G, \omega, s$)
+\begin{algorithmic} [1]
+\State INITIALIZE-SINGLE-SOURCE($G,s$)
+\State $S = \emptyset$
+\State $Q = G.V$
+\While {$Q \neq \emptyset$}
+	\State $u = \text{EXTRACT-MIN}(Q)$
+	\State $S = S \cup \{ u \}$
+        \For {each vertex $v \in G.Adj[u]$}
+		\State RELAX($u,v,w$)
+        \EndFor
+\EndWhile
+\end{algorithmic}
+
+\begin{theorem} [Correctness of Dijkstra's algorithm]
+  Dijkstra's algorithm, run on a weighted, directed graph $G = (V,E)$ with non-negative weight function $\omega$ and source $s$, terminates with $u.d = \delta(s,u)$ for all vertices $u \in V$.
+\end{theorem}
+
+\begin{corollary}
+  If we run Dijkstra's algorithm on a weighted, directed graph $G = (V,E)$ with non-negative weight function $w$ and source $s$, then at termination, the predecessor subgraph $G_{\pi}$ is a shortest-paths tree rooted at $s$.
+\end{corollary}
+
+\subsubsection*{Analysis}
+
+If we  implement the min-priority queue with a binary min-heap, then the total running time is $O((V+E)\log V) = O(E \log V)$. Moreover, if we implement the min-priority queue with a Fibonacci heap, then the running time will be $O(V \log V + E)$.
+
+\subsection{Difference constraints and shortest paths}
+
+\subsubsection*{Linear programming}
+
+In the general \textbf{linear-programming problem}, we are given an $m \times n$ matrix $A$, an $m$-vector $b$, and an $n$-vector $c$. We wish to find a vector $x$ of $n$ elements that maximizes the \textbf{objective function} $\sum_{i=1}^n c_i x_i$ subject to the $m$ constraints given by $Ax \le b$.
+
 
 
 
