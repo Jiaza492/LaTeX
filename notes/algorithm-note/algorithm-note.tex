@@ -2227,6 +2227,178 @@ JOHNSON($G, \omega$)
 
 If we use simple binary min-heap, Johnson's algorithm runs in $O(VE \log V)$. If we implement the min-priority queue in Dijkstra's algorithm by a Fibonacci heap, Johnson's algorithm runs in $O(V^2 \log V + VE)$.
 
+\section{Maximum Flow}
+
+\subsection{Flow networks}
+
+A \textbf{flow network} $G = (V,E)$ is a directed graph in which each edge $(u,v) \in E$ has a non-negative \textbf{capacity} $c(u,v) \ge 0$. If $(u,v) \notin E$, then for convenience we define $c(u,v) = 0$, and we disallow self-loops. We distinguish two vertices in a flow network: a \textbf{source} $s$ and a \textbf{sink} $t$. \\
+
+Let $G = (V,E)$ be a flow network with a capacity function $c$. Let $s$ be the source of the network, and let $t$ be the sink. A \textbf{flow} in $G$ is a real-valued function $f : V \times V \rightarrow \mathbb{R}$ that satisfies the following two properties: \\
+
+\textbf{Capacity constraint:} For all $u,v \in V$, we require $0 \le f(u,v) \le c(u,v)$. \\
+
+\textbf{Flow conservation:} For all $u \in V - \{ s,t \}$, we require
+\begin{equation*}
+  \sum_{v \in V} f(v,u) = \sum_{v \in V} f(u,v).
+\end{equation*}
+
+When $(u,v) \notin E$, there can be no flow from $u$ to $v$, and $f(u,v) = 0$. \\
+
+We call the non-negative quantity $f(u,v)$ the flow from vertex $u$ to vertex $v$. The \textbf{value} $|f|$ of a flow $f$ is defined as
+\begin{equation*}
+  |f| = \sum_{v \in V} f(s,v) - \sum_{v \in V} f(v,s)
+\end{equation*}
+
+that is, the total flow out of the source minus the flow into the source.
+
+\subsubsection{Modeling problems with antiparallel edges}
+
+If an edge $(v_1, v_2) \in E$, and $(v_2, v_1) \in E$, we call the two edges $(v_1, v_2)$ and $(v_2, v_1)$ \textbf{antiparallel}.
+
+\subsubsection{Networks with multiple sources and sinks}
+
+A maximum-flow problem may have several sources and sinks, rather than just one of each. We can reduce the problem of determining a maximum flow in a network with multiple sources and multiple sinks to an ordinary maximum-flow problem. We dd a \textbf{supersource} $s$ and add a direct edge $(s, s_i) = \infty$ for each $i = 1,2,\dots,m$. We also create a new \textbf{supersink} $t$ and add a directed edge $(t_i, t)$ with capacity $c(t_i, t) = \infty$ foreach $i = 1,2,\dots,n$. 
+
+\subsection{The Ford-Fulkerson method}
+
+FORD-FULKERSON-METHOD($G, s, t$)
+\begin{algorithmic} [1]
+\State initialize flow $f$ to $0$
+\While {there exists an augmenting path $p$ in the residual network $G_f$}
+	\State augment flow $f$ along $p$
+\EndWhile
+\State \textbf{return } $f$
+\end{algorithmic}
+
+\subsubsection*{Residual networks}
+
+Given a flow network $G$ and a flow $f$, the residual network $G_f$ consists of edges with capacities that represent how we can change the flow on edges of $G$. \\
+
+We define the \textbf{residual capacity} $c_f(u,v)$ by
+
+\begin{equation*}
+  c_f(u,v) =
+  \begin{cases}
+    c(u,v) - f(u,v) & \text{if $(u,v) \in E$,} \\
+    f(v,u) & \text{if $(v,u) \in E$,} \\
+    0 & \text{otherwise.}
+  \end{cases}
+\end{equation*}
+
+Given a flow network $G = (V,E)$ and a flow $f$, the \textbf{residual network} of $G$ induced by $f$ is $G_f = (V, E_f)$, where
+
+\begin{equation*}
+  E_f = \{ (u,v) \in V \times V : c_f(u,v) > 0 \}
+\end{equation*}
+
+That is, as promised above, each edge of the residual network, or \textbf{residual edge}, can admit a flow that is greater than 0. \\
+
+If $f$ is a flow in $G$ and $f'$ is a flow in the corresponding residual network $G_f$, we define $f \uparrow f'$, the \textbf{augmentation} of flow $f$ by $f'$, to be a function from $V \times V$ to $\mathbb{R}$, defined by
+
+\begin{equation*}
+  (f \uparrow f')(u,v) =
+  \begin{cases}
+    f(u,v) + f'(u,v) - f'(v,u) & \text{if $(u,v) \in E$,} \\
+    0 & \text{otherwise.}
+  \end{cases}
+\end{equation*}
+
+The intuition behind this definition follows the definition of the residual network. We increase the flow on $(u,v)$ by $f'(v,u)$ because pushing flow on the reverse edge in the residual network signifies decreasing the flow in the original network. Pushing flow on the reverse edge in the residual network is also known as \textbf{cancellation}.
+
+\begin{lemma}
+  Let $G = (V,E)$ be a flow network with source $s$ and sink $t$, and let $f$ be a flow in $G$. Let $G_f$ be the residual network of $G$ induced by $f$, and let $f'$ be a flow in $G_f$. Then the function $f \uparrow f'$ defined in the previous equation is a flow in $G$ with value $|f \uparrow f'| = |f| + |f'|$.
+\end{lemma}
+
+\subsubsection*{Augmenting paths}
+
+Given a flow network $G = (V,E)$ and a flow $f$, an \textbf{augmenting path} $p$ is a simple path from $s$ to $t$ in the residual network $G_f$. We call the maximum amount by which we can increase the flow on each edge in an augmenting path $p$ the \textbf{residual capacity} of $p$, given by
+
+\begin{equation*}
+  c_f(p) = \min \{ c_f(u,v): (u,v) \text{ is on } p \}.
+\end{equation*}
+
+\begin{lemma}
+  Let $G = (V,E)$ be a flow network, let $f$ be a flow in $G$, and let $p$ be an augmenting path in $G_f$. Define a function $f_p : V \times V \rightarrow \mathbb{R}$ by
+\begin{equation*}
+  f_p(u,v) =
+  \begin{cases}
+    c_f(p) & \text{if $(u,v)$ is on $p$,} \\
+    0 & \text{otherwise.}
+  \end{cases}
+\end{equation*}
+
+Then $f_p$ is a flow in $G_f$ with value $|f_p| = c_f(p) > 0$.
+\end{lemma}
+
+\begin{corollary}
+  Let $G = (V, E)$ be a flow network, let $f$ be a flow in $G$, and let $p$ be an augmenting path in $G_f$. Let $f_p$ be defined as in the previous equation, and suppose that we augment $f$ by $f_p$. Then the function $f \uparrow f_p$ is a flow in $G$ with value $|f \uparrow f'| = |f| + |f_p| > |f|$.
+\end{corollary}
+
+\subsubsection*{Cuts of flow networks}
+
+A \textbf{cut} $(S,T)$ of flow network $G = (V,E)$ is a partition of $V$ into $S$ and $T = V - S$ such that $s \in S$ and $t \in T$. If $f$ is a flow, then the \textbf{net flow} across the cut $(S,T)$ is defined to be
+\begin{equation*}
+  f(S,T) = \sum)_{u \in S} \sum_{v \in T} f(u,v) - \sum)_{u \in S} \sum_{v \in T} f(v,u)
+\end{equation*}
+
+The \textbf{capacity} of the cut $(S,T)$ is
+
+\begin{equation*}
+  c(S,T) = \sum_{u \in S} \sum_{v \in T} c(u,v).
+\end{equation*}
+
+A \textbf{minimum cut} of a network is a cut whose capacity is minimum over all cuts of the network.
+
+\begin{lemma}
+  Let $f$ be a flow in a flow network $G$ with source $s$ and sink $t$, and let $(S,T)$ be any cut of $G$. Then the net flow across (S,T) is $f(S,T) = |f|$.
+\end{lemma}
+
+\begin{corollary}
+  The value of any flow $f$ in a flow network $G$ is bounded from above by the capacity of any cut of $G$.
+\end{corollary}
+
+\begin{theorem} [Max-flow min-cut theorem]
+  If $f$ is a flow network $G = (V,E)$ with source $s$ and sink $t$, then the following conditions are equivalent:
+  \begin{enumerate}
+    \item $f$ is a maximum flow in $G$.
+    \item The residual network $G_f$ contains no augmenting paths.
+    \item $|f| = c(S,T)$ for some cut $(S,T)$ of $G$.
+  \end{enumerate}
+\end{theorem}
+
+\subsubsection*{The basic Ford-Fulkerson algorithm}
+
+FORD-FULKERSON($G, s, t$)
+\begin{algorithmic} [1]
+\For {each edge $(u,v) \in G.E$}
+	\State $(u, v).f = 0$
+\EndFor
+\While {there exists a path $p$ from $s$ to $t$ in the residual network $G_f$}
+	\State $c_f(p) = \min \{ c_f(u,v) : (u,v) \text{ is in } p \}$
+	\For {each edge $(u,v)$ in $p$}
+		\If {$(u,v) \in E$}
+			\State $(u,v).f = (u,v).f + c_f(p)$
+                \Else
+			\State $(u,v).f = (v,u).f - c_f(p)$
+                \EndIf
+        \EndFor
+\EndWhile
+\end{algorithmic}
+
+The running time of FORD-FULKERSON depends on how we find the augmenting path $p$ in line 3.
+
+\subsubsection*{The Edmonds-Karp algorithm}
+
+We call the Ford-Fulkerson method implemented by finding the augmenting path $p$ with a breadth-first search the \textbf{Edmonds-Karp algorithm}. And the algorithm runs in $O(VE^2)$ time.
+
+\begin{lemma}
+  If the Edmond-Karp algorithm is run on a flow network $G = (V,E)$ with source $s$ and sink $t$, then for all vertices $v \in V - \{ s,t \}$, the shortest-path distance $\delta_f(s,v)$ in the residual network $G_f$ increases monotonically with each flow augmentation.
+\end{lemma}
+
+\begin{theorem}
+  If the Edmonds-Karp algorithm is run on a flow network $G = (V,E)$ with source $s$ and sink $t$, then the total number of flow augmentations performed by the algorithm is $O(VE)$.
+\end{theorem}
+
 
 
 \end{document}
