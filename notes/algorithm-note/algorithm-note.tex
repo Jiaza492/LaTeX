@@ -2104,9 +2104,128 @@ If we  implement the min-priority queue with a binary min-heap, then the total r
 
 In the general \textbf{linear-programming problem}, we are given an $m \times n$ matrix $A$, an $m$-vector $b$, and an $n$-vector $c$. We wish to find a vector $x$ of $n$ elements that maximizes the \textbf{objective function} $\sum_{i=1}^n c_i x_i$ subject to the $m$ constraints given by $Ax \le b$.
 
+\section{All-Pairs Shortest Paths}
 
+\subsection{Shortest paths and matrix multiplication}
 
+his section presents a dynamic-programming algorithm for the all-pairs shortest-paths problem on a directed graph $G = (V, E)$. Each major loop of the dynamic program will invoke an operation that is very similar to matrix multiplication, so that the algorithm will look like repeated matrix multiplication. We shall start by developing a $\Theta(V^4)$-time algorithm for the all-pairs shortest-paths problem and then improve its running time to $\Theta(V^3 \log V)$.
 
+\subsection{The Floyd-Warshall algorithm}
+
+In this section, we shall use a different dynamic-programming formulation to solve the all-pairs shortest-paths problem on a directed graph $G = (V,E)$. The resulting algorithm, known as the \textbf{Floyd-Warshall algorithm}, runs in $\Theta(V^3)$ time.
+
+\subsubsection*{A recursive solution to the all-pairs shortest-paths problems}
+
+Let $d_{ij}^{(k)}$ be the weight of a shortest path from vertex $i$ to vertex $j$ for which all intermediate vertices are in the set $\{ 1,2,\dots,k \}$. We define $d_{ij}^{(k)}$ recursively by
+
+\begin{equation*}
+  d_{ij}^{(k)} =
+  \begin{cases}
+    \omega_{ij} & \text{if $k=0$,} \\
+    \min (d_{ij}^{(k-1)}, d_{ik}^{(k-1)} + d_{kj}^{(k-1)}) & \text{if $k \ge 1$.}
+  \end{cases}
+\end{equation*}
+
+Because of any path, all intermediate vertices are in the set $\{ 1,2,\dots,n \}$, the matrix $D^{(n)} = (d_{ij}^(n))$ gives the final answer: $d_{ij}^{(n)} = \delta(i,j)$ for all $i,j \in V$.
+
+\subsubsection*{Computing the shortest-path weights bottom up}
+
+Let $W = (\omega_{ij})$. \\
+
+FLOYD-WARSHALL($W$)
+\begin{algorithmic} [1]
+\State $n = W.rows$
+\State $D^{(0)} = W$
+\For {$k = 1 \text{ to } n$}
+	\State let $D^{(k)} = (d_{ij}^{(k)})$ be $n \times n$ matrix
+	\For {$i = 1 \text{ to } n$}
+		\For {$j = 1 \text{ to } n$}
+			\State $d_{ij}^{(k)} = \min (d_{ij}^{(k-1)}, d_{ik}^{(k-1)} + d_{kj}^{(k-1)})$
+                \EndFor
+        \EndFor
+\EndFor
+\State \textbf{return } $D^{(n)}$
+\end{algorithmic}
+
+The running time of this algorithm is $\Theta(n^3)$.
+
+\subsubsection*{Constructing a shortest path}
+
+We can computer the predecessor matrix $\prod$ while the algorithm computes the matrices $D^{(k)}$. Specifically, we compute a sequence of matrices $\prod^{(0)}, \prod^{(1)}, \dots, \prod^{(n)}$, where $\prod = \prod^{(n)}$ and we define $\pi_{ij}^{(k)}$ as the predecessor of vertex $j$ on a shortest path from vertex $i$ with all intermediate vertices in the set $\{ 1,2, \dots, k \}$. \\
+
+We can give a recursive formulation of $\pi_{ij}^{k}$. When $k = 0$,
+
+\begin{equation*}
+  \pi_{ij}^{(0)} =
+  \begin{cases}
+    NIL & \text{if $i=j$ or $\omega_{ij} = \infty$,} \\
+    i   & \text{if $i \neq j$ and $\omega_{ij} < \infty$.}
+  \end{cases}
+\end{equation*}
+
+For $k \ge 1$,
+
+\begin{equation*}
+  \pi_{ij}^{(k)} =
+  \begin{cases}
+    \pi_{ij}^{(k)-1} & \text{if $d_{ij}^{(k-1)} \le d_{ik}^{(k-1)} + d_{kj}^{(k-1)}$,} \\
+    \pi_{kj}^{(k-1)} & \text{if $d_{ij}^{(k-1)} > d_{ik}^{(k-1)} + d_{kj}^{(k-1)}$.}
+  \end{cases}
+\end{equation*}
+
+\subsection{Johnson's algorithm for spare graphs}
+
+Johnson's algorithm uses the technique of \textbf{reweighting}. If $G$ has negative-weight edges but no negative-weight cycles, we simply compute a new set of non-negative edge weights that allow us to use the same method. The new set of edge weights $\hat{\omega}$ must satisfy two important properties:
+
+\begin{enumerate}
+  \item For all pairs of vertices $u ,v \in V$, a path $p$ is a shortest path from $u$ to $v$ using weight function $\omega$ if and only if $p$ is also a shortest path from $u$ to $v$ using weight function $\hat{\omega}$.
+  \item For all edges $(u,v)$, the new weight $\hat{\omega}(u,v)$ is non-negative.
+\end{enumerate}
+
+We can pre-process $G$ to determine the new weight function $\hat{\omega}$  in $O(VE)$ time.
+
+\subsubsection*{Preserving shortest paths by reweighting}
+
+\begin{lemma}
+  Given a weighted, directed graph $G = (V, E)$ with weight function $\omega : E \rightarrow \mathbb{R}$ be any function mapping vertices to real numbers. For each edge $(u,v) \in E$, define
+  \begin{equation*}
+    \hat{\omega}(u,v) = \omega(u,v) + h(u) - h(v).
+  \end{equation*}
+  Let $p = <v_0, v_1, \dots, v_k>$ be any path from vertex $v_0$ to vertex $v_k$. Then $p$ is a shortest path from $v_0$to $v_k$ with weight function $\omega$ if and only if it is a shortest path with weight function $\hat{\omega}$. That is, $\omega(p) = \delta(v_0, v_k)$ if and only if $\hat{w}(p) = \hat{\delta}(v_0, v_k)$.Furthermore, $G$ has a negative-weight cycle using weight function $\omega$ if and only if $G$ has a negative-weight cycle using weight function $\hat{\omega}$.
+\end{lemma}
+
+\subsubsection*{Producing non-negative weights by reweighting}
+
+Our next goal is to ensure that the second property holds. Given a weighted, directed graph $G = (V,E)$ with weight function $\omega : E \rightarrow \mathbb{R}$, we make a new graph $G' = (V', E')$, where $V' = V \cup {s}$ for some new vertex $s \notin V$ and $E' = E \cup \{ (s,v) : v \in V \}$. We extend the weight function $\omega$ so that $\omega(s,v) = 0$ for all $v \in V$. Note that because $s$ has no edges that enter it, no shortest paths in $G'$, other than those with source $s$, contain $s$. Moreover, $G'$ has no negative-weight cycles if and only if $G$ has no negative-weight cycles. \\
+
+Suppose that $G$ and $G'$ have no negative cycles. Let us define $h(v) = \delta(s, v)$ for all $v \in V'$ By the triangle inequality, we have $h(v) \le h(u) + \omega(u,v)$ for all edges $(u,v) \in E'$. Thus, we can define the new weights $\hat{\omega} = \omega(u,v) + h(u) - h(v) \ge 0$.
+
+\subsubsection*{Computing all-pairs shortest paths}
+
+JOHNSON($G, \omega$)
+\begin{algorithmic} [1]
+\State compute $G'$
+\If {$\text{BELLMAN-FORD}(G', \omega, s) == \text{FALSE}$}
+	\State print ``the input graph contains a negative-weight cycle''
+\Else
+	\For {each vertex $v \in G'.V$}
+		\State set $h(v)$ to the value of $\delta(u,v)$ computed by the Bellman-Ford algorithm
+        \EndFor
+        \For {each edge $(u,v) \in G'.E$}
+		\State $\hat{\omega}(u,v) = \omega(u,v) + h(u) - h(v)$
+        \EndFor
+        \State Let $D = (d_{uv})$ be a new $n \times n$ matrix
+        \For {each vertex $u \in G.V$}
+		\State run DIJKSTRA($G, \hat{\omega}, u$) to compute $\hat{\delta}$ for all $v \in G.V$
+		\For{each vertex $v \in G.V$}
+			\State $d_{uv} = \hat{\delta}(u,v) + h(v) - h(u)$
+                \EndFor
+        \EndFor
+        \State \textbf{return } $D$
+\EndIf
+\end{algorithmic}
+
+If we use simple binary min-heap, Johnson's algorithm runs in $O(VE \log V)$. If we implement the min-priority queue in Dijkstra's algorithm by a Fibonacci heap, Johnson's algorithm runs in $O(V^2 \log V + VE)$.
 
 
 
