@@ -2399,6 +2399,67 @@ We call the Ford-Fulkerson method implemented by finding the augmenting path $p$
   If the Edmonds-Karp algorithm is run on a flow network $G = (V,E)$ with source $s$ and sink $t$, then the total number of flow augmentations performed by the algorithm is $O(VE)$.
 \end{theorem}
 
+\section{String Matching}
+
+We say that pattern $P$ \textbf{occurs with shift $s$} in text $T$ (or, equivalently, that pattern $P$ \textbf{occurs beginning at position $s+1$} in text $T$) if $0 \le s \le n-m$ and $T[s+1 \dots s+m] = P[1 \dots m]$ (that is , if $T[s+j] = P[j]$, for $1 \le j \le m$). If $P$ occurs with shift $s$ in $T$, then we call $s$ a \textbf{valid shift}; otherwise, we call $s$ an \textbf{invalid shift}. The \textbf{string-matching problem} is the problem of finding all valid shifts with which a given pattern $P$ occurs in a given text $T$. \\
+
+We denote by $\Sigma^*$ the set of all finite-length strings formed using characters from the alphabet $\Sigma$. The zero-length \textbf{empty string}, denoted $\varepsilon$. The length of a string $x$ denoted $|x|$. The \textbf{concatenation} of two strings $x$ and $y$, denoted $xy$m has length $|x| + |y|$ and consists of the characters from $x$ followed by the characters from $y$. \\
+
+We say that a string $\omega$ is a \textbf{prefix} of a string $x$, denoted $\omega \sqsubset x$, if $x = \omega y$ for some string $y \in \Sigma^*$. Note that if $\omega \sqsubset x$, then $|\omega| < |x|$. Similarly, we say that a string $\omega$ is a \textbf{suffix} of a string $x$, denoted $\omega \sqsupset x$, if $x = y \omega$ for some $y \in \Sigma^*$. As with a prefix, $\omega \sqsubset x$ implies $|\omega| \le |x|$.
+
+\begin{lemma} [Overlapping-suffix lemma]
+  Suppose that $x, y$, and $z$ are strings such $x \sqsupset z$ and $y \sqsupset z$. If $|x| \le |y|$, then $x \sqsupset y$. If $|x| \ge |y|$, then $y \sqsupset x$. if $|x| = |y|$, then $x = y$.
+\end{lemma}
+
+\subsection{The Knuth-Morris-Pratt algorithm}
+
+KMP-MATCHER($T, P$)
+\begin{algorithmic} [1]
+\State $n = T.\text{length}$
+\State $m = P.\text{length}$
+\State $\pi = \text{COMPUTE-PREFIX-FUNCTION}(P)$
+\State $q = 0$
+\For {$i = 1 \textbf{ to } n$}
+	\While {$q > 0$ and $P[q+1] \neq T[i]$}
+        	\State $q = \pi [q]$
+        \EndWhile
+        \If {$P[q+1] == T[i]$}
+		\State $q = q + 1$
+        \EndIf
+        \If {$q == m$}
+		\State print ``Pattern occurs with shift" $i-m$
+                \State $q = \pi [q]$
+        \EndIf
+\EndFor
+\end{algorithmic}
+
+COMPUTE-PREFIX-FUNCTION($P$)
+\begin{algorithmic} [1]
+\State $m = P.\text{length}$
+\State let $\pi [1 \dots m]$ be a new array
+\State $\pi [1] = 0$
+\State $k = 0$
+\For {$q = 2 \textbf{ to } m$}
+	\While {$k > 0$ and $P[k+1] \neq P[q]$}
+		\State $k = \pi [k]$
+        \EndWhile
+        \If {$P[k+1] == P[q]$}
+        	\State $k = k + 1$
+        \EndIf
+        \State $\pi [q] = k$
+\EndFor
+\State \textbf{return } $\pi$
+\end{algorithmic}
+
+Using the aggregate method of amortized analysis, $COMPUTE-PREFIX-FUNCTION$ runs in time $\Theta(m)$. And $KMP-MATCHER$ runs in $\Theta(n)$
+
+
+
+
+
+
+
+
 
 
 \end{document}
