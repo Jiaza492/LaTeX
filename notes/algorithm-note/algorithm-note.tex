@@ -2453,11 +2453,53 @@ COMPUTE-PREFIX-FUNCTION($P$)
 
 Using the aggregate method of amortized analysis, $COMPUTE-PREFIX-FUNCTION$ runs in time $\Theta(m)$. And $KMP-MATCHER$ runs in $\Theta(n)$
 
+\section{NP-Completeness}
 
+\subsection{Polynomial time}
 
+We say that a function $f: \{ 0,1 \}^*$ is \textbf{polynomial-time computable} if there exists a polynomial-time algorithm $A$ that, given any input $x \in \{ 0,1 \}^*$, produces as output $f(x)$. For some set $I$ of problem instances, we that two encoding $e_1$ and $e_2$ are \textbf{polynomial related} if there exist two polynomial-time computable functions $f_{12}$ and $f_{21}$ such that for any $i \in I$, we have $f_{12}(e_1(i)) = e_2(i)$ and $f_{21}(e_2(i)) = e_1(i)$. That is, a polynomial-time algorithm can compute the encoding $e_2(i)$ from encoding $e_1(i)$, and vice versa.
 
+\subsection{Polynomial-time verification}
 
+We define a \textbf{verification algorithm} as being a two-argument algorithm A, where one argument is an ordinary input string $x$ and other is a binary string $y$ called a \textbf{certificate}. A two-argument algorithm $A$ \textbf{verifies} an input string $x$ if there exists a certificate $y$ such that $A(x,y) = 1$. The \textbf{language verified} by a verification algorithm $A$ is 
 
+\begin{equation*}
+  L = \{ x \in \{ 0,1 \}^*: \text{ there exists } y \in \{ 0,1 \}^* \text{ such that } A(x,y) = 1 \}
+\end{equation*}
+
+The \textbf{complexity class $NP$} is the class of languages that can be verified by a polynomial-time algorithm. More precisely, a language $L$ belongs to $NP$ if and only if there exist a two-input polynomial-time algorithm $A$ and a constant $c$ such that
+
+\begin{equation*}
+  L = \{ x \in \{ 0,1 \}^*: \text{ there exists } y \text{ with } |y = O(|x|^c)| \text{ such that } A(x,y) = 1 \}
+\end{equation*}
+
+We say that algorithm $A$ \textbf{verifies} language $L$ \textbf{in polynomial time}. \\
+
+We define the \textbf{complexity class co-NP} as the set of language $L$ such that $\bar{L} \in NP$.
+
+\subsection{NP-completeness and reducibility}
+
+We say that a language $L_1$ is \textbf{polynomial-time reducible} to a language $L_2$, written $L_1 \le_p L_2$, if there exists a polynomial-time computable function $f : \{ 0,1 \}^* \rightarrow \{ 0,1 \}^*$ such that for all $x \in \{ 0,1 \}^*$,
+
+\begin{equation*}
+  x \in L_1 \text{ if and only if } f(x) \in L_2
+\end{equation*}
+
+We call the function $f$ the \textbf{reduction function}, and a polynomial-time $F$ that computes $f$ is a \textbf{reduction algorithm}. \\
+
+A language $L \subseteq \{ 0,1 \}^*$ is \textbf{NP-complete} if
+\begin{enumerate}
+  \item $L \in NP$, and
+  \item $L' \le_P L$ for every $L\ \in NP$
+\end{enumerate}
+
+If a language $L$ satisfies property 2, but not necessarily property 1, we say that $L$ is \textbf{NP-hard}. We also define $NPC$ to be the class of $NP$-complete languages.
+
+\subsection{NP-completeness proofs}
+
+\begin{lemma}
+If $L$ is a language such that $L\ \le_P L$ for some $L\ \in NPC$, then $L$ is $NP$-hard. If, in addition, $L \in NP$, then $L \in NPC$.
+\end{lemma}
 
 
 
